@@ -2,7 +2,7 @@ import type { NavLink } from "./types";
 
 export const primaryNav: NavLink[] = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: "About Us", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Rehabilitation", href: "/rehabilitation" },
   { label: "Careers", href: "/careers" },

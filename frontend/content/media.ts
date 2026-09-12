@@ -22,6 +22,10 @@ export const media = {
     src: "https://images.pexels.com/photos/7447263/pexels-photo-7447263.jpeg?auto=compress&cs=tinysrgb&w=1200",
     alt: "A therapist reviewing a drawing with a child and her parents during a family session",
   },
+  aboutImage: {
+    src: "https://images.pexels.com/photos/7108332/pexels-photo-7108332.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    alt: "A clinician consulting with a family in a calm, modern clinic room",
+  },
   serviceImages: {
     "speech-therapy": {
       src: "https://images.pexels.com/photos/7447266/pexels-photo-7447266.jpeg?auto=compress&cs=tinysrgb&w=800",

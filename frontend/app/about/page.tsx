@@ -11,6 +11,7 @@ import { Reveal, StaggerGroup, StaggerItem } from "@/components/ui/AnimatedRevea
 import { JsonLd } from "@/components/seo/JsonLd";
 import { nap } from "@/content/nap";
 import { services } from "@/content/services";
+import { media } from "@/content/media";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/schema";
 
@@ -89,6 +90,7 @@ export default function AboutPage() {
         title="Comprehensive rehabilitation, under one roof"
         description={nap.tagline}
         breadcrumbs={[{ name: "About", path: "/about" }]}
+        image={media.aboutImage}
       />
 
       <Section>
