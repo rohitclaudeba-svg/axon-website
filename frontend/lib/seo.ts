@@ -18,7 +18,7 @@ export function buildMetadata({
   title,
   description,
   path,
-  ogImage = "/brand/axon-logo.svg",
+  ogImage = "/brand/axon-logo.png",
   noIndex = false,
 }: BuildMetadataInput): Metadata {
   const url = new URL(path, nap.siteUrl).toString();

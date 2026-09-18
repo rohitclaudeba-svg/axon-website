@@ -82,15 +82,15 @@ export const media = {
     },
   },
   /**
-   * Generic placeholder portraits — NOT real photos of AXON's founders (no
-   * photos have been supplied). Swap each `src` for the real founder's photo
-   * once available; alt text should then name that person.
+   * Founder portraits. Sharan's is the real supplied photo; Divya's is still
+   * a generic stock placeholder pending a real photo — swap `src` for hers
+   * once supplied and update the alt text to name her directly.
    */
   teamImages: {
     sharan: {
-      src: "https://images.pexels.com/photos/32254658/pexels-photo-32254658.jpeg?auto=compress&cs=tinysrgb&w=700",
-      alt: "Placeholder portrait of a co-founder",
-      focal: "center 32%",
+      src: "/team/sharan.jpeg",
+      alt: "Sharan, Co-Founder & Clinical Director — Physiotherapy",
+      focal: "center 25%",
     },
     divya: {
       src: "https://images.pexels.com/photos/5998480/pexels-photo-5998480.jpeg?auto=compress&cs=tinysrgb&w=700",

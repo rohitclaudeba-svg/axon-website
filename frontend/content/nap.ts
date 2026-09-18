@@ -20,6 +20,10 @@ export const nap = {
   // Phone/email are used inside tel:/mailto: hrefs, so placeholders here must
   // stay URL-safe (no brackets) — Next's <Link> parses "[...]" as a dynamic route segment.
   phone: "+91-98989-87654",
+  // WhatsApp number, digits only with country code (no +, spaces or dashes) —
+  // this is what wa.me links are built from.
+  whatsappNumber: "919445680838",
+  whatsappDefaultMessage: "Hi AXON Multi-Rehabilitation Centre, I'd like to know more about your services.",
   email: "info@axon-placeholder.example",
   mapEmbedUrl: "https://www.google.com/maps?q=13.1341959,79.9108162&output=embed",
   mapDirectionsUrl:

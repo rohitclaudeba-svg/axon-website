@@ -1,10 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { HeroVisual } from "@/components/sections/HeroVisual";
 import { useStableInView } from "@/components/ui/AnimatedReveal";
+import { media } from "@/content/media";
 import { nap } from "@/content/nap";
 
 const heroParagraph =
@@ -52,34 +53,47 @@ export function HomeHero() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-gradient-to-br from-light-blue via-light-blue to-soft-green/30"
+      className="relative isolate flex min-h-[560px] items-center overflow-hidden py-20 sm:min-h-[620px] lg:min-h-[720px]"
     >
+      {reduceMotion ? (
+        <Image
+          src={media.heroImage.src}
+          alt={media.heroImage.alt}
+          fill
+          priority
+          sizes="100vw"
+          className="absolute inset-0 -z-10 object-cover"
+        />
+      ) : (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={media.heroImage.src}
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 h-full w-full object-cover"
+        >
+          <source src="/video/home-hero.mp4" type="video/mp4" />
+        </video>
+      )}
       <div
-        className={reduceMotion ? "" : "animate-float"}
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-black/65 via-black/25 to-transparent"
         aria-hidden="true"
-      >
-        <div className="pointer-events-none absolute -right-20 top-10 h-80 w-80 rounded-full bg-teal/20 blur-3xl" />
-      </div>
-      <div
-        className={reduceMotion ? "" : "animate-float"}
-        style={{ animationDelay: "1.5s" }}
-        aria-hidden="true"
-      >
-        <div className="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
-      </div>
+      />
 
-      <Container className="relative grid grid-cols-1 items-center gap-12 py-14 sm:py-16 lg:grid-cols-2 lg:py-20">
-        <div>
+      <Container className="relative">
+        <div className="max-w-2xl">
           <motion.span
             initial={reduceMotion ? undefined : { opacity: 0, y: 16 }}
             animate={reduceMotion ? undefined : inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-4 inline-block rounded-full bg-white px-4 py-1.5 font-heading text-sm font-semibold text-primary shadow-sm"
+            className="mb-4 inline-block rounded-full bg-white/15 px-4 py-1.5 font-heading text-sm font-semibold text-white backdrop-blur-sm"
           >
             {nap.tagline}
           </motion.span>
 
-          <h1 className="text-4xl font-bold leading-tight text-navy sm:text-5xl lg:text-6xl">
+          <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
             <motion.span
               initial={reduceMotion ? undefined : "hidden"}
               animate={reduceMotion ? undefined : inView ? "visible" : "hidden"}
@@ -94,7 +108,7 @@ export function HomeHero() {
             </motion.span>
           </h1>
 
-          <p className="mt-6 max-w-xl text-lg text-navy/70">
+          <p className="mt-6 max-w-xl text-lg text-white/85">
             <motion.span
               initial={reduceMotion ? undefined : "hidden"}
               animate={reduceMotion ? undefined : inView ? "visible" : "hidden"}
@@ -118,17 +132,11 @@ export function HomeHero() {
             <Button href="/book-appointment" variant="primary">
               Book an Appointment
             </Button>
+            <Button href="/contact" variant="ghost">
+              Contact Us
+            </Button>
           </motion.div>
         </div>
-
-        <motion.div
-          initial={reduceMotion ? undefined : { opacity: 0, scale: 0.94 }}
-          animate={reduceMotion ? undefined : inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.94 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: inView ? 0.15 : 0 }}
-          className="relative"
-        >
-          <HeroVisual />
-        </motion.div>
       </Container>
     </section>
   );

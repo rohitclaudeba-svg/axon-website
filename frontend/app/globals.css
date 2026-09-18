@@ -3,10 +3,12 @@
 @tailwind utilities;
 
 :root {
-  /* AXON brand palette — deep-green theme. The single source of truth is the
-     palette-* variables below plus the semantic tokens in tailwind.config.ts,
-     which point at them. To change the whole site's theme, edit only these
-     two files — never introduce a one-off color in a component.
+  /* AXON brand palette — navy/sky-blue/lavender theme, matched to the AXON
+     neuron logo (navy "AXON" wordmark, sky-blue X-swoosh and dendrites,
+     lavender soma and tagline). The single source of truth is the palette-*
+     variables below plus the semantic tokens in tailwind.config.ts, which
+     point at them. To change the whole site's theme, edit only these two
+     files — never introduce a one-off color in a component.
 
      Values are space-separated "R G B" triplets (no commas, no #) rather than
      hex strings — Tailwind's opacity modifiers (e.g. text-navy/70,
@@ -15,22 +17,23 @@
      rgb(var(--x) / <alpha-value>) pattern in tailwind.config.ts is what makes
      every /NN opacity modifier across the site actually work.
 
-     Swatch ramp (darkest -> lightest):
-       --palette-deep   #051F20
-       --palette-dark   #0B2B26
-       --palette-forest #163832
-       --palette-mid    #235347
-       --palette-sage   #8EB69B
-       --palette-mint   #DAF1DE
-       --palette-bg     #F5FAF7
+     Swatch ramp (darkest -> lightest), sampled directly from the AXON logo
+     artwork (public/brand/CLINIC_LOGO-removebg-preview.png):
+       --palette-deep   #2C4875  — dark navy blue, headings/body text/brand
+       --palette-dark   #1E3354  — darker navy, primary hover state
+       --palette-forest #2C4875  — dark navy blue, main CTA/brand color
+       --palette-mid    #35A7E8  — bright cyan blue, secondary interactive accent
+       --palette-sage   #BD84C2  — soft lilac pink, soft backgrounds/badges
+       --palette-mint   #E3F2FB  — pale sky-blue tint, tint section backgrounds
+       --palette-bg     #F8FAFC  — soft off-white, main page background
   */
-  --palette-deep: 5 31 32;
-  --palette-dark: 11 43 38;
-  --palette-forest: 22 56 50;
-  --palette-mid: 35 83 71;
-  --palette-sage: 142 182 155;
-  --palette-mint: 218 241 222;
-  --palette-bg: 245 250 247;
+  --palette-deep: 44 72 117;
+  --palette-dark: 30 51 84;
+  --palette-forest: 44 72 117;
+  --palette-mid: 53 167 232;
+  --palette-sage: 189 132 194;
+  --palette-mint: 227 242 251;
+  --palette-bg: 248 250 252;
 
   --background: rgb(var(--palette-bg));
   --foreground: rgb(var(--palette-deep));

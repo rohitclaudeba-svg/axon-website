@@ -4,10 +4,7 @@ import { media } from "@/content/media";
 import { StaggerGroup, StaggerItem } from "@/components/ui/AnimatedReveal";
 import { cn } from "@/lib/cn";
 
-const accents = [
-  { glow: "from-primary to-teal", badge: "bg-primary text-white" },
-  { glow: "from-teal to-soft-green", badge: "bg-teal text-white" },
-];
+const accents = [{ badge: "bg-primary text-white" }, { badge: "bg-teal text-white" }];
 
 export function Founders({ variant = "compact" }: { variant?: "compact" | "detailed" }) {
   return (
@@ -19,14 +16,7 @@ export function Founders({ variant = "compact" }: { variant?: "compact" | "detai
         return (
           <StaggerItem key={founder.slug}>
             <div className="group relative">
-              <div
-                className={cn(
-                  "pointer-events-none absolute -inset-3 -z-10 rounded-[2.5rem] bg-gradient-to-br opacity-40 blur-2xl transition-opacity duration-500 animate-float group-hover:opacity-70",
-                  accent.glow
-                )}
-                aria-hidden="true"
-              />
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] shadow-xl shadow-navy/20">
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] shadow-xl shadow-navy/20">
                 {photo && (
                   <Image
                     src={photo.src}
@@ -41,7 +31,7 @@ export function Founders({ variant = "compact" }: { variant?: "compact" | "detai
                 {variant === "compact" && (
                   <>
                     <div
-                      className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/15 to-transparent"
+                      className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"
                       aria-hidden="true"
                     />
                     <div className="absolute inset-x-0 bottom-0 p-8 sm:p-10">

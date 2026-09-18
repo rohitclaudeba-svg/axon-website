@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { RouteProgress } from "@/components/layout/RouteProgress";
+import { FloatingContactButtons } from "@/components/layout/FloatingContactButtons";
 import { ToastProvider } from "@/components/ui/Toast";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { medicalBusinessSchema, websiteSchema } from "@/lib/schema";
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
           <Footer />
+          <FloatingContactButtons />
         </ToastProvider>
       </body>
     </html>

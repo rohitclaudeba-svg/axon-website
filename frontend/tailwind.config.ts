@@ -10,9 +10,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Deep-green theme. Every value below points at the palette-* swatches
-        // defined once in globals.css :root — change the theme by editing
-        // *only* those swatches, not the names/roles here.
+        // Navy / cyan-blue / lilac theme, sampled directly from the AXON
+        // neuron logo artwork. Every value below points at the palette-*
+        // swatches defined once in globals.css :root — change the theme by
+        // editing *only* those swatches, not the names/roles here.
         //
         // The rgb(var(--x) / <alpha-value>) form (rather than a bare var())
         // is required so opacity modifiers work: text-navy/70, from-navy/95,
@@ -22,14 +23,14 @@ const config: Config = {
         background: "rgb(var(--palette-bg) / <alpha-value>)",
         foreground: "rgb(var(--palette-deep) / <alpha-value>)",
         primary: {
-          DEFAULT: "rgb(var(--palette-forest) / <alpha-value>)", // #163832 — main CTA / brand color
-          dark: "rgb(var(--palette-dark) / <alpha-value>)", // #0B2B26 — primary hover state
+          DEFAULT: "rgb(var(--palette-forest) / <alpha-value>)", // #2C4875 — main CTA / brand color
+          dark: "rgb(var(--palette-dark) / <alpha-value>)", // #1E3354 — primary hover state
         },
-        teal: "rgb(var(--palette-mid) / <alpha-value>)", // #235347 — secondary interactive accent
-        "soft-green": "rgb(var(--palette-sage) / <alpha-value>)", // #8EB69B — soft backgrounds/badges, never white-text buttons
-        navy: "rgb(var(--palette-deep) / <alpha-value>)", // #051F20 — headings / body text
-        "light-blue": "rgb(var(--palette-mint) / <alpha-value>)", // #DAF1DE — tint section backgrounds
-        "off-white": "rgb(var(--palette-bg) / <alpha-value>)", // #F5FAF7 — main page background
+        teal: "rgb(var(--palette-mid) / <alpha-value>)", // #35A7E8 — secondary interactive accent (cyan blue)
+        "soft-green": "rgb(var(--palette-sage) / <alpha-value>)", // #BD84C2 — soft backgrounds/badges (lilac pink), never white-text buttons
+        navy: "rgb(var(--palette-deep) / <alpha-value>)", // #2C4875 — headings / body text
+        "light-blue": "rgb(var(--palette-mint) / <alpha-value>)", // #E3F2FB — tint section backgrounds
+        "off-white": "rgb(var(--palette-bg) / <alpha-value>)", // #F8FAFC — main page background
       },
       fontFamily: {
         heading: ["var(--font-poppins)", "sans-serif"],

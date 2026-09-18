@@ -66,7 +66,12 @@ export function ConditionGroups({
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="grid grid-cols-1 lg:grid-cols-5 lg:items-start"
           >
-            <div className="relative h-64 sm:h-80 lg:h-[380px] lg:col-span-2">
+            <div
+              className={cn(
+                "relative h-64 sm:h-80 lg:col-span-2",
+                detailed ? "lg:h-[380px]" : "lg:h-[300px]"
+              )}
+            >
               {image && (
                 <Image
                   src={image.src}
@@ -84,7 +89,7 @@ export function ConditionGroups({
             <div
               className={cn(
                 "px-6 py-10 sm:px-10 lg:col-span-3",
-                !detailed && "lg:flex lg:flex-col lg:justify-center"
+                !detailed && "lg:flex lg:flex-col lg:justify-center lg:self-center"
               )}
             >
               <h3 className="font-heading text-2xl font-bold text-navy">{group.title}</h3>

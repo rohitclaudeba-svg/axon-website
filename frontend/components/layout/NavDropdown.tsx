@@ -18,10 +18,12 @@ export function NavDropdown({
   label,
   items,
   active,
+  light = false,
 }: {
   label: string;
   items: NavDropdownItem[];
   active: boolean;
+  light?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -43,8 +45,10 @@ export function NavDropdown({
         aria-expanded={open}
         aria-haspopup="true"
         className={cn(
-          "flex items-center gap-1 font-heading text-sm font-medium transition-colors duration-300 hover:text-primary",
-          active ? "text-primary" : "text-navy"
+          "flex items-center gap-1 font-heading text-sm font-medium transition-colors duration-300",
+          light
+            ? cn("hover:text-white", active ? "text-white" : "text-white/80")
+            : cn("hover:text-primary", active ? "text-primary" : "text-navy")
         )}
       >
         {label}

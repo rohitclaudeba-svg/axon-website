@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { HomeHero } from "@/components/sections/HomeHero";
 import { ServiceShowcase } from "@/components/sections/ServiceShowcase";
-import { ProgramCard } from "@/components/sections/ProgramCard";
+import { ProgramsOverview } from "@/components/sections/ProgramsOverview";
 import { HowWeWork } from "@/components/sections/HowWeWork";
 import { ConditionGroups } from "@/components/sections/ConditionGroups";
 import { Founders } from "@/components/sections/Founders";
@@ -47,11 +47,7 @@ export default function HomePage() {
 
       <Section tone="tint">
         <SectionHeading eyebrow="Who We Help" title="Rehabilitation Programs" />
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {programs.map((program) => (
-            <ProgramCard key={program.slug} program={program} />
-          ))}
-        </div>
+        <ProgramsOverview programs={programs} />
       </Section>
 
       <HowWeWork />
