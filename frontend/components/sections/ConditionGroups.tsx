@@ -64,14 +64,9 @@ export function ConditionGroups({
             animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             exit={reduceMotion ? undefined : { opacity: 0, y: -16 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="grid grid-cols-1 lg:grid-cols-5 lg:items-start"
+            className="grid grid-cols-1 lg:grid-cols-5 lg:items-stretch"
           >
-            <div
-              className={cn(
-                "relative h-64 sm:h-80 lg:col-span-2",
-                detailed ? "lg:h-[380px]" : "lg:h-[300px]"
-              )}
-            >
+            <div className="relative h-64 sm:h-80 lg:col-span-2 lg:h-auto">
               {image && (
                 <Image
                   src={image.src}
@@ -86,12 +81,7 @@ export function ConditionGroups({
               </div>
             </div>
 
-            <div
-              className={cn(
-                "px-6 py-10 sm:px-10 lg:col-span-3",
-                !detailed && "lg:flex lg:flex-col lg:justify-center lg:self-center"
-              )}
-            >
+            <div className="flex flex-col justify-center px-6 py-10 sm:px-10 lg:col-span-3">
               <h3 className="font-heading text-2xl font-bold text-navy">{group.title}</h3>
               <p className="mt-3 text-lg text-navy/70">{group.description}</p>
               {detailed ? (
