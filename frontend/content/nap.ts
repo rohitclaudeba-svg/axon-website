@@ -9,7 +9,7 @@ export const nap = {
   brandName: "AXON Multi-Rehabilitation Centre",
   legalName: "AXON Multi-Rehabilitation Centre",
   tagline: "One Centre. Multiple Specialities. Personalised Care.",
-  emotionalTagline: "Helping You Move, Communicate & Grow.",
+  emotionalTagline: "Together, We Build Your Strength.",
   streetAddress: "Ground Floor, No. 33/1A, JJ Street, Hariram Nagar, V.M Nagar",
   addressLocality: "Tiruvallur",
   addressRegion: "Tamil Nadu",

@@ -30,6 +30,74 @@ export function ConditionGroups({
   const group = conditionGroups[active];
   const image = media.programImages[conditionImageKey[group.slug]];
 
+  if (!detailed) {
+    return (
+      <div>
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 pt-6 sm:grid-cols-2 lg:grid-cols-4">
+          {conditionGroups.map((item) => {
+            const cardImage = media.programImages[conditionImageKey[item.slug]];
+            const displayItems = item.items
+              .filter((conditionItem) => conditionItem.title !== "Dementia/Alzheimer's-related rehabilitation")
+              .slice(0, 6);
+            return (
+              <div key={item.slug} className="relative flex h-full flex-col rounded-3xl border border-navy/8 bg-white pt-6 shadow-sm shadow-navy/5">
+                <span className="absolute left-6 top-0 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-2xl border-4 border-white bg-primary text-white shadow-md shadow-primary/20">
+                  <Icon name={item.icon} className="h-6 w-6" />
+                </span>
+
+                <div className="relative mx-4 h-32 overflow-hidden rounded-2xl sm:h-36">
+                  {cardImage && (
+                    <Image
+                      src={cardImage.src}
+                      alt={cardImage.alt}
+                      fill
+                      sizes="(min-width: 1024px) 24vw, 50vw"
+                      className="object-cover"
+                    />
+                  )}
+                </div>
+
+                <div className="flex flex-1 flex-col p-5 sm:p-6">
+                  <h3 className="font-heading text-lg font-bold text-navy">{item.title}</h3>
+                  <p className="mt-1.5 text-sm text-navy/65">{item.description}</p>
+                  <div className="mt-4 flex flex-1 flex-wrap content-start gap-2">
+                    {displayItems.map((conditionItem) => (
+                      <span
+                        key={conditionItem.title}
+                        className="rounded-full bg-light-blue px-3 py-1.5 text-xs font-medium text-primary"
+                      >
+                        {conditionItem.title}
+                      </span>
+                    ))}
+                  </div>
+                  <Link
+                    href="/conditions"
+                    className="group mt-5 inline-flex items-center gap-1.5 font-heading text-sm font-semibold text-primary hover:underline"
+                  >
+                    Learn more
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {linkToFullPage && (
+          <div className="mt-10 text-center">
+            <Link
+              href="/conditions"
+              className="group inline-flex items-center gap-1.5 font-heading text-sm font-semibold text-primary hover:underline"
+            >
+              View all conditions we support
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+            </Link>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="flex flex-wrap justify-center gap-3" role="tablist" aria-label="Condition categories">
@@ -76,30 +144,14 @@ export function ConditionGroups({
                   className="object-cover"
                 />
               )}
-              <div className="absolute left-5 top-5 flex h-12 w-12 items-center justify-center rounded-xl bg-white/95 text-primary shadow-sm backdrop-blur-sm">
-                <Icon name={group.icon} className="h-6 w-6" />
-              </div>
             </div>
 
             <div className="flex flex-col justify-center px-6 py-10 sm:px-10 lg:col-span-3">
               <h3 className="font-heading text-2xl font-bold text-navy">{group.title}</h3>
               <p className="mt-3 text-lg text-navy/70">{group.description}</p>
-              {detailed ? (
-                <div className="mt-7">
-                  <SupportAreaCarousel areas={group.items} />
-                </div>
-              ) : (
-                <div className="mt-7 flex flex-wrap gap-2.5">
-                  {group.items.map((conditionItem) => (
-                    <span
-                      key={conditionItem.title}
-                      className="rounded-full bg-light-blue px-4 py-2 text-sm font-medium text-primary"
-                    >
-                      {conditionItem.title}
-                    </span>
-                  ))}
-                </div>
-              )}
+              <div className="mt-7">
+                <SupportAreaCarousel areas={group.items} />
+              </div>
             </div>
           </motion.div>
         </AnimatePresence>

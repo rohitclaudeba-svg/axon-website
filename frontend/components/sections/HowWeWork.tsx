@@ -26,11 +26,11 @@ const steps: { title: string; description: string; icon: IconName }[] = [
   },
 ];
 
-// Percentages along the connector's own height where it meets the box above/below it.
-const TOP_Y = 38;
-const BOTTOM_Y = 62;
-const pathDown = `M0,${TOP_Y} C50,${TOP_Y} 50,${BOTTOM_Y} 100,${BOTTOM_Y}`;
-const pathUp = `M0,${BOTTOM_Y} C50,${BOTTOM_Y} 50,${TOP_Y} 100,${TOP_Y}`;
+// The connector's own box is inset by exactly one box-height (h-16) from the
+// top and bottom of the column, so 0/100 here always line up with the real
+// box edges no matter how much taller a sibling column's text makes the row.
+const pathDown = "M0,0 C50,0 50,100 100,100";
+const pathUp = "M0,100 C50,100 50,0 100,0";
 
 export function HowWeWork() {
   return (
@@ -42,10 +42,7 @@ export function HowWeWork() {
         {steps.map((step, index) => (
           <Reveal
             key={step.title}
-            className={cn(
-              "relative flex flex-col gap-6 text-left",
-              index % 2 === 1 && "flex-col-reverse justify-end"
-            )}
+            className={cn("relative flex flex-col gap-6 text-left", index % 2 === 1 && "flex-col-reverse")}
           >
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-teal font-heading text-xl font-bold text-white shadow-md shadow-primary/20">
               {String(index + 1).padStart(2, "0")}
@@ -56,7 +53,7 @@ export function HowWeWork() {
             </div>
 
             {index < steps.length - 1 && (
-              <div className="pointer-events-none absolute inset-y-0 left-16 -right-10" aria-hidden="true">
+              <div className="pointer-events-none absolute left-16 -right-10 top-16 bottom-16" aria-hidden="true">
                 <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full text-navy/30">
                   <path
                     d={index % 2 === 0 ? pathDown : pathUp}
@@ -67,8 +64,8 @@ export function HowWeWork() {
                     strokeLinecap="round"
                     vectorEffect="non-scaling-stroke"
                   />
-                  <circle cx="2" cy={index % 2 === 0 ? TOP_Y : BOTTOM_Y} r="1.8" fill="currentColor" />
-                  <circle cx="98" cy={index % 2 === 0 ? BOTTOM_Y : TOP_Y} r="1.8" fill="currentColor" />
+                  <circle cx="2" cy={index % 2 === 0 ? 0 : 100} r="1.8" fill="currentColor" />
+                  <circle cx="98" cy={index % 2 === 0 ? 100 : 0} r="1.8" fill="currentColor" />
                 </svg>
               </div>
             )}
@@ -76,22 +73,25 @@ export function HowWeWork() {
         ))}
       </div>
 
-      {/* Mobile / tablet: simple stacked list */}
-      <StaggerGroup className="grid grid-cols-1 divide-y divide-navy/10 lg:hidden">
-        {steps.map((step, index) => (
-          <StaggerItem key={step.title}>
-            <div className="flex items-start gap-5 py-6 first:pt-0 last:pb-0">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-teal font-heading text-sm font-bold text-white shadow-sm">
-                {String(index + 1).padStart(2, "0")}
+      {/* Mobile / tablet: connected vertical timeline */}
+      <div className="relative lg:hidden">
+        <div className="absolute bottom-6 left-6 top-6 w-px bg-navy/12" aria-hidden="true" />
+        <StaggerGroup className="space-y-8">
+          {steps.map((step, index) => (
+            <StaggerItem key={step.title}>
+              <div className="relative flex items-start gap-5">
+                <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-teal font-heading text-sm font-bold text-white shadow-md shadow-primary/20">
+                  {String(index + 1).padStart(2, "0")}
+                </div>
+                <div className="pt-2">
+                  <h3 className="font-heading text-lg font-bold text-navy">{step.title}</h3>
+                  <p className="mt-1.5 text-sm text-navy/65">{step.description}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-heading text-lg font-bold text-navy">{step.title}</h3>
-                <p className="mt-1.5 text-sm text-navy/65">{step.description}</p>
-              </div>
-            </div>
-          </StaggerItem>
-        ))}
-      </StaggerGroup>
+            </StaggerItem>
+          ))}
+        </StaggerGroup>
+      </div>
     </Section>
   );
 }

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { Icon } from "@/lib/icons";
 import { media } from "@/content/media";
 import { StaggerGroup, StaggerItem } from "@/components/ui/AnimatedReveal";
 import type { ServiceEntry } from "@/content/types";
@@ -31,10 +30,6 @@ export function ServiceShowcase({ services }: { services: ServiceEntry[] }) {
                 className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/35 to-navy/5 transition-colors duration-300 group-hover:from-navy/95"
                 aria-hidden="true"
               />
-
-              <span className="absolute left-6 top-6 flex h-12 w-12 items-center justify-center rounded-xl bg-white/95 text-primary shadow-sm backdrop-blur-sm">
-                <Icon name={service.icon} className="h-6 w-6" />
-              </span>
 
               <div className="relative mt-auto p-6 sm:p-7">
                 <h3 className="text-2xl font-bold text-white">{service.name}</h3>

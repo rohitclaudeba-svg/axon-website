@@ -38,7 +38,6 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
       <JsonLd data={serviceSchema(service, `/services/${service.slug}`)} />
       <DetailTemplate
         entry={service}
-        eyebrow="Service"
         image={media.serviceShowcaseImages[service.slug as keyof typeof media.serviceShowcaseImages]}
         breadcrumbs={[{ name: service.name, path: `/services/${service.slug}` }]}
         relatedServices={relatedServices}

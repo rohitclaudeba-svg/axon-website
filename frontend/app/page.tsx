@@ -52,12 +52,12 @@ export default function HomePage() {
 
       <HowWeWork />
 
-      <Section>
+      <Section tone="tint">
         <SectionHeading eyebrow="Conditions We Support" title="Care across every stage of life" />
         <ConditionGroups linkToFullPage />
       </Section>
 
-      <Section tone="tint">
+      <Section>
         <SectionHeading eyebrow="Our Founders" title="Built by people who care" />
         <Founders variant="compact" />
         <div className="mt-10 text-center">

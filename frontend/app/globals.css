@@ -39,8 +39,14 @@
   --foreground: rgb(var(--palette-deep));
 }
 
+/* overflow-x: hidden with overflow-y left unset computes overflow-y to
+   "auto" per the CSS Overflow spec, which silently turns body into its own
+   independent scroll container instead of the viewport — breaking
+   `position: sticky` children in subtle ways. Pin overflow-y to visible on
+   both so the viewport stays the single scrolling context. */
 html {
   overflow-x: hidden;
+  overflow-y: visible;
 }
 
 body {
@@ -48,6 +54,7 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
   overflow-x: hidden;
+  overflow-y: visible;
   max-width: 100vw;
 }
 

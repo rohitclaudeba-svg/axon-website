@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Check, ChevronRight, HeartHandshake, Target, TrendingUp, Users } from "lucide-react";
+import { ArrowRight, ChevronRight, HeartHandshake, Sparkle, Target, TrendingUp, Users } from "lucide-react";
 import { Icon } from "@/lib/icons";
 import { media } from "@/content/media";
 import { cn } from "@/lib/cn";
@@ -22,7 +22,7 @@ export function ProgramsOverview({ programs }: { programs: ProgramEntry[] }) {
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[16rem_1fr] lg:gap-8">
       <div
-        className="flex gap-3 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0"
+        className="sticky top-[60px] z-20 grid grid-cols-2 gap-2.5 rounded-2xl bg-off-white/95 py-2 backdrop-blur-sm sm:top-[64px] lg:static lg:z-auto lg:flex lg:flex-col lg:gap-3 lg:self-start lg:bg-transparent lg:py-0 lg:backdrop-blur-0"
         role="tablist"
         aria-label="Rehabilitation programs"
       >
@@ -36,7 +36,7 @@ export function ProgramsOverview({ programs }: { programs: ProgramEntry[] }) {
               aria-selected={isActive}
               onClick={() => setActive(index)}
               className={cn(
-                "flex shrink-0 items-center gap-3.5 rounded-2xl border px-4 py-4 text-left font-heading text-sm font-semibold shadow-sm transition-all duration-300 lg:w-full",
+                "flex items-center gap-2.5 rounded-2xl border p-3 text-left font-heading text-xs font-semibold shadow-sm transition-all duration-300 sm:text-sm lg:w-full lg:gap-3.5 lg:p-4 lg:text-sm",
                 isActive
                   ? "border-primary bg-gradient-to-br from-primary to-primary-dark shadow-md shadow-primary/25"
                   : "border-navy/8 bg-white shadow-navy/5 hover:border-primary/25 hover:shadow-md hover:shadow-navy/8"
@@ -44,15 +44,13 @@ export function ProgramsOverview({ programs }: { programs: ProgramEntry[] }) {
             >
               <span
                 className={cn(
-                  "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors duration-300",
+                  "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-colors duration-300 lg:h-11 lg:w-11",
                   isActive ? "bg-white text-primary" : "bg-light-blue text-primary"
                 )}
               >
-                <Icon name={item.icon} className="h-5 w-5" />
+                <Icon name={item.icon} className="h-4 w-4 lg:h-5 lg:w-5" />
               </span>
-              <span className={cn("flex-1 whitespace-nowrap lg:whitespace-normal", isActive ? "text-white" : "text-navy/70")}>
-                {item.name}
-              </span>
+              <span className={cn("flex-1 leading-snug", isActive ? "text-white" : "text-navy/70")}>{item.name}</span>
               <ChevronRight
                 className={cn(
                   "hidden h-4 w-4 shrink-0 transition-transform duration-300 lg:block",
@@ -72,7 +70,7 @@ export function ProgramsOverview({ programs }: { programs: ProgramEntry[] }) {
           animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
           exit={reduceMotion ? undefined : { opacity: 0, y: -12 }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 gap-9 rounded-3xl border border-navy/8 bg-white p-6 shadow-sm shadow-navy/5 sm:p-9 lg:grid-cols-[1fr_1.25fr_0.9fr] lg:gap-10"
+          className="grid grid-cols-1 gap-9 rounded-3xl border border-navy/8 bg-white p-6 shadow-sm shadow-navy/5 sm:p-9 lg:grid-cols-[1fr_1.25fr_0.9fr] lg:gap-10 lg:min-h-[540px]"
         >
           <div className="relative h-56 overflow-hidden rounded-2xl sm:h-64 lg:h-full lg:min-h-[320px]">
             {image && (
@@ -84,12 +82,6 @@ export function ProgramsOverview({ programs }: { programs: ProgramEntry[] }) {
                 className="object-cover"
               />
             )}
-            <div className="absolute inset-x-3 bottom-3 flex items-start gap-2.5 rounded-xl bg-white/95 p-3 shadow-sm backdrop-blur-sm">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-white">
-                <Icon name={program.icon} className="h-4 w-4" />
-              </span>
-              <span className="line-clamp-2 text-xs font-medium leading-snug text-navy/75">{program.shortDescription}</span>
-            </div>
           </div>
 
           <div>
@@ -122,7 +114,7 @@ export function ProgramsOverview({ programs }: { programs: ProgramEntry[] }) {
             <ul className="mt-4 space-y-3.5">
               {program.whoMayBenefit.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-sm leading-relaxed text-navy/70">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                  <Sparkle className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                   {item}
                 </li>
               ))}
@@ -131,7 +123,7 @@ export function ProgramsOverview({ programs }: { programs: ProgramEntry[] }) {
               href={`/rehabilitation/${program.slug}`}
               className="mt-6 inline-flex items-center gap-1.5 font-heading text-sm font-semibold text-primary hover:underline"
             >
-              Learn more about this program
+              Learn more
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>

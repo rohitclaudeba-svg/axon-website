@@ -34,7 +34,6 @@ export default function ProgramDetailPage({ params }: { params: { slug: string }
       <JsonLd data={serviceSchema(program, `/rehabilitation/${program.slug}`)} />
       <DetailTemplate
         entry={program}
-        eyebrow="Rehabilitation Program"
         image={media.programImages[program.slug as keyof typeof media.programImages]}
         breadcrumbs={[
           { name: "Rehabilitation Programs", path: "/rehabilitation" },

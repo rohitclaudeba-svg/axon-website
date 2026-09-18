@@ -11,13 +11,11 @@ import { Container } from "@/components/ui/Container";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/ui/AnimatedReveal";
 import { Button } from "@/components/ui/Button";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { Icon } from "@/lib/icons";
 import { faqPageSchema } from "@/lib/schema";
 import type { ProgramEntry, ServiceEntry } from "@/content/types";
 
 interface DetailTemplateProps {
   entry: ServiceEntry | ProgramEntry;
-  eyebrow: string;
   breadcrumbs: Crumb[];
   image: { src: string; alt: string };
   relatedServices: ServiceEntry[];
@@ -26,7 +24,6 @@ interface DetailTemplateProps {
 
 export function DetailTemplate({
   entry,
-  eyebrow,
   breadcrumbs,
   image,
   relatedServices,
@@ -57,16 +54,6 @@ export function DetailTemplate({
             <Reveal>
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl shadow-xl shadow-navy/15 lg:aspect-auto lg:h-[520px]">
                 <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
-                <div
-                  className="absolute inset-0 bg-gradient-to-t from-navy/50 via-transparent to-transparent"
-                  aria-hidden="true"
-                />
-                <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full bg-white/90 px-3.5 py-2 shadow-sm backdrop-blur-sm">
-                  <Icon name={entry.icon} className="h-4 w-4 text-primary" />
-                  <span className="font-heading text-xs font-semibold uppercase tracking-wide text-navy">
-                    {eyebrow}
-                  </span>
-                </div>
               </div>
             </Reveal>
 

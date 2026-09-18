@@ -64,6 +64,7 @@ export const programs: ProgramEntry[] = [
       "Children with Autism Spectrum Disorder or ADHD",
       "Children with Cerebral Palsy or Developmental Delay",
       "Children with Down Syndrome, Learning Difficulties or Intellectual Disability",
+      "Children with Speech & Language Delay",
     ],
     processSteps: [
       "Multidisciplinary assessment",
@@ -158,6 +159,7 @@ export const programs: ProgramEntry[] = [
       "Individuals recovering from Stroke or Traumatic Brain Injury",
       "People with Parkinson's Disease, Multiple Sclerosis or Ataxia",
       "Individuals with Guillain-Barré Syndrome, Neuropathy or Post-polio syndrome",
+      "Individuals seeking coordinated physiotherapy, occupational therapy and speech support during recovery",
     ],
     processSteps: [
       "Neurological and functional assessment",
@@ -252,6 +254,7 @@ export const programs: ProgramEntry[] = [
       "Individuals recovering from fractures, dislocations or joint replacements",
       "People with sports injuries, arthritis or tendonitis/bursitis",
       "Individuals with low back pain, neck pain or postural disorders",
+      "Individuals undergoing post-surgical rehabilitation for orthopedic procedures",
     ],
     processSteps: [
       "Musculoskeletal assessment",
@@ -346,6 +349,7 @@ export const programs: ProgramEntry[] = [
       "Older adults with balance or fall-risk concerns",
       "Individuals with dementia or Alzheimer's-related rehabilitation needs",
       "People recovering from hip replacement or managing age-related functional decline",
+      "Older adults managing osteoporosis, frailty or chronic pain",
     ],
     processSteps: [
       "Functional and mobility assessment",
