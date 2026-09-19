@@ -50,7 +50,7 @@ export function SectionHeading({
   size?: keyof typeof titleSizes;
 }) {
   return (
-    <Reveal className={cn("mb-10 max-w-2xl", align === "center" ? "mx-auto text-center" : "text-left")}>
+    <Reveal className={cn("mb-10", align === "center" ? "mx-auto max-w-2xl text-center" : "text-left")}>
       {eyebrow && (
         <span className="mb-3 inline-block font-heading text-sm font-semibold uppercase tracking-wide text-teal">
           {eyebrow}

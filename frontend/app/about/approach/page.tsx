@@ -5,6 +5,7 @@ import { CTASection } from "@/components/sections/CTASection";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/AnimatedReveal";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { media } from "@/content/media";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/schema";
 
@@ -34,6 +35,7 @@ export default function ApproachPage() {
           { name: "About", path: "/about" },
           { name: "Our Approach", path: "/about/approach" },
         ]}
+        image={media.approachImage}
       />
 
       <Section>

@@ -39,6 +39,8 @@ export default function ServiceDetailPage({ params }: { params: { slug: string }
       <DetailTemplate
         entry={service}
         image={media.serviceShowcaseImages[service.slug as keyof typeof media.serviceShowcaseImages]}
+        contentImage={media.serviceImages[service.slug as keyof typeof media.serviceImages]}
+        secondaryImage={media.serviceWhoBenefitImages[service.slug as keyof typeof media.serviceWhoBenefitImages]}
         breadcrumbs={[{ name: service.name, path: `/services/${service.slug}` }]}
         relatedServices={relatedServices}
         relatedPrograms={relatedPrograms}

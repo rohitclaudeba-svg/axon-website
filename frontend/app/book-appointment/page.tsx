@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import { Clock, Phone } from "lucide-react";
 import { EnquiryForm } from "@/components/sections/EnquiryForm";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/AnimatedReveal";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { media } from "@/content/media";
 import { nap } from "@/content/nap";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/schema";
@@ -28,35 +27,45 @@ export default function BookAppointmentPage() {
         })}
       />
       <Section className="!pt-6 sm:!pt-8">
-        <Reveal className="-mt-2 mb-8 text-center">
-          <span className="mb-3 inline-block font-heading text-sm font-semibold uppercase tracking-wide text-teal">
-            Book an Appointment
-          </span>
-          <h1 className="text-3xl font-bold text-navy sm:text-4xl">Let&apos;s build your personalised plan</h1>
-        </Reveal>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
+          <Reveal className="lg:pt-4">
+            <span className="mb-3 inline-block font-heading text-sm font-semibold uppercase tracking-wide text-teal">
+              Appointment
+            </span>
+            <h1 className="text-3xl font-bold text-navy sm:text-4xl">Let&apos;s build your personalised plan</h1>
+            <p className="mt-4 text-lg text-navy/70">
+              Book a session with our specialists to support your recovery, development or everyday independence.
+              Choose a suitable time and let us help you get started.
+            </p>
 
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start">
-          <Reveal>
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl shadow-xl shadow-navy/15 sm:aspect-[16/10] lg:aspect-auto lg:h-[560px]">
-              <Image
-                src={media.heroImage.src}
-                alt={media.heroImage.alt}
-                fill
-                sizes="(min-width: 1024px) 45vw, 100vw"
-                className="object-cover"
-              />
-              <div
-                className="absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/25 to-transparent"
-                aria-hidden="true"
-              />
-              <div className="absolute inset-x-0 bottom-0 p-8 sm:p-10">
-                <span className="inline-block rounded-full bg-white/15 px-4 py-1.5 font-heading text-xs font-semibold uppercase tracking-wide text-white backdrop-blur-sm">
-                  {nap.brandName}
-                </span>
-                <h2 className="mt-4 text-2xl font-bold text-white sm:text-3xl">{nap.tagline}</h2>
-                <p className="mt-3 text-white/80">
-                  Our team will match you with the right specialists and confirm a time that works for you.
-                </p>
+            <div className="mt-8 flex items-start gap-4">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-light-blue text-primary">
+                <Phone className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <div>
+                <p className="font-heading text-sm font-semibold text-navy">Contact Us</p>
+                <a href={`tel:${nap.phone}`} className="block text-navy/70 transition-colors hover:text-primary">
+                  {nap.phone}
+                </a>
+                <a href={`mailto:${nap.email}`} className="block text-navy/70 transition-colors hover:text-primary">
+                  {nap.email}
+                </a>
+              </div>
+            </div>
+
+            <div className="my-6 border-t border-navy/10" aria-hidden="true" />
+
+            <div className="flex items-start gap-4">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-light-blue text-primary">
+                <Clock className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <div>
+                <p className="font-heading text-sm font-semibold text-navy">Working Hours</p>
+                {nap.hours.map((h) => (
+                  <p key={h.day} className="text-navy/70">
+                    {h.day}: {h.time}
+                  </p>
+                ))}
               </div>
             </div>
           </Reveal>

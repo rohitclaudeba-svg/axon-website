@@ -11,6 +11,10 @@ import {
   ListChecks,
   Stethoscope,
   TrendingUp,
+  Puzzle,
+  Users,
+  GraduationCap,
+  Blocks,
   type LucideIcon,
 } from "lucide-react";
 import type { IconName } from "@/content/types";
@@ -20,6 +24,10 @@ export const iconMap: Record<IconName, LucideIcon> = {
   occupational: Hand,
   physiotherapy: Activity,
   "special-education": BookOpen,
+  "behavioral-therapy": Puzzle,
+  "social-groups": Users,
+  "school-readiness": GraduationCap,
+  "play-groups": Blocks,
   pediatric: Baby,
   neurological: Brain,
   orthopedic: Bone,

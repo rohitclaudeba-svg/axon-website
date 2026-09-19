@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { PageHero } from "@/components/sections/PageHero";
 import { GalleryGrid } from "@/components/sections/GalleryGrid";
 import { CTASection } from "@/components/sections/CTASection";
-import { Section } from "@/components/ui/Section";
+import { Section, SectionHeading } from "@/components/ui/Section";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/schema";
@@ -25,13 +24,12 @@ export default function GalleryPage() {
           path: "/gallery",
         })}
       />
-      <PageHero
-        eyebrow="Gallery"
-        title="A look inside AXON"
-        description="Photography placeholders below will be replaced with authentic AXON clinic photography."
-        breadcrumbs={[{ name: "Gallery", path: "/gallery" }]}
-      />
-      <Section>
+      <Section className="!pt-16 sm:!pt-20">
+        <SectionHeading
+          eyebrow="Gallery"
+          title="A look inside AXON"
+          description="A look at our centre, our team and our therapy spaces."
+        />
         <GalleryGrid />
       </Section>
       <CTASection />

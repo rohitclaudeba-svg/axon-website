@@ -4,7 +4,6 @@ import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { useStableInView } from "@/components/ui/AnimatedReveal";
 import { media } from "@/content/media";
 import { nap } from "@/content/nap";
 
@@ -48,13 +47,9 @@ export function HomeHero() {
   const reduceMotion = useReducedMotion();
   const headingWords = nap.emotionalTagline.split(" ");
   const paragraphWords = heroParagraph.split(" ");
-  const { ref, inView } = useStableInView<HTMLElement>("0px", 0.3);
 
   return (
-    <section
-      ref={ref}
-      className="relative isolate flex min-h-[560px] items-center overflow-hidden py-20 sm:min-h-[620px] lg:min-h-[720px]"
-    >
+    <section className="relative isolate flex min-h-[560px] items-center overflow-hidden py-20 sm:min-h-[620px] lg:min-h-[720px]">
       {reduceMotion ? (
         <Image
           src={media.heroImage.src}
@@ -83,12 +78,12 @@ export function HomeHero() {
       />
 
       <Container className="relative">
-        <div className="max-w-2xl">
+        <div className="-mt-8 max-w-2xl sm:mt-0">
           <motion.span
             initial={reduceMotion ? undefined : { opacity: 0, y: 16 }}
-            animate={reduceMotion ? undefined : inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-4 inline-block rounded-full bg-white/15 px-4 py-1.5 font-heading text-sm font-semibold text-white backdrop-blur-sm"
+            className="mb-4 hidden rounded-full bg-white/15 px-4 py-1.5 font-heading text-sm font-semibold text-white backdrop-blur-sm sm:inline-block"
           >
             {nap.tagline}
           </motion.span>
@@ -96,7 +91,7 @@ export function HomeHero() {
           <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
             <motion.span
               initial={reduceMotion ? undefined : "hidden"}
-              animate={reduceMotion ? undefined : inView ? "visible" : "hidden"}
+              animate={reduceMotion ? undefined : "visible"}
               variants={headingContainer}
               className="inline-block"
             >
@@ -111,7 +106,7 @@ export function HomeHero() {
           <p className="mt-6 max-w-xl text-lg text-white/85">
             <motion.span
               initial={reduceMotion ? undefined : "hidden"}
-              animate={reduceMotion ? undefined : inView ? "visible" : "hidden"}
+              animate={reduceMotion ? undefined : "visible"}
               variants={paragraphContainer}
               className="inline"
             >
@@ -125,8 +120,8 @@ export function HomeHero() {
 
           <motion.div
             initial={reduceMotion ? undefined : { opacity: 0, y: 16 }}
-            animate={reduceMotion ? undefined : inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: inView ? 2.5 : 0 }}
+            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 2.5 }}
             className="mt-8 flex flex-wrap gap-4"
           >
             <Button href="/book-appointment" variant="primary">

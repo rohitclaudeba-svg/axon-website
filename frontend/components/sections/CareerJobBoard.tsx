@@ -11,17 +11,23 @@ import { cn } from "@/lib/cn";
 export function CareerJobBoard() {
   const [activeSlug, setActiveSlug] = useState(careerOpenings[0].slug);
   const [mode, setMode] = useState<"details" | "apply">("details");
+  const [step, setStep] = useState<"list" | "detail">("list");
   const reduceMotion = useReducedMotion();
   const active = careerOpenings.find((opening) => opening.slug === activeSlug) ?? careerOpenings[0];
 
   const selectOpening = (slug: string) => {
     setActiveSlug(slug);
     setMode("details");
+    setStep("detail");
+  };
+
+  const backToList = () => {
+    setStep("list");
   };
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:items-start">
-      <div className="flex flex-col gap-3 lg:col-span-2">
+      <div className={cn("flex-col gap-3 lg:col-span-2 lg:flex", step === "list" ? "flex" : "hidden")}>
         <p className="px-1 font-heading text-xs font-semibold uppercase tracking-wide text-navy/45">
           {careerOpenings.length} open roles
         </p>
@@ -67,7 +73,12 @@ export function CareerJobBoard() {
         })}
       </div>
 
-      <div className="lg:sticky lg:top-28 lg:col-span-3">
+      <div
+        className={cn(
+          "lg:sticky lg:top-28 lg:col-span-3 lg:block",
+          step === "list" ? "hidden" : "block"
+        )}
+      >
         <AnimatePresence mode="wait" initial={false}>
           {mode === "details" ? (
             <motion.div
@@ -78,6 +89,15 @@ export function CareerJobBoard() {
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
               className="rounded-3xl border border-navy/8 bg-white p-6 shadow-sm shadow-navy/5 sm:p-8"
             >
+              <button
+                type="button"
+                onClick={backToList}
+                className="group mb-5 inline-flex items-center gap-1.5 font-heading text-sm font-semibold text-navy/60 transition-colors hover:text-primary lg:hidden"
+              >
+                <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" aria-hidden="true" />
+                Back to open roles
+              </button>
+
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="flex items-center gap-3.5">
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-light-blue text-primary">

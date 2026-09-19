@@ -87,6 +87,7 @@ export default function AboutPage() {
       />
       <PageHero
         eyebrow="About Us"
+        eyebrowClassName="text-pink-400"
         title="Comprehensive rehabilitation, under one roof"
         description={nap.tagline}
         breadcrumbs={[{ name: "About", path: "/about" }]}

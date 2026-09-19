@@ -11,13 +11,6 @@ import { media } from "@/content/media";
 import { SupportAreaCarousel } from "@/components/sections/SupportAreaCarousel";
 import { cn } from "@/lib/cn";
 
-const conditionImageKey: Record<string, keyof typeof media.programImages> = {
-  "developmental-and-learning": "pediatric-rehabilitation",
-  neurological: "neurological-rehabilitation",
-  "orthopedic-and-musculoskeletal": "orthopedic-musculoskeletal-rehabilitation",
-  geriatric: "geriatric-rehabilitation",
-};
-
 export function ConditionGroups({
   linkToFullPage = false,
   detailed = false,
@@ -28,14 +21,14 @@ export function ConditionGroups({
   const [active, setActive] = useState(0);
   const reduceMotion = useReducedMotion();
   const group = conditionGroups[active];
-  const image = media.programImages[conditionImageKey[group.slug]];
+  const image = media.conditionGroupImages[group.slug as keyof typeof media.conditionGroupImages];
 
   if (!detailed) {
     return (
       <div>
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 pt-6 sm:grid-cols-2 lg:grid-cols-4">
           {conditionGroups.map((item) => {
-            const cardImage = media.programImages[conditionImageKey[item.slug]];
+            const cardImage = media.conditionGroupImages[item.slug as keyof typeof media.conditionGroupImages];
             const displayItems = item.items
               .filter((conditionItem) => conditionItem.title !== "Dementia/Alzheimer's-related rehabilitation")
               .slice(0, 6);

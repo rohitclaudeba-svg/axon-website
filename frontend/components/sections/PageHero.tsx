@@ -3,9 +3,11 @@ import Image from "next/image";
 import { Breadcrumbs, type Crumb } from "@/components/ui/Breadcrumbs";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/AnimatedReveal";
+import { cn } from "@/lib/cn";
 
 export function PageHero({
   eyebrow,
+  eyebrowClassName,
   title,
   description,
   breadcrumbs,
@@ -13,6 +15,7 @@ export function PageHero({
   children,
 }: {
   eyebrow?: string;
+  eyebrowClassName?: string;
   title: string;
   description?: string;
   breadcrumbs: Crumb[];
@@ -40,7 +43,12 @@ export function PageHero({
             <Breadcrumbs items={breadcrumbs} light />
             <div className="mt-6 max-w-3xl">
               {eyebrow && (
-                <span className="mb-3 inline-block font-heading text-sm font-semibold uppercase tracking-wide text-soft-green">
+                <span
+                  className={cn(
+                    "mb-3 inline-block font-heading text-sm font-semibold uppercase tracking-wide",
+                    eyebrowClassName ?? "text-soft-green"
+                  )}
+                >
                   {eyebrow}
                 </span>
               )}

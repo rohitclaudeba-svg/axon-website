@@ -1,10 +1,9 @@
 import Image from "next/image";
-import { CheckCircle2, Sparkles } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { Breadcrumbs, type Crumb } from "@/components/ui/Breadcrumbs";
 import { ServiceCard } from "@/components/sections/ServiceCard";
 import { ProgramCard } from "@/components/sections/ProgramCard";
 import { FaqAccordion } from "@/components/sections/FaqAccordion";
-import { SupportAreaCarousel } from "@/components/sections/SupportAreaCarousel";
 import { CTASection } from "@/components/sections/CTASection";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
@@ -12,128 +11,219 @@ import { Reveal, StaggerGroup, StaggerItem } from "@/components/ui/AnimatedRevea
 import { Button } from "@/components/ui/Button";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { faqPageSchema } from "@/lib/schema";
-import type { ProgramEntry, ServiceEntry } from "@/content/types";
+import { nap } from "@/content/nap";
+import type { ApproachSection, ProgramEntry, ServiceEntry } from "@/content/types";
+
+interface DetailImage {
+  src: string;
+  alt: string;
+  focal?: string;
+}
 
 interface DetailTemplateProps {
   entry: ServiceEntry | ProgramEntry;
   breadcrumbs: Crumb[];
-  image: { src: string; alt: string };
+  image: DetailImage;
+  contentImage?: DetailImage;
+  secondaryImage?: DetailImage;
   relatedServices: ServiceEntry[];
   relatedPrograms: ProgramEntry[];
+}
+
+function CheckItem({ title, description }: { title: string; description?: string }) {
+  return (
+    <div className="flex items-start gap-3">
+      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+      <p className="text-navy/75">
+        <span className="font-heading font-semibold text-navy">{title}</span>
+        {description && <span> — {description}</span>}
+      </p>
+    </div>
+  );
 }
 
 export function DetailTemplate({
   entry,
   breadcrumbs,
   image,
+  contentImage = image,
+  secondaryImage = image,
   relatedServices,
   relatedPrograms,
 }: DetailTemplateProps) {
-  // The hero uses a custom light-tint background, so every section below it
-  // must alternate default/tint starting from "default" — otherwise adjacent
-  // sections using the same tone (e.g. two "tint" bands in a row) blend into
-  // one another with no visible boundary.
+  // Every section below the plain intro hero must alternate default/tint
+  // starting from "default" — otherwise adjacent sections using the same
+  // tone (e.g. two "tint" bands in a row) blend into one another with no
+  // visible boundary.
   const slots = [
-    "areas",
-    "whoProcess",
+    "whatIs",
+    "howHelps",
+    "approach",
+    "whoBenefit",
+    "whyChoose",
     ...(relatedServices.length > 0 ? ["relatedServices"] : []),
     ...(relatedPrograms.length > 0 ? ["relatedPrograms"] : []),
     ...(entry.faqs.length > 0 ? ["faq"] : []),
   ] as const;
   const toneFor = (slot: (typeof slots)[number]) => (slots.indexOf(slot) % 2 === 0 ? "default" : "tint");
 
+  const approachSections: ApproachSection[] | undefined = "approachSections" in entry ? entry.approachSections : undefined;
+  const [primaryAreas, restAreas] = approachSections && approachSections.length > 0
+    ? [entry.supportAreas, []]
+    : [entry.supportAreas.slice(0, 5), entry.supportAreas.slice(5)];
+
   return (
     <>
-      <section className="relative overflow-hidden bg-gradient-to-br from-light-blue via-light-blue to-soft-green/25 pb-16 pt-8 sm:pb-20">
+      <section className="relative isolate flex min-h-[380px] items-center overflow-hidden py-14 sm:min-h-[440px]">
+        <Image
+          src={image.src}
+          alt={image.alt}
+          fill
+          priority
+          sizes="100vw"
+          style={image.focal ? { objectPosition: image.focal } : undefined}
+          className="absolute inset-0 -z-10 object-cover"
+        />
+        <div
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-black/70 via-black/35 to-black/10"
+          aria-hidden="true"
+        />
+
         <Container className="relative">
           <Reveal>
-            <Breadcrumbs items={breadcrumbs} />
+            <Breadcrumbs items={breadcrumbs} light />
           </Reveal>
-
-          <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
-            <Reveal>
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl shadow-xl shadow-navy/15 lg:aspect-auto lg:h-[520px]">
-                <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.1} className="flex flex-col lg:justify-center">
-              <h1 className="text-4xl font-bold leading-tight text-navy sm:text-5xl">
-                {entry.name.split(" ").slice(0, -1).join(" ")}{" "}
-                <span className="bg-gradient-to-r from-primary to-teal bg-clip-text text-transparent">
-                  {entry.name.split(" ").slice(-1)}
-                </span>
-              </h1>
-              <p className="mt-5 text-lg text-navy/70">{entry.heroSummary}</p>
-
-              <div className="mt-7 rounded-2xl border border-primary/15 bg-white/80 p-5 backdrop-blur-sm">
-                <div className="flex items-start gap-3">
-                  <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-teal" aria-hidden="true" />
-                  <p className="text-sm text-navy/75">{entry.whatItIs}</p>
-                </div>
-                <ul className="mt-4 grid grid-cols-1 gap-2.5 border-t border-navy/8 pt-4 sm:grid-cols-2">
-                  {entry.supportAreas.map((area) => (
-                    <li key={area.title} className="flex items-start gap-2.5">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                      <span className="font-heading text-sm font-medium text-navy">{area.title}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="mt-7 flex flex-wrap gap-3">
-                <Button href="/book-appointment" variant="primary">
-                  Book an Appointment
-                </Button>
-                <Button href="/contact" variant="ghost">
-                  Contact Us
-                </Button>
-              </div>
-            </Reveal>
-          </div>
+          <Reveal delay={0.05} className="mt-6 max-w-3xl">
+            <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl">{entry.name}</h1>
+            <p className="mt-5 text-lg text-white/85">{entry.heroSummary}</p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Button href="/book-appointment" variant="primary">
+                Book an Appointment
+              </Button>
+              <Button href="/contact" variant="ghost">
+                Contact Us
+              </Button>
+            </div>
+          </Reveal>
         </Container>
       </section>
 
-      <Section tone={toneFor("areas")}>
-        <SectionHeading eyebrow="Areas of Support" title="What this covers" />
-        <SupportAreaCarousel areas={entry.supportAreas} />
+      <Section tone={toneFor("whatIs")}>
+        <Reveal>
+          <h2 className="text-3xl font-bold text-navy">What is {entry.name}?</h2>
+          <p className="mt-4 text-lg leading-relaxed text-navy/70">{entry.whatItIs}</p>
+        </Reveal>
       </Section>
 
-      <Section tone={toneFor("whoProcess")}>
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          <div>
-            <h2 className="text-2xl font-bold text-navy">Who may benefit</h2>
-            <StaggerGroup className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <Section tone={toneFor("howHelps")}>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-stretch lg:gap-14">
+          <Reveal>
+            <h2 className="text-3xl font-bold text-navy">How {entry.name} Helps</h2>
+            <p className="mt-3 text-navy/65">Individuals we support may face:</p>
+            <div className="mt-6 space-y-5">
+              {primaryAreas.map((area) => (
+                <CheckItem key={area.title} title={area.title} description={area.description} />
+              ))}
+            </div>
+            <p className="mt-6 text-navy/70">
+              Our {entry.name.toLowerCase()} at {nap.brandName} supports individuals in working through these
+              challenges, building confidence and everyday skills.
+            </p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl shadow-xl shadow-navy/15 lg:h-full lg:aspect-auto">
+              <Image
+                src={contentImage.src}
+                alt={contentImage.alt}
+                fill
+                sizes="(min-width: 1024px) 45vw, 100vw"
+                style={contentImage.focal ? { objectPosition: contentImage.focal } : undefined}
+                className="object-cover"
+              />
+            </div>
+          </Reveal>
+        </div>
+      </Section>
+
+      {approachSections && approachSections.length > 0 ? (
+        <Section tone={toneFor("approach")}>
+          <SectionHeading eyebrow="Our Approach" title={`Our Approach to ${entry.name} at ${nap.brandName}`} align="left" />
+          <div className="space-y-12">
+            {approachSections.map((section) => (
+              <Reveal key={section.title}>
+                <h3 className="text-xl font-bold text-navy">{section.title}</h3>
+                <p className="mt-2 text-navy/65">{section.intro}</p>
+                <div className="mt-5 grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2">
+                  {section.items.map((item) => (
+                    <CheckItem key={item.title} title={item.title} description={item.description} />
+                  ))}
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </Section>
+      ) : (
+        restAreas.length > 0 && (
+          <Section tone={toneFor("approach")}>
+            <SectionHeading eyebrow="Our Approach" title={`Our approach to ${entry.name} at AXON`} align="left" />
+            <StaggerGroup className="grid grid-cols-1 gap-x-10 gap-y-6 sm:grid-cols-2">
+              {restAreas.map((area) => (
+                <StaggerItem key={area.title}>
+                  <CheckItem title={area.title} description={area.description} />
+                </StaggerItem>
+              ))}
+            </StaggerGroup>
+          </Section>
+        )
+      )}
+
+      <Section tone={toneFor("whoBenefit")}>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-stretch lg:gap-14">
+          <Reveal className="lg:order-2">
+            <h2 className="text-3xl font-bold text-navy">Who Can Benefit from {entry.name}?</h2>
+            <StaggerGroup className="mt-6 space-y-3">
               {entry.whoMayBenefit.map((item) => (
                 <StaggerItem key={item}>
-                  <div className="flex h-full items-start gap-2.5 rounded-xl border border-navy/8 bg-white p-4 shadow-sm shadow-navy/5">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-teal" aria-hidden="true" />
-                    <span className="text-sm text-navy/75">{item}</span>
+                  <div className="flex items-start gap-3">
+                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
+                    <span className="text-lg text-navy/75">{item}</span>
                   </div>
                 </StaggerItem>
               ))}
             </StaggerGroup>
-          </div>
-
-          <div>
-            <h2 className="text-2xl font-bold text-navy">What the process can involve</h2>
-            <div className="relative mt-5">
-              <div className="absolute left-4 top-2 bottom-2 w-px bg-navy/10" aria-hidden="true" />
-              <StaggerGroup className="space-y-5">
-                {entry.processSteps.map((step, index) => (
-                  <StaggerItem key={step}>
-                    <div className="relative flex items-start gap-4 pl-0">
-                      <span className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-xs font-semibold text-white">
-                        {index + 1}
-                      </span>
-                      <span className="pt-1 text-navy/75">{step}</span>
-                    </div>
-                  </StaggerItem>
-                ))}
-              </StaggerGroup>
+            <p className="mt-6 text-navy/70">
+              Through structured, individualised therapy, we help build emotional regulation, social interaction and
+              everyday behaviour, step by step.
+            </p>
+          </Reveal>
+          <Reveal delay={0.1} className="hidden lg:order-1 lg:block">
+            <div className="relative h-full w-full overflow-hidden rounded-3xl shadow-xl shadow-navy/15">
+              <Image
+                src={secondaryImage.src}
+                alt={secondaryImage.alt}
+                fill
+                sizes="45vw"
+                style={secondaryImage.focal ? { objectPosition: secondaryImage.focal } : undefined}
+                className="object-cover"
+              />
             </div>
-          </div>
+          </Reveal>
         </div>
+      </Section>
+
+      <Section tone={toneFor("whyChoose")}>
+        <Reveal>
+          <h2 className="text-3xl font-bold text-navy">Why Choose {nap.brandName} for {entry.name}?</h2>
+          <p className="mt-4 text-lg leading-relaxed text-navy/70">
+            Our therapists coordinate {entry.name.toLowerCase()} alongside {nap.brandName}&apos;s wider team where
+            needed, so your plan stays consistent, personalised and focused on measurable progress — not delivered
+            in isolation.
+          </p>
+          <p className="mt-4 text-lg leading-relaxed text-navy/70">
+            If you&apos;re looking for {entry.name.toLowerCase()} to help build confidence and everyday independence,
+            get in touch with {nap.brandName} today to take the first step.
+          </p>
+        </Reveal>
       </Section>
 
       {relatedServices.length > 0 && (
@@ -162,7 +252,7 @@ export function DetailTemplate({
         <>
           <JsonLd data={faqPageSchema(entry.faqs)} />
           <Section tone={toneFor("faq")}>
-            <SectionHeading eyebrow="FAQs" title="Frequently asked questions" />
+            <SectionHeading eyebrow="FAQs" title="Frequently asked questions" align="left" />
             <FaqAccordion items={entry.faqs} />
           </Section>
         </>

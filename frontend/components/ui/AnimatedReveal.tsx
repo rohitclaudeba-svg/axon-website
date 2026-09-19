@@ -1,32 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import type { ReactNode } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/motion";
 import { cn } from "@/lib/cn";
 
 /**
- * Raw IntersectionObserver-backed `useInView` can flap true/false several
- * times a frame when scrolling stalls right on the trigger boundary — that
- * flapping is what shows up as "flickering" text. Debouncing the boolean by
- * a small delay collapses that noise into one clean state change, while
- * still replaying the animation every time the element actually enters or
- * leaves the viewport (scrolling down AND back up).
+ * These used to gate their entrance animation behind an IntersectionObserver
+ * (fading in only once scrolled into view). That observer re-fires on every
+ * scroll-position recalculation near a section boundary — combined with
+ * layout shifts elsewhere on the page (header height, images loading), it
+ * produced a visible flicker right at section transitions, on both mobile
+ * and desktop. Animating once on mount instead removes the observer
+ * entirely, so there's nothing left to mis-fire.
  */
-export function useStableInView<T extends HTMLElement>(margin: string, amount: number) {
-  const ref = useRef<T>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const rawInView = useInView(ref, { margin: margin as any, amount });
-  const [stableInView, setStableInView] = useState(false);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => setStableInView(rawInView), 120);
-    return () => clearTimeout(timeout);
-  }, [rawInView]);
-
-  return { ref, inView: stableInView };
-}
-
 export function Reveal({
   children,
   className,
@@ -37,21 +24,13 @@ export function Reveal({
   delay?: number;
 }) {
   const reduceMotion = useReducedMotion();
-  const { ref, inView } = useStableInView<HTMLDivElement>("-40px", 0.2);
 
   if (reduceMotion) {
     return <div className={className}>{children}</div>;
   }
 
   return (
-    <motion.div
-      ref={ref}
-      className={className}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-      variants={fadeUp}
-      transition={{ delay }}
-    >
+    <motion.div className={className} initial="hidden" animate="visible" variants={fadeUp} transition={{ delay }}>
       {children}
     </motion.div>
   );
@@ -59,20 +38,13 @@ export function Reveal({
 
 export function StaggerGroup({ children, className }: { children: ReactNode; className?: string }) {
   const reduceMotion = useReducedMotion();
-  const { ref, inView } = useStableInView<HTMLDivElement>("-40px", 0.2);
 
   if (reduceMotion) {
     return <div className={className}>{children}</div>;
   }
 
   return (
-    <motion.div
-      ref={ref}
-      className={className}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-      variants={staggerContainer}
-    >
+    <motion.div className={className} initial="hidden" animate="visible" variants={staggerContainer}>
       {children}
     </motion.div>
   );

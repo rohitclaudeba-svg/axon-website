@@ -9,6 +9,10 @@ export type IconName =
   | "occupational"
   | "physiotherapy"
   | "special-education"
+  | "behavioral-therapy"
+  | "social-groups"
+  | "school-readiness"
+  | "play-groups"
   | "pediatric"
   | "neurological"
   | "orthopedic"
@@ -28,6 +32,15 @@ export interface SupportArea {
   description: string;
 }
 
+/** A themed cluster of strategies within "Our Approach" — optional; when a
+ * service/program doesn't define these, the page falls back to a flat list
+ * built from `supportAreas` instead. */
+export interface ApproachSection {
+  title: string;
+  intro: string;
+  items: SupportArea[];
+}
+
 export interface ServiceEntry {
   slug: string;
   name: string;
@@ -36,6 +49,7 @@ export interface ServiceEntry {
   heroSummary: string;
   whatItIs: string;
   supportAreas: SupportArea[];
+  approachSections?: ApproachSection[];
   whoMayBenefit: string[];
   processSteps: string[];
   faqs: FaqEntry[];

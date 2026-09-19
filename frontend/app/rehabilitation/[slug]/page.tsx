@@ -35,6 +35,8 @@ export default function ProgramDetailPage({ params }: { params: { slug: string }
       <DetailTemplate
         entry={program}
         image={media.programImages[program.slug as keyof typeof media.programImages]}
+        contentImage={media.programContentImages[program.slug as keyof typeof media.programContentImages]}
+        secondaryImage={media.programWhoBenefitImages[program.slug as keyof typeof media.programWhoBenefitImages]}
         breadcrumbs={[
           { name: "Rehabilitation Programs", path: "/rehabilitation" },
           { name: program.name, path: `/rehabilitation/${program.slug}` },

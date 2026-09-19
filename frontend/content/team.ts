@@ -1,18 +1,18 @@
 import type { TeamMember } from "./types";
 
 /**
- * AXON is founder-led — two co-founders, not a generic multi-person roster.
- * Names, degrees and bios are illustrative editorial content (drafted for the
- * site, not confirmed biographical facts) — swap in AXON's approved details
- * whenever they're ready; photos remain stock placeholders until real photos
- * are supplied.
+ * AXON is founder-led. Divya's name, credentials and bio below are the real,
+ * supplied details. Sharan's are still illustrative editorial content
+ * (drafted for the site, not confirmed biographical facts) — swap in his
+ * approved details whenever they're ready. Photos are real (see
+ * content/media.ts teamImages).
  */
 export const team: TeamMember[] = [
   {
     slug: "divya",
-    name: "Divya",
-    role: "Co-Founder & Clinical Director — Speech & Developmental Therapy",
-    bio: "Divya holds a Master's in Speech-Language Pathology (M.Sc. SLP) and a Bachelor's in Audiology & Speech-Language Pathology, with over 10 years of experience supporting children and adults with communication, language and feeding difficulties. She co-founded AXON to bring speech therapy, occupational therapy and special education together under one coordinated plan, and leads the centre's speech therapy and pediatric development programs.",
+    name: "Divya D.",
+    role: "Founder & Consultant — Speech-Language Pathologist",
+    bio: "Divya D. (BASLP, MSc Psychology) is a Speech-Language Pathologist and the founder and consultant at AXON Multi-Rehabilitation Centre, Tiruvallur. She has 5+ years of experience in speech, language and communication, having worked with 100+ pediatric and adult clients — including neurodivergent individuals and those with a range of speech, language, developmental and communication needs. Divya has also conducted multiple school-readiness sessions and supported 100+ families throughout her professional journey. With a background in both Speech-Language Pathology and Psychology, she believes in personalised, child- and family-friendly care, focused on helping individuals communicate better, build confidence and participate meaningfully in everyday life.",
     photoPlaceholder: "Placeholder portrait",
   },
   {

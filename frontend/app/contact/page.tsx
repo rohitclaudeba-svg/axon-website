@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/sections/PageHero";
-import { QuickContactCards } from "@/components/sections/QuickContactCards";
 import { ContactDetails } from "@/components/sections/ContactDetails";
 import { EnquiryForm } from "@/components/sections/EnquiryForm";
 import { FaqAccordion } from "@/components/sections/FaqAccordion";
+import { Clock, MessageCircle, ShieldCheck } from "lucide-react";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/AnimatedReveal";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -19,6 +19,24 @@ export function generateMetadata(): Metadata {
     path: "/contact",
   });
 }
+
+const whatToExpect = [
+  {
+    icon: Clock,
+    title: "A quick response",
+    description: "Our team typically responds within 24 hours on working days.",
+  },
+  {
+    icon: MessageCircle,
+    title: "No pressure, just guidance",
+    description: "We'll talk through your needs first — there's no obligation to book anything.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "The right specialist",
+    description: "We match you with the therapist best suited to your goals before you visit.",
+  },
+];
 
 export default function ContactPage() {
   return (
@@ -40,17 +58,8 @@ export default function ContactPage() {
         image={media.contactImage}
       />
 
-      <Section className="!pt-10">
-        <QuickContactCards />
-      </Section>
-
-      <Section>
-        <SectionHeading eyebrow="Get in Touch" title="Visit our centre or reach us directly" align="left" />
-        <ContactDetails />
-      </Section>
-
-      <Section tone="tint">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-center">
+      <Section className="!pt-10" tone="tint">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:items-start">
           <Reveal className="lg:col-span-2">
             <span className="mb-3 inline-block font-heading text-sm font-semibold uppercase tracking-wide text-teal">
               Send Us a Message
@@ -60,6 +69,19 @@ export default function ContactPage() {
               Share a few details about what you&apos;re looking for and our team will get back to you to help
               match you with the right specialists — no obligation, just a conversation.
             </p>
+            <div className="mt-8 space-y-6">
+              {whatToExpect.map((item) => (
+                <div key={item.title} className="flex items-start gap-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-primary shadow-sm shadow-navy/10">
+                    <item.icon className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <p className="font-heading text-sm font-semibold text-navy">{item.title}</p>
+                    <p className="mt-1 text-sm text-navy/65">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </Reveal>
           <Reveal delay={0.1} className="lg:col-span-3">
             <div className="relative overflow-hidden rounded-3xl border border-primary/15 bg-gradient-to-br from-light-blue to-soft-green/40 p-6 shadow-xl shadow-navy/10 sm:p-8">
@@ -68,11 +90,16 @@ export default function ContactPage() {
                 aria-hidden="true"
               />
               <div className="relative">
-                <EnquiryForm variant="contact" />
+                <EnquiryForm variant="appointment" />
               </div>
             </div>
           </Reveal>
         </div>
+      </Section>
+
+      <Section>
+        <SectionHeading eyebrow="Get in Touch" title="Visit our centre or reach us directly" align="left" />
+        <ContactDetails />
       </Section>
 
       <Section>

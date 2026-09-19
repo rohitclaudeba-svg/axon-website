@@ -379,6 +379,407 @@ export const services: ServiceEntry[] = [
         "AXON's special education service offers individualised learning plans and structured support for children with learning differences and developmental needs.",
     },
   },
+  {
+    slug: "behavioral-therapy",
+    name: "Behavioral Therapy",
+    shortDescription: "Positive, structured support for behaviour, focus and emotional regulation.",
+    icon: "behavioral-therapy",
+    heroSummary:
+      "Structured, positive-reinforcement-based behavioural therapy that helps children and adults manage emotions, reduce challenging behaviours and build lasting everyday skills.",
+    whatItIs:
+      "Children and adults with Autism Spectrum Disorder, ADHD or developmental delay often find it hard to manage attention, emotions and behaviour in ways that affect learning, communication and daily life. Our behavioural therapy combines a detailed behavioural assessment with individualised, positive-reinforcement-based strategies — helping each person build self-regulation, communication and social skills, while reducing behaviours that get in the way of learning and connection.",
+    supportAreas: [
+      {
+        title: "Difficulty Following Instructions & Maintaining Focus",
+        description: "Struggling with attention and completing tasks.",
+      },
+      {
+        title: "Emotional Outbursts in Social or Learning Settings",
+        description: "Finding it hard to regulate big emotions.",
+      },
+      {
+        title: "Difficulty Adapting to Change & New Situations",
+        description: "Feeling distressed when routines are altered.",
+      },
+      {
+        title: "Struggles with Social Interaction & Communication",
+        description: "Difficulty reading social cues and engaging with others.",
+      },
+      {
+        title: "Repetitive Behaviours That Interfere with Learning & Play",
+        description: "Patterns that limit engagement and development.",
+      },
+    ],
+    approachSections: [
+      {
+        title: "Behavioural Assessment & Individualised Strategies",
+        intro:
+          "Our therapy begins with a detailed behavioural assessment to understand each child's strengths, challenges and triggers. Based on this, we build an intervention plan that includes:",
+        items: [
+          {
+            title: "Behaviour Modification Techniques",
+            description: "Encouraging positive behaviours while reducing unwanted ones.",
+          },
+          {
+            title: "Reinforcement-Based Learning",
+            description: "Building social and communication skills through structured, repeatable approaches.",
+          },
+        ],
+      },
+      {
+        title: "Positive Reinforcement & Structured Learning",
+        intro: "We use positive reinforcement to shape desired behaviours and build independence through:",
+        items: [
+          {
+            title: "Reward-Based Learning",
+            description: "Encouraging motivation through consistent, positive feedback.",
+          },
+          {
+            title: "Clear & Structured Routines",
+            description: "Helping children understand expectations and daily activities.",
+          },
+          {
+            title: "Visual Schedules & Communication Aids",
+            description: "Supporting focus and comprehension through visual supports.",
+          },
+        ],
+      },
+      {
+        title: "Emotional Regulation & Coping Mechanisms",
+        intro:
+          "Many of the children we work with find it hard to regulate big emotions, which can lead to meltdowns or withdrawal. Our therapy focuses on:",
+        items: [
+          {
+            title: "Self-Regulation Techniques",
+            description: "Teaching breathing exercises and calming strategies.",
+          },
+          {
+            title: "Recognising & Expressing Emotions",
+            description: "Helping children communicate their feelings constructively.",
+          },
+          {
+            title: "Sensory-Friendly Strategies",
+            description: "Managing overstimulation and anxiety in daily settings.",
+          },
+        ],
+      },
+      {
+        title: "Social Skills Training & Peer Interaction",
+        intro: "Building social confidence is a key part of therapy. We use:",
+        items: [
+          {
+            title: "Role-Play & Guided Practice",
+            description: "Developing conversation and social interaction skills.",
+          },
+          {
+            title: "Group Activities",
+            description: "Encouraging teamwork, patience and cooperation with peers.",
+          },
+        ],
+      },
+      {
+        title: "Reducing Unwanted Behaviours",
+        intro: "Repetitive or disruptive behaviours can get in the way of learning and connection. We work on:",
+        items: [
+          {
+            title: "Minimising Self-Stimulatory Behaviours",
+            description: "Supporting children to manage stimming in a way that works for them.",
+          },
+          {
+            title: "Smoother Activity Transitions",
+            description: "Helping children adjust between activities with less distress.",
+          },
+        ],
+      },
+      {
+        title: "Parent Training & Home-Based Support",
+        intro: "Consistent progress depends on involving families. We work with parents and caregivers through:",
+        items: [
+          {
+            title: "Behaviour Management Techniques",
+            description: "Practical strategies for everyday use at home.",
+          },
+          {
+            title: "Handling Challenging Moments",
+            description: "Equipping parents to manage real-life situations calmly and effectively.",
+          },
+          {
+            title: "Creating a Supportive Home Environment",
+            description: "Reinforcing therapy goals for long-term progress.",
+          },
+        ],
+      },
+    ],
+    whoMayBenefit: [
+      "Children with Autism Spectrum Disorder (ASD)",
+      "Children with ADHD or Oppositional Defiant Disorder (ODD)",
+      "Children facing social anxiety or communication challenges",
+      "Children with developmental delay or learning difficulties",
+    ],
+    processSteps: [
+      "Behavioural and functional assessment",
+      "Individualised, goal-based behaviour support plan",
+      "Structured therapy sessions using positive reinforcement",
+      "Ongoing review with family and school involvement",
+    ],
+    faqs: [
+      {
+        question: "Who can benefit from behavioural therapy at AXON?",
+        answer:
+          "Behavioural therapy supports children with Autism Spectrum Disorder, ADHD, Oppositional Defiant Disorder, or those facing social anxiety, communication challenges or developmental delay, along with families needing consistent strategies at home.",
+      },
+      {
+        question: "What does a behavioural therapy plan involve?",
+        answer:
+          "It begins with a functional behaviour assessment, followed by an individualised plan combining positive reinforcement, emotional-regulation coaching and social skills training, with consistent strategies carried through at home and school.",
+      },
+      {
+        question: "What makes AXON's approach to behavioural therapy different?",
+        answer:
+          "Our therapists coordinate behavioural therapy alongside AXON's speech, occupational therapy and special-education teams where needed, so a child's plan stays consistent across every part of their care rather than working in isolation.",
+      },
+      {
+        question: "How do I start behavioural therapy at AXON?",
+        answer: "Book an appointment through our website or by phone, and our team will arrange an initial assessment.",
+      },
+    ],
+    relatedServiceSlugs: ["special-education", "occupational-therapy"],
+    relatedProgramSlugs: ["pediatric-rehabilitation"],
+    seo: {
+      title: "Behavioral Therapy",
+      description:
+        "AXON's behavioural therapy service uses positive reinforcement and individualised strategies to support behaviour, attention and emotional regulation for children with ASD, ADHD and related needs.",
+    },
+  },
+  {
+    slug: "social-communication-groups",
+    name: "Social & Communication Groups",
+    shortDescription: "Guided group sessions that build social confidence and communication skills.",
+    icon: "social-groups",
+    heroSummary:
+      "Small-group sessions that help children and adults build social confidence, communication skills and meaningful peer connections.",
+    whatItIs:
+      "Social & communication groups bring individuals together in a supported, small-group setting to practise conversation, turn-taking, social problem-solving and friendship skills alongside peers.",
+    supportAreas: [
+      {
+        title: "Conversation & Turn-Taking",
+        description: "Practising back-and-forth conversation in a supported group setting.",
+      },
+      {
+        title: "Social Problem-Solving",
+        description: "Guided practice working through social situations and conflicts.",
+      },
+      {
+        title: "Reading Social Cues",
+        description: "Building awareness of tone, body language and facial expression.",
+      },
+      {
+        title: "Friendship & Peer Skills",
+        description: "Developing the skills needed to build and maintain friendships.",
+      },
+      {
+        title: "Group Play & Collaboration",
+        description: "Structured group activities that build cooperative play skills.",
+      },
+      {
+        title: "Emotional Expression in Groups",
+        description: "Practising sharing feelings and perspectives with peers.",
+      },
+      {
+        title: "Confidence Building",
+        description: "Supportive group settings that build social confidence over time.",
+      },
+      {
+        title: "Family Debrief & Strategies",
+        description: "Sharing progress and strategies with families after each group session.",
+      },
+    ],
+    whoMayBenefit: [
+      "Children and teens with Autism Spectrum Disorder or social communication difficulties",
+      "Individuals working on friendship and peer-interaction skills",
+      "Children with speech and language delay wanting peer practice",
+      "Families looking for a supported, small-group setting to build social confidence",
+    ],
+    processSteps: [
+      "Social communication assessment",
+      "Placement into a small, compatible peer group",
+      "Structured weekly group sessions",
+      "Progress review and family feedback",
+    ],
+    faqs: [
+      {
+        question: "Who are social & communication groups for?",
+        answer:
+          "These groups support children and teens with Autism Spectrum Disorder, social communication difficulties, or those simply looking to build friendship and peer-interaction skills in a supported setting.",
+      },
+      {
+        question: "How are groups formed?",
+        answer: "Groups are formed based on an initial social communication assessment, matching participants by age and compatible goals.",
+      },
+      {
+        question: "How do I enrol in a social & communication group?",
+        answer: "Book an appointment through our website or by phone, and our team will guide you through assessment and group placement.",
+      },
+    ],
+    relatedServiceSlugs: ["speech-therapy", "special-education"],
+    relatedProgramSlugs: ["pediatric-rehabilitation"],
+    seo: {
+      title: "Social & Communication Groups",
+      description:
+        "AXON's social & communication groups build social confidence, conversation and peer skills for children and teens in a supported, small-group setting.",
+    },
+  },
+  {
+    slug: "school-readiness",
+    name: "School Readiness",
+    shortDescription: "Preparing children with the skills and confidence to thrive at school.",
+    icon: "school-readiness",
+    heroSummary:
+      "School readiness support that builds the academic, social and self-help skills children need for a confident start at school.",
+    whatItIs:
+      "School readiness support brings together speech, occupational therapy and special-education strategies to prepare children for the academic, social and functional demands of a classroom setting.",
+    supportAreas: [
+      {
+        title: "Pre-Literacy & Pre-Numeracy Skills",
+        description: "Building the foundations for reading, writing and early maths.",
+      },
+      {
+        title: "Fine Motor & Handwriting Readiness",
+        description: "Strengthening the hand skills needed for writing and classroom tasks.",
+      },
+      {
+        title: "Following Instructions & Routines",
+        description: "Practising listening, following multi-step instructions and classroom routines.",
+      },
+      {
+        title: "Classroom Social Skills",
+        description: "Building sharing, turn-taking and group participation skills.",
+      },
+      {
+        title: "Attention & Task Persistence",
+        description: "Strategies to support focus and completing tasks independently.",
+      },
+      {
+        title: "Self-Help & Independence Skills",
+        description: "Building independence with belongings, dressing and mealtime routines at school.",
+      },
+      {
+        title: "Communication for Learning",
+        description: "Supporting the communication skills needed to ask for help and participate in class.",
+      },
+      {
+        title: "Transition-to-School Planning",
+        description: "Practical preparation and family guidance ahead of starting school.",
+      },
+    ],
+    whoMayBenefit: [
+      "Children preparing to start preschool or primary school",
+      "Children with developmental delay, speech delay or learning difficulties",
+      "Families wanting a structured, multidisciplinary plan before the school transition",
+    ],
+    processSteps: [
+      "School-readiness assessment across key developmental areas",
+      "Individualised, multidisciplinary preparation plan",
+      "Structured skill-building sessions",
+      "Transition planning and review with families",
+    ],
+    faqs: [
+      {
+        question: "Who is school readiness support for?",
+        answer:
+          "This service supports children preparing to start preschool or primary school, including those with developmental delay, speech delay or learning difficulties.",
+      },
+      {
+        question: "What does a school readiness plan include?",
+        answer:
+          "It combines pre-literacy, fine motor, communication and classroom social skills, built around a school-readiness assessment and reviewed as your child progresses.",
+      },
+      {
+        question: "How do I start school readiness support?",
+        answer: "Book an appointment through our website or by phone, and our team will arrange an initial assessment.",
+      },
+    ],
+    relatedServiceSlugs: ["special-education", "occupational-therapy"],
+    relatedProgramSlugs: ["pediatric-rehabilitation"],
+    seo: {
+      title: "School Readiness",
+      description:
+        "AXON's school readiness service prepares children with the academic, social and self-help skills needed for a confident start at school.",
+    },
+  },
+  {
+    slug: "play-groups",
+    name: "Play Groups",
+    shortDescription: "Guided group play sessions that build developmental and social skills.",
+    icon: "play-groups",
+    heroSummary:
+      "Guided play group sessions that turn everyday play into an opportunity to build developmental, motor and social skills.",
+    whatItIs:
+      "Play groups use structured, therapist-guided play in a small-group setting to support motor development, sensory regulation, communication and social interaction.",
+    supportAreas: [
+      {
+        title: "Structured Group Play",
+        description: "Therapist-guided play activities that build developmental skills.",
+      },
+      {
+        title: "Motor Skills Through Play",
+        description: "Supporting gross and fine motor development through movement-based play.",
+      },
+      {
+        title: "Sensory Play & Regulation",
+        description: "Play activities that support healthy sensory processing.",
+      },
+      {
+        title: "Turn-Taking & Sharing",
+        description: "Practising cooperative play skills alongside peers.",
+      },
+      {
+        title: "Early Communication in Play",
+        description: "Encouraging communication and requesting during play.",
+      },
+      {
+        title: "Imaginative & Social Play",
+        description: "Building pretend play and social interaction skills.",
+      },
+      {
+        title: "Parent Participation & Coaching",
+        description: "Involving families in play strategies to continue at home.",
+      },
+    ],
+    whoMayBenefit: [
+      "Toddlers and young children with developmental delay",
+      "Children working on motor, sensory or early social skills",
+      "Families looking for guided, therapeutic play in a group setting",
+    ],
+    processSteps: [
+      "Developmental screening",
+      "Placement into an age- and needs-matched play group",
+      "Structured, therapist-guided group play sessions",
+      "Ongoing progress review with families",
+    ],
+    faqs: [
+      {
+        question: "Who are play groups for?",
+        answer:
+          "Play groups support toddlers and young children with developmental delay, or those working on motor, sensory or early social skills, in a guided group setting.",
+      },
+      {
+        question: "What happens in a play group session?",
+        answer: "Sessions use structured, therapist-guided play activities that build motor, sensory, communication and social skills alongside peers.",
+      },
+      {
+        question: "How do I join a play group?",
+        answer: "Book an appointment through our website or by phone, and our team will guide you through a short developmental screening and group placement.",
+      },
+    ],
+    relatedServiceSlugs: ["occupational-therapy", "speech-therapy"],
+    relatedProgramSlugs: ["pediatric-rehabilitation"],
+    seo: {
+      title: "Play Groups",
+      description:
+        "AXON's play groups use guided, therapist-led group play to build motor, sensory, communication and social skills in young children.",
+    },
+  },
 ];
 
 export function getServiceBySlug(slug: string): ServiceEntry | undefined {

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, ChevronRight, HeartHandshake, Sparkle, Target, TrendingUp, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronRight, HeartHandshake, Sparkle, Target, TrendingUp, Users } from "lucide-react";
 import { Icon } from "@/lib/icons";
 import { media } from "@/content/media";
 import { cn } from "@/lib/cn";
@@ -18,9 +18,15 @@ export function ProgramsOverview({ programs }: { programs: ProgramEntry[] }) {
   const program = programs[active];
   const image = media.programImages[program.slug as keyof typeof media.programImages];
   const features = program.supportAreas.slice(0, 4);
+  const topRef = useRef<HTMLDivElement>(null);
+
+  const goToProgram = (direction: 1 | -1) => {
+    setActive((current) => (current + direction + programs.length) % programs.length);
+    topRef.current?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+  };
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[16rem_1fr] lg:gap-8">
+    <div ref={topRef} className="scroll-mt-20 grid grid-cols-1 gap-6 lg:grid-cols-[16rem_1fr] lg:gap-8">
       <div
         className="sticky top-[60px] z-20 grid grid-cols-2 gap-2.5 rounded-2xl bg-off-white/95 py-2 backdrop-blur-sm sm:top-[64px] lg:static lg:z-auto lg:flex lg:flex-col lg:gap-3 lg:self-start lg:bg-transparent lg:py-0 lg:backdrop-blur-0"
         role="tablist"
@@ -129,6 +135,30 @@ export function ProgramsOverview({ programs }: { programs: ProgramEntry[] }) {
           </div>
         </motion.div>
       </AnimatePresence>
+
+      <div className="flex items-center justify-center gap-4 lg:col-start-2">
+        <button
+          type="button"
+          onClick={() => goToProgram(-1)}
+          aria-label="Previous program"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-navy/15 bg-white text-navy/60 shadow-sm transition-colors duration-200 hover:border-primary/40 hover:text-primary"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        </button>
+
+        <span className="font-heading text-xs font-semibold text-navy/50">
+          {active + 1} / {programs.length}
+        </span>
+
+        <button
+          type="button"
+          onClick={() => goToProgram(1)}
+          aria-label="Next program"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-navy/15 bg-white text-navy/60 shadow-sm transition-colors duration-200 hover:border-primary/40 hover:text-primary"
+        >
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </button>
+      </div>
     </div>
   );
 }

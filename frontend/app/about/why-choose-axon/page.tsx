@@ -3,6 +3,7 @@ import { PageHero } from "@/components/sections/PageHero";
 import { WhyChooseAxon } from "@/components/sections/WhyChooseAxon";
 import { CTASection } from "@/components/sections/CTASection";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { media } from "@/content/media";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/schema";
 
@@ -31,6 +32,7 @@ export default function WhyChooseAxonPage() {
           { name: "About", path: "/about" },
           { name: "Why Choose AXON", path: "/about/why-choose-axon" },
         ]}
+        image={media.whyChooseImage}
       />
       <WhyChooseAxon />
       <CTASection />

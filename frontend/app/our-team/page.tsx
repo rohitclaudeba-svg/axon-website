@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { PageHero } from "@/components/sections/PageHero";
 import { Founders } from "@/components/sections/Founders";
 import { CTASection } from "@/components/sections/CTASection";
-import { Section } from "@/components/ui/Section";
+import { Section, SectionHeading } from "@/components/ui/Section";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/schema";
@@ -25,13 +24,12 @@ export default function OurTeamPage() {
           path: "/our-team",
         })}
       />
-      <PageHero
-        eyebrow="Our Founders"
-        title="Built by people who care"
-        description="Meet the co-founders leading AXON's coordinated, multidisciplinary care."
-        breadcrumbs={[{ name: "Our Team", path: "/our-team" }]}
-      />
-      <Section>
+      <Section className="!pt-8 sm:!pt-12">
+        <SectionHeading
+          eyebrow="Our Founders"
+          title="Built by people who care"
+          description="Meet the co-founders leading AXON's coordinated, multidisciplinary care."
+        />
         <Founders variant="detailed" />
       </Section>
       <CTASection />

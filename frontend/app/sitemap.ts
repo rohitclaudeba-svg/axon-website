@@ -11,8 +11,6 @@ const staticRoutes = [
   "/our-team",
   "/rehabilitation",
   "/conditions",
-  "/patient-resources",
-  "/faqs",
   "/gallery",
   "/contact",
   "/book-appointment",
