@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Clock, Phone } from "lucide-react";
+import { Clock, Phone, Mail } from "lucide-react";
 import { EnquiryForm } from "@/components/sections/EnquiryForm";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/AnimatedReveal";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { nap } from "@/content/nap";
+import { groupHours } from "@/lib/hours";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/schema";
 
@@ -43,10 +44,21 @@ export default function BookAppointmentPage() {
                 <Phone className="h-5 w-5" aria-hidden="true" />
               </span>
               <div>
-                <p className="font-heading text-sm font-semibold text-navy">Contact Us</p>
+                <p className="font-heading text-sm font-semibold text-navy">Call Us</p>
                 <a href={`tel:${nap.phone}`} className="block text-navy/70 transition-colors hover:text-primary">
                   {nap.phone}
                 </a>
+              </div>
+            </div>
+
+            <div className="my-6 border-t border-navy/10" aria-hidden="true" />
+
+            <div className="flex items-start gap-4">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-light-blue text-primary">
+                <Mail className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <div>
+                <p className="font-heading text-sm font-semibold text-navy">Email Us</p>
                 <a href={`mailto:${nap.email}`} className="block text-navy/70 transition-colors hover:text-primary">
                   {nap.email}
                 </a>
@@ -61,9 +73,9 @@ export default function BookAppointmentPage() {
               </span>
               <div>
                 <p className="font-heading text-sm font-semibold text-navy">Working Hours</p>
-                {nap.hours.map((h) => (
-                  <p key={h.day} className="text-navy/70">
-                    {h.day}: {h.time}
+                {groupHours(nap.hours).map((h) => (
+                  <p key={h.label} className="whitespace-nowrap text-sm text-navy/70 sm:text-base">
+                    {h.label}: {h.time}
                   </p>
                 ))}
               </div>

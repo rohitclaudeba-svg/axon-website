@@ -4,21 +4,7 @@ import { Logo } from "./Logo";
 import { Container } from "@/components/ui/Container";
 import { footerServiceLinks, footerProgramLinks, footerCompanyLinks } from "@/content/nav";
 import { nap } from "@/content/nap";
-
-/** Collapses consecutive days with the same hours into a range, e.g. "Monday – Saturday". */
-function groupHours(hours: typeof nap.hours) {
-  const groups: { label: string; time: string }[] = [];
-  for (const { day, time } of hours) {
-    const last = groups[groups.length - 1];
-    if (last && last.time === time) {
-      const [firstDay] = last.label.split(" – ");
-      last.label = `${firstDay} – ${day}`;
-    } else {
-      groups.push({ label: day, time });
-    }
-  }
-  return groups;
-}
+import { groupHours } from "@/lib/hours";
 
 export function Footer() {
   return (
@@ -104,7 +90,7 @@ export function Footer() {
                 <Clock className="mt-0.5 h-4 w-4 shrink-0 text-soft-green" aria-hidden="true" />
                 <span>
                   {groupHours(nap.hours).map((h) => (
-                    <span key={h.label} className="block">
+                    <span key={h.label} className="block whitespace-nowrap text-sm">
                       {h.label}: {h.time}
                     </span>
                   ))}

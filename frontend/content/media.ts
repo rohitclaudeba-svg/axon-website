@@ -223,8 +223,8 @@ export const media = {
   /** Homepage/About "Conditions We Support" card images — distinct from the program hero photos. */
   conditionGroupImages: {
     "developmental-and-learning": {
-      src: "https://images.pexels.com/photos/8422162/pexels-photo-8422162.jpeg?auto=compress&cs=tinysrgb&w=900",
-      alt: "A group of children of different ages focused on an activity indoors",
+      src: "https://images.pexels.com/photos/8653951/pexels-photo-8653951.jpeg?auto=compress&cs=tinysrgb&w=900",
+      alt: "A therapist engaging with a child during a developmental support session",
     },
     neurological: {
       src: "https://images.pexels.com/photos/6975791/pexels-photo-6975791.jpeg?auto=compress&cs=tinysrgb&w=900",

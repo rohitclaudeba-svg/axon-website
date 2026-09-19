@@ -45,7 +45,6 @@ export function Header() {
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
-  const isBookingPage = pathname === "/book-appointment";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -133,21 +132,17 @@ export function Header() {
                 })}
               </nav>
 
-              {!isBookingPage && (
-                <Button href="/book-appointment" variant="ghost">
-                  Book an Appointment
-                </Button>
-              )}
+              <Button href="/book-appointment" variant="ghost">
+                Book an Appointment
+              </Button>
             </div>
 
-            {!isBookingPage && (
-              <Link
-                href="/book-appointment"
-                className="ml-auto flex shrink-0 items-center whitespace-nowrap rounded-full bg-teal px-3 py-2 font-heading text-[11px] font-semibold text-white shadow-sm transition-colors hover:bg-teal/85 sm:px-3.5 sm:text-xs xl:hidden"
-              >
-                Book an Appointment
-              </Link>
-            )}
+            <Link
+              href="/book-appointment"
+              className="ml-auto flex shrink-0 items-center whitespace-nowrap rounded-full bg-teal px-3 py-2 font-heading text-[11px] font-semibold text-white shadow-sm transition-colors hover:bg-teal/85 sm:px-3.5 sm:text-xs xl:hidden"
+            >
+              Book an Appointment
+            </Link>
           </div>
         </Container>
 
@@ -219,13 +214,11 @@ export function Header() {
                     </Link>
                   );
                 })}
-                {!isBookingPage && (
-                  <div className="mt-4">
-                    <Button href="/book-appointment" variant="ghost" className="w-full">
-                      Book an Appointment
-                    </Button>
-                  </div>
-                )}
+                <div className="mt-4">
+                  <Button href="/book-appointment" variant="ghost" className="w-full">
+                    Book an Appointment
+                  </Button>
+                </div>
               </Container>
             </motion.div>
           )}
