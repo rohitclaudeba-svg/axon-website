@@ -8,7 +8,8 @@ import type { TeamMember } from "./types";
 export const team: TeamMember[] = [
   {
     slug: "divya",
-    name: "Divya D.",
+    name: "D. Divya",
+    credentials: "BASLP, MSc Psychology",
     role: "Founder & Consultant — Speech-Language Pathologist",
     bio: [
       "Divya D. (BASLP, MSc Psychology) is a Speech-Language Pathologist and the founder and consultant at AXON Multi-Rehabilitation Centre, Tiruvallur. She has 5+ years of experience in the field of speech, language, and communication.",
@@ -21,6 +22,7 @@ export const team: TeamMember[] = [
   {
     slug: "sharan",
     name: "K. M. Sharan Kumar",
+    credentials: "B.O.T., M.O.T. (Orthopaedics), (PhD)",
     role: "Founder & Consultant Occupational Therapist",
     bio: [
       "K. M. Sharan Kumar is the Founder and Consultant Occupational Therapist with over 5 years of clinical experience in paediatric and rehabilitation settings. He holds a Master's degree in Occupational Therapy (Orthopaedics) and he is certified in Behaviour Modification Techniques.",

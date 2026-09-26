@@ -5,7 +5,7 @@ export interface VideoTestimonial {
   author?: string;
 }
 
-const realVideos: VideoTestimonial[] = [
+export const realVideos: VideoTestimonial[] = [
   {
     youtubeId: "dlNfJAWnu40",
     title: "Benefits of Group Therapy — Grow Together, Learn Together",

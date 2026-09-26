@@ -35,8 +35,15 @@ export function Founders({ variant = "compact" }: { variant?: "compact" | "detai
                       aria-hidden="true"
                     />
                     <div className="absolute inset-x-0 bottom-0 p-8 sm:p-10">
-                      <div className="flex flex-wrap items-center gap-2.5">
-                        <h3 className="text-3xl font-bold text-white sm:text-4xl">{founder.name}</h3>
+                      <div className="flex flex-wrap items-baseline gap-2.5">
+                        <h3 className="text-3xl font-bold text-white sm:text-4xl lg:whitespace-nowrap lg:text-2xl xl:text-3xl">
+                          {founder.name}
+                          {founder.credentials && (
+                            <span className="ml-2 text-base font-medium text-white/70 lg:text-sm xl:text-base">
+                              {founder.credentials}
+                            </span>
+                          )}
+                        </h3>
                         <span
                           className={cn(
                             "inline-block rounded-full px-2.5 py-1 font-heading text-[10px] font-semibold uppercase tracking-wide",
@@ -54,8 +61,15 @@ export function Founders({ variant = "compact" }: { variant?: "compact" | "detai
 
               {variant === "detailed" && (
                 <div className="mt-6">
-                  <div className="flex flex-wrap items-center gap-2.5">
-                    <h3 className="text-2xl font-bold text-navy sm:text-3xl">{founder.name}</h3>
+                  <div className="flex flex-wrap items-baseline gap-2.5">
+                    <h3 className="text-2xl font-bold text-navy sm:text-3xl lg:whitespace-nowrap lg:text-xl xl:text-2xl">
+                      {founder.name}
+                      {founder.credentials && (
+                        <span className="ml-2 text-base font-medium text-navy/60 lg:text-sm xl:text-base">
+                          {founder.credentials}
+                        </span>
+                      )}
+                    </h3>
                     <span
                       className={cn(
                         "inline-block rounded-full px-2.5 py-1 font-heading text-[10px] font-semibold uppercase tracking-wide",

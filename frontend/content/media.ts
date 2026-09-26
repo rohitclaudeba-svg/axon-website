@@ -193,6 +193,18 @@ export const media = {
       focal: "center 40%",
     },
   },
+  /**
+   * Per-program overrides for the homepage "Rehabilitation Programs" card —
+   * falls back to programImages when a program has no override here, so most
+   * programs share their hero photo while a few get a distinct one.
+   */
+  programOverviewImages: {
+    "pediatric-rehabilitation": {
+      src: "https://images.pexels.com/photos/6340559/pexels-photo-6340559.jpeg?auto=compress&cs=tinysrgb&w=900",
+      alt: "A child receiving a gentle, soothing foot massage during a therapy session",
+      focal: "center 40%",
+    },
+  },
   /** "How it helps" box images on each program's detail page. */
   programContentImages: {
     "pediatric-rehabilitation": {

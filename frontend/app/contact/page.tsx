@@ -90,7 +90,7 @@ export default function ContactPage() {
                 aria-hidden="true"
               />
               <div className="relative">
-                <EnquiryForm variant="appointment" />
+                <EnquiryForm variant="contact" />
               </div>
             </div>
           </Reveal>

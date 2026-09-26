@@ -16,7 +16,9 @@ export function ProgramsOverview({ programs }: { programs: ProgramEntry[] }) {
   const [active, setActive] = useState(0);
   const reduceMotion = useReducedMotion();
   const program = programs[active];
-  const image = media.programImages[program.slug as keyof typeof media.programImages];
+  const image =
+    media.programOverviewImages[program.slug as keyof typeof media.programOverviewImages] ??
+    media.programImages[program.slug as keyof typeof media.programImages];
   const features = program.supportAreas.slice(0, 4);
   const topRef = useRef<HTMLDivElement>(null);
 

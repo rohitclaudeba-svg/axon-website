@@ -122,25 +122,27 @@ export function EnquiryForm({ variant = "appointment" }: { variant?: "appointmen
         </div>
       </div>
 
-      <div>
-        <label htmlFor="email" className="mb-1.5 block font-heading text-sm font-medium text-navy">
-          Email <span className="font-normal text-navy/50">(optional)</span>
-        </label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="email"
-          className={inputClasses}
-          aria-invalid={!!errors.email}
-          aria-describedby={errors.email ? "email-error" : undefined}
-          {...register("email")}
-        />
-        {errors.email && (
-          <p id="email-error" className="mt-1.5 text-xs text-red-600">
-            {errors.email.message}
-          </p>
-        )}
-      </div>
+      {variant === "appointment" && (
+        <div>
+          <label htmlFor="email" className="mb-1.5 block font-heading text-sm font-medium text-navy">
+            Email <span className="font-normal text-navy/50">(optional)</span>
+          </label>
+          <input
+            id="email"
+            type="email"
+            autoComplete="email"
+            className={inputClasses}
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? "email-error" : undefined}
+            {...register("email")}
+          />
+          {errors.email && (
+            <p id="email-error" className="mt-1.5 text-xs text-red-600">
+              {errors.email.message}
+            </p>
+          )}
+        </div>
+      )}
 
       {variant === "appointment" && (
         <div>
@@ -212,7 +214,7 @@ export function EnquiryForm({ variant = "appointment" }: { variant?: "appointmen
 
       <div>
         <label htmlFor="message" className="mb-1.5 block font-heading text-sm font-medium text-navy">
-          {variant === "appointment" ? "Anything we should know?" : "Message"}{" "}
+          Anything we should know?{" "}
           <span className="font-normal text-navy/50">(optional)</span>
         </label>
         <textarea
