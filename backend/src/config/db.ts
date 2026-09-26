@@ -10,6 +10,10 @@ export const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   charset: "utf8mb4_unicode_ci",
+  // Return DATE columns as plain "YYYY-MM-DD" strings instead of JS Date
+  // objects — otherwise mysql2 applies local-timezone conversion on
+  // serialization and a stored date can shift to the previous day.
+  dateStrings: ["DATE"],
 });
 
 export async function checkDbConnection(): Promise<boolean> {

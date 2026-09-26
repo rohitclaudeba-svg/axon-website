@@ -12,7 +12,9 @@ export function GalleryItemForm({ mode, initial }: { mode: "create" | "edit"; in
   const [type, setType] = useState<MediaType>(initial?.type ?? "image");
   const [description, setDescription] = useState(initial?.description ?? "");
   const [title, setTitle] = useState(initial?.title ?? "");
-  const [youtubeLink, setYoutubeLink] = useState(initial?.youtubeId ?? "");
+  const [youtubeLink, setYoutubeLink] = useState(
+    initial?.youtubeId ? `https://www.youtube.com/watch?v=${initial.youtubeId}` : ""
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");

@@ -1,29 +1,52 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { team } from "@/content/team";
-import { media } from "@/content/media";
 import { StaggerGroup, StaggerItem } from "@/components/ui/AnimatedReveal";
 import { cn } from "@/lib/cn";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
+
+interface FounderItem {
+  id: number;
+  name: string;
+  credentials: string | null;
+  role: string;
+  bioParagraphs: string[];
+  photo: string | null;
+}
 
 const accents = [{ badge: "bg-primary text-white" }, { badge: "bg-teal text-white" }];
 
 export function Founders({ variant = "compact" }: { variant?: "compact" | "detailed" }) {
+  const [founders, setFounders] = useState<FounderItem[]>([]);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/founders`)
+      .then((res) => res.json())
+      .then((json: { ok: boolean; data: FounderItem[] }) => {
+        if (json.ok) setFounders(json.data);
+      })
+      .catch(() => {
+        // Backend unreachable — the section just stays empty.
+      });
+  }, []);
+
   return (
     <StaggerGroup className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-      {team.map((founder, index) => {
-        const photo = media.teamImages[founder.slug as keyof typeof media.teamImages];
+      {founders.map((founder, index) => {
         const accent = accents[index % accents.length];
 
         return (
-          <StaggerItem key={founder.slug}>
+          <StaggerItem key={founder.id}>
             <div className="group relative">
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] shadow-xl shadow-navy/20">
-                {photo && (
+                {founder.photo && (
                   <Image
-                    src={photo.src}
-                    alt={photo.alt}
+                    src={founder.photo}
+                    alt={founder.name}
                     fill
                     sizes="(min-width: 1024px) 45vw, 90vw"
-                    style={{ objectPosition: photo.focal }}
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                 )}
@@ -75,7 +98,7 @@ export function Founders({ variant = "compact" }: { variant?: "compact" | "detai
                     </span>
                   </div>
                   <div className="mt-3 space-y-3 text-navy/70">
-                    {founder.bio.map((paragraph, i) => (
+                    {founder.bioParagraphs.map((paragraph, i) => (
                       <p key={i}>{paragraph}</p>
                     ))}
                   </div>

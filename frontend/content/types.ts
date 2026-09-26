@@ -96,16 +96,6 @@ export interface CareerOpening {
   requirements: string[];
 }
 
-export interface TeamMember {
-  slug: string;
-  name: string;
-  /** Degrees/credentials shown next to the name, e.g. "BASLP, MSc Psychology". */
-  credentials?: string;
-  role: string;
-  /** One entry per paragraph. */
-  bio: string[];
-  photoPlaceholder: string;
-}
 
 export interface FaqEntry {
   question: string;

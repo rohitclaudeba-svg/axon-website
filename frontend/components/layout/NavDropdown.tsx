@@ -11,7 +11,7 @@ import type { IconName } from "@/content/types";
 export interface NavDropdownItem {
   label: string;
   href: string;
-  icon: IconName;
+  icon?: IconName;
 }
 
 export function NavDropdown({
@@ -91,7 +91,11 @@ export function NavDropdown({
                 className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 transition-colors duration-200 hover:bg-light-blue"
               >
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-light-blue text-primary">
-                  <Icon name={item.icon} className="h-3.5 w-3.5" />
+                  {item.icon ? (
+                    <Icon name={item.icon} className="h-3.5 w-3.5" />
+                  ) : (
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
+                  )}
                 </span>
                 <span className="font-heading text-xs font-medium text-navy">{item.label}</span>
               </Link>

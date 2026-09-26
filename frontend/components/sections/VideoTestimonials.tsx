@@ -1,15 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Play, Video, X } from "lucide-react";
-import { videoTestimonials } from "@/content/videoTestimonials";
 import { StaggerGroup, StaggerItem } from "@/components/ui/AnimatedReveal";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
+
+interface FetchedVideoTestimonial {
+  id: number;
+  youtubeId: string;
+  title: string;
+  thumbnail: string;
+}
+
 export function VideoTestimonials() {
+  const [videos, setVideos] = useState<FetchedVideoTestimonial[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  if (videoTestimonials.length === 0) {
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/video-testimonials`)
+      .then((res) => res.json())
+      .then((json: { ok: boolean; data: FetchedVideoTestimonial[] }) => {
+        if (json.ok) setVideos(json.data);
+      })
+      .catch(() => {
+        // Backend unreachable — falls through to the empty state below.
+      });
+  }, []);
+
+  if (videos.length === 0) {
     return (
       <div className="flex flex-col items-center rounded-3xl border border-dashed border-navy/15 bg-white/60 px-6 py-16 text-center">
         <span className="flex h-14 w-14 items-center justify-center rounded-full bg-light-blue text-primary">
@@ -23,13 +43,13 @@ export function VideoTestimonials() {
     );
   }
 
-  const active = activeIndex !== null ? videoTestimonials[activeIndex] : null;
+  const active = activeIndex !== null ? videos[activeIndex] : null;
 
   return (
     <>
       <StaggerGroup className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-        {videoTestimonials.map((video, index) => (
-          <StaggerItem key={`${video.youtubeId}-${index}`}>
+        {videos.map((video, index) => (
+          <StaggerItem key={video.id}>
             <button
               type="button"
               onClick={() => setActiveIndex(index)}
@@ -37,7 +57,7 @@ export function VideoTestimonials() {
             >
               <div className="relative aspect-[9/16] w-full">
                 <Image
-                  src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`}
+                  src={video.thumbnail}
                   alt={video.title}
                   fill
                   sizes="(min-width: 1024px) 20vw, 40vw"

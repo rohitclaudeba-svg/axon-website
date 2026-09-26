@@ -62,7 +62,7 @@ export function EnquiryForm({ variant = "appointment" }: { variant?: "appointmen
       const response = await fetch("/api/enquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, source: variant }),
       });
 
       if (!response.ok) {

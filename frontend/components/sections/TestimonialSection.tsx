@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { testimonials } from "@/content/testimonials";
+import type { Testimonial } from "@/content/testimonials";
 import { nap } from "@/content/nap";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { StaggerGroup, StaggerItem } from "@/components/ui/AnimatedReveal";
@@ -10,9 +10,40 @@ import { cn } from "@/lib/cn";
 
 const CARDS_PER_PAGE = 3;
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
+
+interface FetchedTestimonial {
+  quote: string;
+  author: string;
+  context: string | null;
+  rating: number | null;
+}
+
 export function TestimonialSection() {
-  const pageCount = Math.ceil(testimonials.length / CARDS_PER_PAGE);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/reviews`)
+      .then((res) => res.json())
+      .then((json: { ok: boolean; data: FetchedTestimonial[] }) => {
+        if (json.ok) {
+          setTestimonials(
+            json.data.map((item) => ({
+              quote: item.quote,
+              author: item.author,
+              context: item.context ?? undefined,
+              rating: item.rating ?? undefined,
+            }))
+          );
+        }
+      })
+      .catch(() => {
+        // Backend unreachable — section simply stays empty.
+      });
+  }, []);
+
+  const pageCount = Math.ceil(testimonials.length / CARDS_PER_PAGE);
 
   useEffect(() => {
     if (pageCount <= 1) return;

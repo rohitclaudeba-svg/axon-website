@@ -262,17 +262,4 @@ export const media = {
       alt: "A caregiver helping an elderly man with arm exercises",
     },
   },
-  /** Founder portraits — both are real supplied photos. */
-  teamImages: {
-    sharan: {
-      src: "/team/sharan.jpeg",
-      alt: "Sharan, Co-Founder & Clinical Director — Physiotherapy",
-      focal: "center 25%",
-    },
-    divya: {
-      src: "/team/Divya.jpeg",
-      alt: "Divya D., Founder & Consultant — Speech-Language Pathologist",
-      focal: "center 38%",
-    },
-  },
 } as const;

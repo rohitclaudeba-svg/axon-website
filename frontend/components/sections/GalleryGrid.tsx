@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { StaggerGroup, StaggerItem } from "@/components/ui/AnimatedReveal";
-import { realVideos } from "@/content/videoTestimonials";
 import { cn } from "@/lib/cn";
 
 type GalleryItem =
@@ -13,18 +12,11 @@ type GalleryItem =
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
 
-const staticGalleryImages: GalleryItem[] = Array.from({ length: 9 }, (_, i) => ({
-  type: "image" as const,
-  src: `/Gallery/gallery-${i + 1}.webp`,
-  alt: `AXON Multi-Rehabilitation Centre — photo ${i + 1}`,
-}));
-
-const galleryVideos: GalleryItem[] = realVideos.map((video) => ({
-  type: "video" as const,
-  youtubeId: video.youtubeId,
-  title: video.title,
-}));
-
+// Photos and videos are both fully admin-managed now (see the Gallery module
+// in /admin) — no hardcoded static list here anymore, so add/delete in the
+// admin panel actually changes the live site. This is deliberately separate
+// from the Video Testimonials module — those videos only appear on the
+// Testimonials page, not here.
 interface UploadedGalleryItem {
   id: number;
   type: "image" | "video";
@@ -54,28 +46,25 @@ export function GalleryGrid() {
         if (json.ok) setUploadedItems(json.data);
       })
       .catch(() => {
-        // Backend unreachable — the static photos/videos below still render fine.
+        // Backend unreachable — the grid just stays empty.
       });
   }, []);
 
   const galleryItems = useMemo<GalleryItem[]>(() => {
-    const dynamicImages: GalleryItem[] = uploadedItems
+    const allImages: GalleryItem[] = uploadedItems
       .filter((item) => item.type === "image" && item.src)
       .map((item) => ({
         type: "image",
         src: item.src as string,
         alt: item.description || "AXON Multi-Rehabilitation Centre — photo",
       }));
-    const dynamicVideos: GalleryItem[] = uploadedItems
+    const allVideos: GalleryItem[] = uploadedItems
       .filter((item) => item.type === "video" && item.youtubeId)
       .map((item) => ({
         type: "video",
         youtubeId: item.youtubeId as string,
         title: item.title || "AXON video",
       }));
-
-    const allImages = [...staticGalleryImages, ...dynamicImages];
-    const allVideos = [...galleryVideos, ...dynamicVideos];
 
     // Videos are placed after the first half of the photos, so they sit in the middle of the grid.
     const midpoint = Math.ceil(allImages.length / 2);
