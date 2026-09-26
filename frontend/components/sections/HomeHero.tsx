@@ -49,7 +49,7 @@ export function HomeHero() {
   const paragraphWords = heroParagraph.split(" ");
 
   return (
-    <section className="relative isolate flex min-h-[560px] items-center overflow-hidden py-20 sm:min-h-[620px] lg:min-h-[720px]">
+    <section className="relative isolate flex min-h-[560px] items-center overflow-hidden bg-navy py-20 sm:min-h-[620px] lg:min-h-[720px]">
       {reduceMotion ? (
         <Image
           src={media.heroImage.src}
@@ -65,7 +65,7 @@ export function HomeHero() {
           muted
           loop
           playsInline
-          poster={media.heroImage.src}
+          preload="auto"
           aria-hidden="true"
           className="absolute inset-0 -z-10 h-full w-full object-cover"
         >

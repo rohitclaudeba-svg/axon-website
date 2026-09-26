@@ -9,6 +9,7 @@ const staticRoutes = [
   "/about/approach",
   "/about/why-choose-axon",
   "/our-team",
+  "/services",
   "/rehabilitation",
   "/conditions",
   "/gallery",

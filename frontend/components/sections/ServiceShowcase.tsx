@@ -5,14 +5,22 @@ import { media } from "@/content/media";
 import { StaggerGroup, StaggerItem } from "@/components/ui/AnimatedReveal";
 import type { ServiceEntry } from "@/content/types";
 
-export function ServiceShowcase({ services }: { services: ServiceEntry[] }) {
+export function ServiceShowcase({
+  services,
+  maxMobile,
+}: {
+  services: ServiceEntry[];
+  /** Hides items beyond this count below the lg breakpoint; all items still show at lg+. */
+  maxMobile?: number;
+}) {
   return (
-    <StaggerGroup className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
-      {services.map((service) => {
+    <StaggerGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
+      {services.map((service, index) => {
         const image = media.serviceShowcaseImages[service.slug as keyof typeof media.serviceShowcaseImages];
+        const hiddenOnMobile = maxMobile !== undefined && index >= maxMobile;
 
         return (
-          <StaggerItem key={service.slug}>
+          <StaggerItem key={service.slug} className={hiddenOnMobile ? "hidden lg:block" : undefined}>
             <Link
               href={`/services/${service.slug}`}
               className="group relative flex aspect-[4/5] w-full overflow-hidden rounded-3xl shadow-xl shadow-navy/15"
@@ -31,12 +39,12 @@ export function ServiceShowcase({ services }: { services: ServiceEntry[] }) {
                 aria-hidden="true"
               />
 
-              <div className="relative mt-auto p-3 sm:p-6">
-                <h3 className="text-sm font-bold leading-snug text-white sm:text-lg lg:text-xl">{service.name}</h3>
-                <p className="mt-1 line-clamp-2 text-[11px] text-white/80 sm:mt-1.5 sm:text-sm">{service.shortDescription}</p>
-                <span className="mt-2 inline-flex items-center gap-1.5 font-heading text-[11px] font-semibold text-white sm:mt-3 sm:text-sm">
+              <div className="relative mt-auto p-6">
+                <h3 className="text-lg font-bold leading-snug text-white lg:text-xl">{service.name}</h3>
+                <p className="mt-1.5 line-clamp-2 text-sm text-white/80">{service.shortDescription}</p>
+                <span className="mt-3 inline-flex items-center gap-1.5 font-heading text-sm font-semibold text-white">
                   Learn more
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1 sm:h-4 sm:w-4" aria-hidden="true" />
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
                 </span>
               </div>
             </Link>

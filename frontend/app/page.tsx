@@ -42,7 +42,12 @@ export default function HomePage() {
 
       <Section>
         <SectionHeading eyebrow="What We Offer" title="Our Services" size="lg" />
-        <ServiceShowcase services={services} />
+        <ServiceShowcase services={services} maxMobile={4} />
+        <div className="mt-10 text-center lg:hidden">
+          <Link href="/services" className="font-heading text-sm font-semibold text-primary hover:underline">
+            View all services →
+          </Link>
+        </div>
       </Section>
 
       <Section tone="tint">

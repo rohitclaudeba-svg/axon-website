@@ -46,7 +46,7 @@ export function Founders({ variant = "compact" }: { variant?: "compact" | "detai
                           {founder.role}
                         </span>
                       </div>
-                      <p className="mt-3 line-clamp-2 text-base text-white/80">{founder.bio}</p>
+                      <p className="mt-3 line-clamp-2 text-base text-white/80">{founder.bio[0]}</p>
                     </div>
                   </>
                 )}
@@ -65,7 +65,11 @@ export function Founders({ variant = "compact" }: { variant?: "compact" | "detai
                       {founder.role}
                     </span>
                   </div>
-                  <p className="mt-3 text-navy/70">{founder.bio}</p>
+                  <div className="mt-3 space-y-3 text-navy/70">
+                    {founder.bio.map((paragraph, i) => (
+                      <p key={i}>{paragraph}</p>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

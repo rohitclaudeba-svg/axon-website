@@ -98,7 +98,8 @@ export interface TeamMember {
   slug: string;
   name: string;
   role: string;
-  bio: string;
+  /** One entry per paragraph. */
+  bio: string[];
   photoPlaceholder: string;
 }
 

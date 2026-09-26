@@ -87,17 +87,6 @@ export function Header() {
       >
         <Container>
           <div className={cn("flex items-center gap-2 transition-all duration-300", scrolled ? "py-2" : "py-2.5")}>
-            <button
-              type="button"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-              aria-controls="mobile-menu"
-              onClick={() => setMenuOpen((open) => !open)}
-              className="-ml-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10 xl:hidden"
-            >
-              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
-
             <Logo variant="dark" size="compact" />
 
             <div className="ml-auto hidden items-center gap-6 xl:flex">
@@ -107,7 +96,16 @@ export function Header() {
                   const dropdownItems = dropdownItemsByHref[link.href];
 
                   if (dropdownItems) {
-                    return <NavDropdown key={link.href} label={link.label} items={dropdownItems} active={active} light />;
+                    return (
+                      <NavDropdown
+                        key={link.href}
+                        label={link.label}
+                        href={link.href}
+                        items={dropdownItems}
+                        active={active}
+                        light
+                      />
+                    );
                   }
 
                   return (
@@ -137,12 +135,24 @@ export function Header() {
               </Button>
             </div>
 
-            <Link
-              href="/book-appointment"
-              className="ml-auto flex shrink-0 items-center whitespace-nowrap rounded-full bg-teal px-3 py-2 font-heading text-[11px] font-semibold text-white shadow-sm transition-colors hover:bg-teal/85 sm:px-3.5 sm:text-xs xl:hidden"
-            >
-              Book an Appointment
-            </Link>
+            <div className="ml-auto flex items-center gap-1 xl:hidden">
+              <Link
+                href="/book-appointment"
+                className="flex shrink-0 items-center whitespace-nowrap rounded-full bg-teal px-3 py-2 font-heading text-[11px] font-semibold text-white shadow-sm transition-colors hover:bg-teal/85 sm:px-3.5 sm:text-xs"
+              >
+                Book an Appointment
+              </Link>
+              <button
+                type="button"
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={menuOpen}
+                aria-controls="mobile-menu"
+                onClick={() => setMenuOpen((open) => !open)}
+                className="-mr-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white transition-colors hover:bg-white/10"
+              >
+                {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+            </div>
           </div>
         </Container>
 
@@ -164,18 +174,26 @@ export function Header() {
                   if (dropdownItems) {
                     return (
                       <div key={link.href}>
-                        <button
-                          type="button"
-                          onClick={() => setExpandedMobile(isExpanded ? null : link.href)}
-                          aria-expanded={isExpanded}
-                          className="flex w-full items-center justify-between rounded-lg px-3 py-3 font-heading text-base font-medium text-white/90 transition-colors hover:bg-white/10 hover:text-white"
-                        >
-                          {link.label}
-                          <ChevronDown
-                            className={cn("h-4 w-4 transition-transform duration-300", isExpanded && "rotate-180")}
-                            aria-hidden="true"
-                          />
-                        </button>
+                        <div className="flex items-center justify-between rounded-lg pr-1 transition-colors hover:bg-white/10">
+                          <Link
+                            href={link.href}
+                            className="flex-1 px-3 py-3 font-heading text-base font-medium text-white/90 transition-colors hover:text-white"
+                          >
+                            {link.label}
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => setExpandedMobile(isExpanded ? null : link.href)}
+                            aria-expanded={isExpanded}
+                            aria-label={`Toggle ${link.label} menu`}
+                            className="flex h-10 w-10 shrink-0 items-center justify-center text-white/90"
+                          >
+                            <ChevronDown
+                              className={cn("h-4 w-4 transition-transform duration-300", isExpanded && "rotate-180")}
+                              aria-hidden="true"
+                            />
+                          </button>
+                        </div>
                         <AnimatePresence>
                           {isExpanded && (
                             <motion.div

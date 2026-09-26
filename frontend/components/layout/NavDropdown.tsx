@@ -16,11 +16,13 @@ export interface NavDropdownItem {
 
 export function NavDropdown({
   label,
+  href,
   items,
   active,
   light = false,
 }: {
   label: string;
+  href: string;
   items: NavDropdownItem[];
   active: boolean;
   light?: boolean;
@@ -38,20 +40,31 @@ export function NavDropdown({
   };
 
   return (
-    <div className="relative" onMouseEnter={openMenu} onMouseLeave={scheduleClose}>
-      <button
-        type="button"
-        onClick={() => setOpen((value) => !value)}
-        aria-expanded={open}
-        aria-haspopup="true"
+    <div className="relative flex items-center" onMouseEnter={openMenu} onMouseLeave={scheduleClose}>
+      <Link
+        href={href}
         className={cn(
-          "flex items-center gap-1 font-heading text-sm font-medium transition-colors duration-300",
+          "font-heading text-sm font-medium transition-colors duration-300",
           light
             ? cn("hover:text-white", active ? "text-white" : "text-white/80")
             : cn("hover:text-primary", active ? "text-primary" : "text-navy")
         )}
       >
         {label}
+      </Link>
+      <button
+        type="button"
+        onClick={() => setOpen((value) => !value)}
+        aria-expanded={open}
+        aria-haspopup="true"
+        aria-label={`Toggle ${label} menu`}
+        className={cn(
+          "ml-1 flex items-center p-1 transition-colors duration-300",
+          light
+            ? cn("hover:text-white", active ? "text-white" : "text-white/80")
+            : cn("hover:text-primary", active ? "text-primary" : "text-navy")
+        )}
+      >
         <ChevronDown
           className={cn("h-3.5 w-3.5 transition-transform duration-300", open && "rotate-180")}
           aria-hidden="true"
