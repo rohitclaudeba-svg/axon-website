@@ -6,6 +6,7 @@ import { Section } from "@/components/ui/Section";
 import { StaggerGroup, StaggerItem } from "@/components/ui/AnimatedReveal";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { programs } from "@/content/programs";
+import { media } from "@/content/media";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/schema";
 
@@ -33,6 +34,7 @@ export default function RehabilitationPage() {
         title="Coordinated care for every stage of life"
         description="From early childhood development to healthy ageing, our programs bring the right specialities together around each individual."
         breadcrumbs={[{ name: "Rehabilitation Programs", path: "/rehabilitation" }]}
+        image={media.rehabilitationHeroImage}
       />
       <Section>
         <StaggerGroup className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

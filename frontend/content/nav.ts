@@ -5,7 +5,7 @@ export const primaryNav: NavLink[] = [
   { label: "About Us", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Rehabilitation", href: "/rehabilitation" },
-  { label: "Gallery", href: "/gallery" },
+  { label: "Media", href: "/gallery" },
   { label: "Careers", href: "/careers" },
   { label: "Contact", href: "/contact" },
 ];
@@ -35,5 +35,6 @@ export const footerCompanyLinks: NavLink[] = [
   { label: "Our Team", href: "/our-team" },
   { label: "Conditions We Support", href: "/conditions" },
   { label: "Gallery", href: "/gallery" },
+  { label: "Testimonials", href: "/testimonials" },
   { label: "Careers", href: "/careers" },
 ];

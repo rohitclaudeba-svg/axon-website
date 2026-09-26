@@ -24,7 +24,7 @@ export default function GalleryPage() {
           path: "/gallery",
         })}
       />
-      <Section className="!pt-16 sm:!pt-20">
+      <Section className="!pt-8 sm:!pt-12">
         <SectionHeading
           eyebrow="Gallery"
           title="A look inside AXON"

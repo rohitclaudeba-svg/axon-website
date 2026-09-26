@@ -27,6 +27,9 @@ export const nap = {
   mapEmbedUrl: "https://www.google.com/maps?q=13.1341959,79.9108162&output=embed",
   mapDirectionsUrl:
     "https://www.google.com/maps/dir//Axon+Multi-Rehabilitation+Centre,+Ground+floor,+No:+33%2F1A,+JJ+St,+Hariram+Nagar,+V.M+Nagar,+Tiruvallur,+Tiruvaloor,+Tamil+Nadu+602001/@13.1023416,79.908075,15z",
+  /** AXON's real Google Business profile (reviews tab). */
+  googleReviewsUrl:
+    "https://www.google.com/maps/place/Axon+Multi-Rehabilitation+Centre/@13.1341959,79.9108162,17z/data=!4m8!3m7!1s0x3a5291d6240cec49:0xfd8fb4155497c18d!8m2!3d13.1341959!4d79.9108162!9m1!1b1!16s%2Fg%2F11xd1tbp2m?entry=ttu&g_ep=EgoyMDI2MDkyMy4wIKXMDSoASAFQAw%3D%3D",
   hours: [
     { day: "Monday", time: "3:00 PM – 7:00 PM", closed: false },
     { day: "Tuesday", time: "3:00 PM – 7:00 PM", closed: false },

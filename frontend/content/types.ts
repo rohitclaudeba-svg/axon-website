@@ -20,7 +20,9 @@ export type IconName =
   | "assessment"
   | "plan"
   | "therapy"
-  | "progress";
+  | "progress"
+  | "gallery"
+  | "testimonials";
 
 export interface SeoMeta {
   title: string;

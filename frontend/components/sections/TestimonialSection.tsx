@@ -1,30 +1,71 @@
-import { Quote } from "lucide-react";
+"use client";
+
+import { useEffect, useState } from "react";
 import { testimonials } from "@/content/testimonials";
+import { nap } from "@/content/nap";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { StaggerGroup, StaggerItem } from "@/components/ui/AnimatedReveal";
+import { TestimonialCard } from "@/components/sections/TestimonialCard";
+import { cn } from "@/lib/cn";
+
+const CARDS_PER_PAGE = 3;
 
 export function TestimonialSection() {
+  const pageCount = Math.ceil(testimonials.length / CARDS_PER_PAGE);
+  const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    if (pageCount <= 1) return;
+    const timer = setInterval(() => {
+      setPage((prev) => (prev + 1) % pageCount);
+    }, 10000);
+    return () => clearInterval(timer);
+  }, [pageCount]);
+
   if (testimonials.length === 0) return null;
+
+  const visible = testimonials.slice(page * CARDS_PER_PAGE, page * CARDS_PER_PAGE + CARDS_PER_PAGE);
 
   return (
     <Section tone="tint">
-      <SectionHeading eyebrow="Testimonials" title="What families say about AXON" />
+      <SectionHeading eyebrow="Reviews" title="What families say about AXON" />
+
       <StaggerGroup className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {testimonials.map((testimonial) => (
+        {visible.map((testimonial, i) => (
           <StaggerItem key={testimonial.author}>
-            <figure className="h-full rounded-2xl bg-white p-6">
-              <Quote className="h-6 w-6 text-teal" aria-hidden="true" />
-              <blockquote className="mt-4 text-sm text-navy/75">{testimonial.quote}</blockquote>
-              <figcaption className="mt-4 font-heading text-sm font-semibold text-navy">
-                {testimonial.author}
-                {testimonial.context && (
-                  <span className="block font-normal text-navy/50">{testimonial.context}</span>
-                )}
-              </figcaption>
-            </figure>
+            <TestimonialCard testimonial={testimonial} colorIndex={page * CARDS_PER_PAGE + i} />
           </StaggerItem>
         ))}
       </StaggerGroup>
+
+      {pageCount > 1 && (
+        <div className="mt-6 flex justify-center gap-2">
+          {Array.from({ length: pageCount }).map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => setPage(index)}
+              aria-label={`Show testimonials page ${index + 1}`}
+              aria-current={index === page}
+              className={cn(
+                "h-2.5 rounded-full transition-all duration-300",
+                index === page ? "w-6 bg-primary" : "w-2.5 bg-navy/15 hover:bg-navy/30"
+              )}
+            />
+          ))}
+        </div>
+      )}
+
+      <div className="mt-10 text-center">
+        <a
+          href={nap.googleReviewsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-heading text-sm font-semibold text-primary hover:underline"
+        >
+          View more reviews →
+        </a>
+      </div>
     </Section>
   );
 }

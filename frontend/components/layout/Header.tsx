@@ -27,9 +27,15 @@ const programItems: NavDropdownItem[] = programs.map((program) => ({
   icon: program.icon,
 }));
 
+const mediaItems: NavDropdownItem[] = [
+  { label: "Gallery", href: "/gallery", icon: "gallery" },
+  { label: "Testimonials", href: "/testimonials", icon: "testimonials" },
+];
+
 const dropdownItemsByHref: Record<string, NavDropdownItem[]> = {
   "/services": serviceItems,
   "/rehabilitation": programItems,
+  "/gallery": mediaItems,
 };
 
 // Plain useEffect runs after the browser paints, so the spacer would flash
@@ -92,8 +98,12 @@ export function Header() {
             <div className="ml-auto hidden items-center gap-6 xl:flex">
               <nav aria-label="Primary" className="flex items-center gap-5">
                 {primaryNav.map((link) => {
-                  const active = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
                   const dropdownItems = dropdownItemsByHref[link.href];
+                  const active =
+                    link.href === "/"
+                      ? pathname === "/"
+                      : pathname.startsWith(link.href) ||
+                        (dropdownItems?.some((item) => pathname.startsWith(item.href)) ?? false);
 
                   if (dropdownItems) {
                     return (

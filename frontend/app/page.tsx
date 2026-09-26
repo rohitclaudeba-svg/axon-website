@@ -62,7 +62,7 @@ export default function HomePage() {
         <ConditionGroups linkToFullPage />
       </Section>
 
-      <Section>
+      <Section className="!pb-0">
         <SectionHeading eyebrow="Our Founders" title="Built by people who care" />
         <Founders variant="compact" />
         <div className="mt-10 text-center">

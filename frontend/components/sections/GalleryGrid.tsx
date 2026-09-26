@@ -48,7 +48,7 @@ export function GalleryGrid() {
           <button
             type="button"
             onClick={() => setActiveIndex(null)}
-            className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60"
             aria-label="Close"
           >
             <X className="h-5 w-5" aria-hidden="true" />
@@ -59,7 +59,7 @@ export function GalleryGrid() {
               event.stopPropagation();
               showPrev();
             }}
-            className="absolute left-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:left-4"
+            className="absolute left-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60 sm:left-4"
             aria-label="Previous image"
           >
             <ChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -70,7 +70,7 @@ export function GalleryGrid() {
               event.stopPropagation();
               showNext();
             }}
-            className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:right-4"
+            className="absolute right-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60 sm:right-4"
             aria-label="Next image"
           >
             <ChevronRight className="h-5 w-5" aria-hidden="true" />

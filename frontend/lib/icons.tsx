@@ -15,6 +15,8 @@ import {
   Users,
   GraduationCap,
   Blocks,
+  Image,
+  Quote,
   type LucideIcon,
 } from "lucide-react";
 import type { IconName } from "@/content/types";
@@ -36,6 +38,8 @@ export const iconMap: Record<IconName, LucideIcon> = {
   plan: ListChecks,
   therapy: Stethoscope,
   progress: TrendingUp,
+  gallery: Image,
+  testimonials: Quote,
 };
 
 export function Icon({ name, className }: { name: IconName; className?: string }) {

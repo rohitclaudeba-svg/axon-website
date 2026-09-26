@@ -15,13 +15,14 @@ export const media = {
     alt: "A physiotherapist guiding a patient through a supported leg stretch during a rehabilitation session",
   },
   careersImage: {
-    src: "https://images.pexels.com/photos/5452190/pexels-photo-5452190.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    alt: "Three clinical team members in discussion during a workday at the centre",
+    src: "https://images.pexels.com/photos/29807423/pexels-photo-29807423.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    alt: "Two physiotherapists providing treatment together at a modern clinic",
+    focal: "center 35%",
   },
   contactImage: {
-    src: "https://images.pexels.com/photos/33812025/pexels-photo-33812025.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    alt: "A warm, contemporary clinic reception area with wood panel accents",
-    focal: "center 40%",
+    src: "https://images.pexels.com/photos/8101355/pexels-photo-8101355.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    alt: "A smiling woman in an office taking a phone call",
+    focal: "center 30%",
   },
   conditionsImage: {
     src: "https://images.pexels.com/photos/7447263/pexels-photo-7447263.jpeg?auto=compress&cs=tinysrgb&w=1200",
@@ -46,6 +47,16 @@ export const media = {
     alt: "Three colleagues in a supportive discussion, reflecting mentorship and teamwork",
     focal: "center 30%",
   },
+  servicesHeroImage: {
+    src: "https://images.pexels.com/photos/5794054/pexels-photo-5794054.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    alt: "A therapist applying kinesiology tape during a treatment session",
+    focal: "center 35%",
+  },
+  rehabilitationHeroImage: {
+    src: "https://images.pexels.com/photos/20860617/pexels-photo-20860617.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    alt: "A physiotherapist exercising with a patient in a modern clinic setting",
+    focal: "center 35%",
+  },
   /** Detail-page hero banners (also reused as the homepage services grid tile). */
   serviceShowcaseImages: {
     "speech-therapy": {
@@ -64,9 +75,9 @@ export const media = {
       focal: "center 35%",
     },
     "special-education": {
-      src: "https://images.pexels.com/photos/8923081/pexels-photo-8923081.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      alt: "A teacher smiling while working through a writing activity with a child",
-      focal: "center 30%",
+      src: "https://images.pexels.com/photos/8535598/pexels-photo-8535598.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      alt: "A teacher engaging children in a learning activity in a spacious classroom",
+      focal: "center 40%",
     },
     "behavioral-therapy": {
       src: "https://images.pexels.com/photos/8653974/pexels-photo-8653974.jpeg?auto=compress&cs=tinysrgb&w=1200",
@@ -162,9 +173,9 @@ export const media = {
   /** Rehabilitation program hero banners. */
   programImages: {
     "pediatric-rehabilitation": {
-      src: "https://images.pexels.com/photos/8535145/pexels-photo-8535145.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      alt: "A therapist guiding a child through a hands-on developmental activity",
-      focal: "center 30%",
+      src: "https://images.pexels.com/photos/16873404/pexels-photo-16873404.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      alt: "A smiling therapist holding therapy balls in a bright, colourful therapy studio",
+      focal: "center 40%",
     },
     "neurological-rehabilitation": {
       src: "https://images.pexels.com/photos/6111585/pexels-photo-6111585.jpeg?auto=compress&cs=tinysrgb&w=1200",
@@ -177,9 +188,9 @@ export const media = {
       focal: "center 40%",
     },
     "geriatric-rehabilitation": {
-      src: "https://images.pexels.com/photos/7551627/pexels-photo-7551627.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      alt: "A therapist guiding an older adult through an arm-raising mobility exercise",
-      focal: "center 30%",
+      src: "https://images.pexels.com/photos/6922187/pexels-photo-6922187.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      alt: "An elderly man assisted by a trainer during a workout session in a gym setting",
+      focal: "center 40%",
     },
   },
   /** "How it helps" box images on each program's detail page. */

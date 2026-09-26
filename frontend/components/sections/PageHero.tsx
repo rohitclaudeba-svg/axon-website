@@ -35,7 +35,7 @@ export function PageHero({
           className="absolute inset-0 -z-10 object-cover"
         />
         <div
-          className="absolute inset-0 -z-10 bg-gradient-to-t from-navy/95 via-navy/55 to-navy/10"
+          className="absolute inset-0 -z-10 bg-gradient-to-t from-black/85 via-black/45 to-black/10"
           aria-hidden="true"
         />
         <Container className="relative">

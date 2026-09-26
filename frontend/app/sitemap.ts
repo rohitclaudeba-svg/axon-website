@@ -13,6 +13,7 @@ const staticRoutes = [
   "/rehabilitation",
   "/conditions",
   "/gallery",
+  "/testimonials",
   "/contact",
   "/book-appointment",
   "/careers",
