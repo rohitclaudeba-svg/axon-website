@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { StaggerGroup, StaggerItem } from "@/components/ui/AnimatedReveal";
@@ -11,7 +11,9 @@ type GalleryItem =
   | { type: "image"; src: string; alt: string }
   | { type: "video"; youtubeId: string; title: string };
 
-const galleryImages: GalleryItem[] = Array.from({ length: 9 }, (_, i) => ({
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
+
+const staticGalleryImages: GalleryItem[] = Array.from({ length: 9 }, (_, i) => ({
   type: "image" as const,
   src: `/Gallery/gallery-${i + 1}.webp`,
   alt: `AXON Multi-Rehabilitation Centre — photo ${i + 1}`,
@@ -23,13 +25,14 @@ const galleryVideos: GalleryItem[] = realVideos.map((video) => ({
   title: video.title,
 }));
 
-// Videos are placed after the first half of the photos, so they sit in the middle of the grid.
-const midpoint = Math.ceil(galleryImages.length / 2);
-const galleryItems: GalleryItem[] = [
-  ...galleryImages.slice(0, midpoint),
-  ...galleryVideos,
-  ...galleryImages.slice(midpoint),
-];
+interface UploadedGalleryItem {
+  id: number;
+  type: "image" | "video";
+  src: string | null;
+  youtubeId: string | null;
+  title: string | null;
+  description: string;
+}
 
 type Filter = "all" | "image" | "video";
 
@@ -42,6 +45,42 @@ const filters: { label: string; value: Filter }[] = [
 export function GalleryGrid() {
   const [filter, setFilter] = useState<Filter>("all");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [uploadedItems, setUploadedItems] = useState<UploadedGalleryItem[]>([]);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/gallery`)
+      .then((res) => res.json())
+      .then((json: { ok: boolean; data: UploadedGalleryItem[] }) => {
+        if (json.ok) setUploadedItems(json.data);
+      })
+      .catch(() => {
+        // Backend unreachable — the static photos/videos below still render fine.
+      });
+  }, []);
+
+  const galleryItems = useMemo<GalleryItem[]>(() => {
+    const dynamicImages: GalleryItem[] = uploadedItems
+      .filter((item) => item.type === "image" && item.src)
+      .map((item) => ({
+        type: "image",
+        src: item.src as string,
+        alt: item.description || "AXON Multi-Rehabilitation Centre — photo",
+      }));
+    const dynamicVideos: GalleryItem[] = uploadedItems
+      .filter((item) => item.type === "video" && item.youtubeId)
+      .map((item) => ({
+        type: "video",
+        youtubeId: item.youtubeId as string,
+        title: item.title || "AXON video",
+      }));
+
+    const allImages = [...staticGalleryImages, ...dynamicImages];
+    const allVideos = [...galleryVideos, ...dynamicVideos];
+
+    // Videos are placed after the first half of the photos, so they sit in the middle of the grid.
+    const midpoint = Math.ceil(allImages.length / 2);
+    return [...allImages.slice(0, midpoint), ...allVideos, ...allImages.slice(midpoint)];
+  }, [uploadedItems]);
 
   const visibleItems = filter === "all" ? galleryItems : galleryItems.filter((item) => item.type === filter);
 

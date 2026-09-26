@@ -1,0 +1,12 @@
+-- Mirrors the local Testimonial interface in frontend/content/testimonials.ts.
+CREATE TABLE IF NOT EXISTS testimonials (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  quote TEXT NOT NULL,
+  author VARCHAR(150) NOT NULL,
+  context VARCHAR(150) NULL,
+  rating TINYINT UNSIGNED NULL,
+  position SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT chk_testimonials_rating CHECK (rating IS NULL OR (rating BETWEEN 1 AND 5))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

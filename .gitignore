@@ -1,0 +1,18 @@
+# Environment files (never commit real secrets)
+.env
+.env.*
+!.env.example
+!.env.local.example
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+
+# Uploaded files (never committed)
+backend/uploads/
+
+# OS
+.DS_Store
+Thumbs.db

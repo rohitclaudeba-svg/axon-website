@@ -35,15 +35,11 @@ export function Founders({ variant = "compact" }: { variant?: "compact" | "detai
                       aria-hidden="true"
                     />
                     <div className="absolute inset-x-0 bottom-0 p-8 sm:p-10">
-                      <div className="flex flex-wrap items-baseline gap-2.5">
-                        <h3 className="text-3xl font-bold text-white sm:text-4xl lg:whitespace-nowrap lg:text-2xl xl:text-3xl">
-                          {founder.name}
-                          {founder.credentials && (
-                            <span className="ml-2 text-base font-medium text-white/70 lg:text-sm xl:text-base">
-                              {founder.credentials}
-                            </span>
-                          )}
-                        </h3>
+                      <div className="flex flex-col items-start gap-1.5">
+                        <h3 className="text-2xl font-bold text-white sm:text-3xl">{founder.name}</h3>
+                        {founder.credentials && (
+                          <p className="text-sm font-medium text-white/75 sm:text-base">{founder.credentials}</p>
+                        )}
                         <span
                           className={cn(
                             "inline-block rounded-full px-2.5 py-1 font-heading text-[10px] font-semibold uppercase tracking-wide",
@@ -53,7 +49,6 @@ export function Founders({ variant = "compact" }: { variant?: "compact" | "detai
                           {founder.role}
                         </span>
                       </div>
-                      <p className="mt-3 line-clamp-2 text-base text-white/80">{founder.bio[0]}</p>
                     </div>
                   </>
                 )}
