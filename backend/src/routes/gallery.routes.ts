@@ -6,6 +6,7 @@ import {
   getGalleryHandler,
   createGalleryHandler,
   updateGalleryHandler,
+  reorderGalleryHandler,
   deleteGalleryHandler,
 } from "../controllers/gallery.controller";
 import { asyncHandler } from "../utils/asyncHandler";
@@ -13,6 +14,7 @@ import { asyncHandler } from "../utils/asyncHandler";
 export const galleryRouter = Router();
 
 galleryRouter.get("/gallery", asyncHandler(listGalleryHandler));
+galleryRouter.put("/gallery/reorder", requireAuth, asyncHandler(reorderGalleryHandler));
 galleryRouter.get("/gallery/:id", asyncHandler(getGalleryHandler));
 galleryRouter.post("/gallery", requireAuth, uploadGalleryImage, asyncHandler(createGalleryHandler));
 galleryRouter.put("/gallery/:id", requireAuth, uploadGalleryImage, asyncHandler(updateGalleryHandler));

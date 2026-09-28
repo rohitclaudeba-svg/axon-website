@@ -13,6 +13,7 @@ import { categoriesRouter } from "./routes/categories.routes";
 import { subcategoryPagesRouter } from "./routes/subcategoryPages.routes";
 import { careerApplicationsRouter } from "./routes/careerApplications.routes";
 import { careerOpeningsRouter } from "./routes/careerOpenings.routes";
+import { siteSettingsRouter } from "./routes/siteSettings.routes";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 
 export const app = express();
@@ -50,6 +51,7 @@ app.use("/api", categoriesRouter);
 app.use("/api", subcategoryPagesRouter);
 app.use("/api", careerApplicationsRouter);
 app.use("/api", careerOpeningsRouter);
+app.use("/api", siteSettingsRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

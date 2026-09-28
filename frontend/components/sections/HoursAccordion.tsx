@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { ChevronDown, Clock } from "lucide-react";
-import { nap } from "@/content/nap";
 import { cn } from "@/lib/cn";
+import { formatHoursTime, type HoursDay } from "@/lib/siteSettings";
 
-export function HoursAccordion() {
+export function HoursAccordion({ hours }: { hours: HoursDay[] }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -35,10 +35,12 @@ export function HoursAccordion() {
         )}
       >
         <ul className="min-h-0 divide-y divide-navy/8 pl-8">
-          {nap.hours.map((h) => (
+          {hours.map((h) => (
             <li key={h.day} className="flex items-center justify-between gap-4 py-2 text-sm">
               <span className="text-navy/70">{h.day}</span>
-              <span className={cn("font-medium", h.closed ? "text-navy/40" : "text-primary")}>{h.time}</span>
+              <span className={cn("font-medium", h.closed ? "text-navy/40" : "text-primary")}>
+                {formatHoursTime(h)}
+              </span>
             </li>
           ))}
         </ul>

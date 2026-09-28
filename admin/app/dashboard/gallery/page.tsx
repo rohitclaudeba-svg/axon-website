@@ -62,12 +62,20 @@ export default function GalleryPage() {
             Photos and videos added here appear immediately on the public site&apos;s Gallery page.
           </p>
         </div>
-        <Link
-          href="/dashboard/gallery/new"
-          className="shrink-0 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-700"
-        >
-          + Add
-        </Link>
+        <div className="flex shrink-0 gap-2">
+          <Link
+            href="/dashboard/gallery/view"
+            className="rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100"
+          >
+            Gallery View
+          </Link>
+          <Link
+            href="/dashboard/gallery/new"
+            className="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-700"
+          >
+            + Add
+          </Link>
+        </div>
       </div>
 
       {error && <p className="mt-4 text-sm text-red-600">{error}</p>}

@@ -247,3 +247,35 @@ export interface CareerOpeningDto {
   createdAt: string;
   updatedAt: string;
 }
+
+export const DAYS_OF_WEEK = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+] as const;
+
+export interface HoursDay {
+  day: (typeof DAYS_OF_WEEK)[number];
+  opens: string;
+  closes: string;
+  closed: boolean;
+}
+
+export interface SiteSettingsDto {
+  streetAddress: string;
+  addressLocality: string;
+  addressRegion: string;
+  postalCode: string;
+  addressCountry: string;
+  latitude: number | null;
+  longitude: number | null;
+  phones: TextListItem[];
+  emails: TextListItem[];
+  whatsappNumber: string;
+  hours: HoursDay[];
+  updatedAt: string | null;
+}

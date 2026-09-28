@@ -105,3 +105,20 @@ export async function updateGalleryVideoItem(id: number, data: UpdateVideoItem):
 export async function deleteGalleryItem(id: number): Promise<void> {
   await pool.query("DELETE FROM gallery_items WHERE id = ?", [id]);
 }
+
+/** Sets each item's position to its index in the given id order — drives the admin's drag-to-reorder gallery view. */
+export async function reorderGalleryItems(ids: number[]): Promise<void> {
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
+    for (let i = 0; i < ids.length; i++) {
+      await conn.query("UPDATE gallery_items SET position = ? WHERE id = ?", [i, ids[i]]);
+    }
+    await conn.commit();
+  } catch (err) {
+    await conn.rollback();
+    throw err;
+  } finally {
+    conn.release();
+  }
+}

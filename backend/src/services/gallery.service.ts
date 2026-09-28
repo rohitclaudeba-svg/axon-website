@@ -7,6 +7,7 @@ import {
   updateGalleryImageItem,
   updateGalleryVideoItem,
   deleteGalleryItem,
+  reorderGalleryItems,
   type GalleryItemRow,
   type NewImageItem,
   type NewVideoItem,
@@ -112,4 +113,9 @@ export async function removeGalleryItem(id: number): Promise<boolean> {
   }
 
   return true;
+}
+
+export async function reorderGallery(ids: number[]): Promise<GalleryItemDto[]> {
+  await reorderGalleryItems(ids);
+  return listGalleryItems();
 }

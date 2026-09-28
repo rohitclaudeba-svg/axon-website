@@ -1,5 +1,6 @@
 import { nap } from "@/content/nap";
 import type { FaqEntry } from "@/content/types";
+import type { SiteSettingsData } from "./siteSettings";
 
 /**
  * Reusable JSON-LD builders (spec §1.2). Rendered through <JsonLd> so schema
@@ -7,7 +8,7 @@ import type { FaqEntry } from "@/content/types";
  * of being duplicated across components.
  */
 
-export function medicalBusinessSchema() {
+export function medicalBusinessSchema(settings: SiteSettingsData) {
   return {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
@@ -15,28 +16,30 @@ export function medicalBusinessSchema() {
     description:
       "Multi-specialty rehabilitation and therapy centre offering speech therapy, occupational therapy, physiotherapy and special education.",
     url: nap.siteUrl,
-    telephone: nap.phone,
-    email: nap.email,
+    telephone: settings.phones[0]?.text ?? "",
+    email: settings.emails[0]?.text ?? "",
     address: {
       "@type": "PostalAddress",
-      streetAddress: nap.streetAddress,
-      addressLocality: nap.addressLocality,
-      addressRegion: nap.addressRegion,
-      postalCode: nap.postalCode,
-      addressCountry: nap.addressCountry,
+      streetAddress: settings.streetAddress,
+      addressLocality: settings.addressLocality,
+      addressRegion: settings.addressRegion,
+      postalCode: settings.postalCode,
+      addressCountry: settings.addressCountry,
     },
     geo: {
       "@type": "GeoCoordinates",
-      latitude: nap.latitude,
-      longitude: nap.longitude,
+      latitude: settings.latitude,
+      longitude: settings.longitude,
     },
     hasMap: nap.mapDirectionsUrl,
-    openingHoursSpecification: nap.openingHours.map((h) => ({
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: h.dayOfWeek,
-      opens: h.opens,
-      closes: h.closes,
-    })),
+    openingHoursSpecification: settings.hours
+      .filter((h) => !h.closed && h.opens && h.closes)
+      .map((h) => ({
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: h.day,
+        opens: h.opens,
+        closes: h.closes,
+      })),
   };
 }
 

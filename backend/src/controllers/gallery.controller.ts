@@ -7,6 +7,7 @@ import {
   updateImageGalleryItem,
   updateVideoGalleryItem,
   removeGalleryItem,
+  reorderGallery,
 } from "../services/gallery.service";
 import {
   createVideoItemSchema,
@@ -96,6 +97,16 @@ export async function updateGalleryHandler(req: AuthedRequest, res: Response) {
     description: parsed.data.description,
   });
   res.json({ ok: true, data: item });
+}
+
+export async function reorderGalleryHandler(req: AuthedRequest, res: Response) {
+  const ids = req.body?.ids;
+  if (!Array.isArray(ids) || ids.some((id) => !Number.isInteger(id))) {
+    return res.status(422).json({ ok: false, error: "ids must be an array of item ids" });
+  }
+
+  const items = await reorderGallery(ids);
+  res.json({ ok: true, data: items });
 }
 
 export async function deleteGalleryHandler(req: AuthedRequest, res: Response) {

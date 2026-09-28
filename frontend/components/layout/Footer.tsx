@@ -4,9 +4,13 @@ import { Logo } from "./Logo";
 import { Container } from "@/components/ui/Container";
 import { footerServiceLinks, footerProgramLinks, footerCompanyLinks } from "@/content/nav";
 import { nap } from "@/content/nap";
-import { groupHours } from "@/lib/hours";
+import { getSiteSettings, groupHours } from "@/lib/siteSettings";
 
-export function Footer() {
+export async function Footer() {
+  const settings = await getSiteSettings();
+  const phone = settings.phones[0]?.text ?? "";
+  const email = settings.emails[0]?.text ?? "";
+
   return (
     <footer className="bg-navy text-white">
       <Container className="py-16">
@@ -71,25 +75,26 @@ export function Footer() {
               <li className="flex items-start gap-2.5">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-soft-green" aria-hidden="true" />
                 <span>
-                  {nap.streetAddress}, {nap.addressLocality}, {nap.addressRegion} {nap.postalCode}
+                  {settings.streetAddress}, {settings.addressLocality}, {settings.addressRegion}{" "}
+                  {settings.postalCode}
                 </span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="h-4 w-4 shrink-0 text-soft-green" aria-hidden="true" />
-                <a href={`tel:${nap.phone}`} className="hover:text-soft-green">
-                  {nap.phone}
+                <a href={`tel:${phone}`} className="hover:text-soft-green">
+                  {phone}
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="h-4 w-4 shrink-0 text-soft-green" aria-hidden="true" />
-                <a href={`mailto:${nap.email}`} className="hover:text-soft-green">
-                  {nap.email}
+                <a href={`mailto:${email}`} className="hover:text-soft-green">
+                  {email}
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <Clock className="mt-0.5 h-4 w-4 shrink-0 text-soft-green" aria-hidden="true" />
                 <span>
-                  {groupHours(nap.hours).map((h) => (
+                  {groupHours(settings.hours).map((h) => (
                     <span key={h.label} className="block whitespace-nowrap text-sm">
                       {h.label}: {h.time}
                     </span>

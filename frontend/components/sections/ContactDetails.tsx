@@ -3,8 +3,13 @@ import { nap } from "@/content/nap";
 import { Button } from "@/components/ui/Button";
 import { StaggerGroup, StaggerItem } from "@/components/ui/AnimatedReveal";
 import { HoursAccordion } from "@/components/sections/HoursAccordion";
+import { getSiteSettings } from "@/lib/siteSettings";
 
-export function ContactDetails() {
+export async function ContactDetails() {
+  const settings = await getSiteSettings();
+  const phone = settings.phones[0]?.text ?? "";
+  const email = settings.emails[0]?.text ?? "";
+
   return (
     <StaggerGroup className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <StaggerItem>
@@ -15,7 +20,8 @@ export function ContactDetails() {
               <div>
                 <p className="font-heading text-sm font-semibold text-navy">Address</p>
                 <p className="text-sm text-navy/70">
-                  {nap.streetAddress}, {nap.addressLocality}, {nap.addressRegion} {nap.postalCode}
+                  {settings.streetAddress}, {settings.addressLocality}, {settings.addressRegion}{" "}
+                  {settings.postalCode}
                 </p>
               </div>
             </li>
@@ -23,8 +29,8 @@ export function ContactDetails() {
               <Phone className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
               <div>
                 <p className="font-heading text-sm font-semibold text-navy">Phone</p>
-                <a href={`tel:${nap.phone}`} className="text-sm text-navy/70 hover:text-primary">
-                  {nap.phone}
+                <a href={`tel:${phone}`} className="text-sm text-navy/70 hover:text-primary">
+                  {phone}
                 </a>
               </div>
             </li>
@@ -32,14 +38,14 @@ export function ContactDetails() {
               <Mail className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
               <div>
                 <p className="font-heading text-sm font-semibold text-navy">Email</p>
-                <a href={`mailto:${nap.email}`} className="text-sm text-navy/70 hover:text-primary">
-                  {nap.email}
+                <a href={`mailto:${email}`} className="text-sm text-navy/70 hover:text-primary">
+                  {email}
                 </a>
               </div>
             </li>
           </ul>
           <div className="mt-5 border-t border-navy/8 pt-5">
-            <HoursAccordion />
+            <HoursAccordion hours={settings.hours} />
           </div>
           <div className="mt-6">
             <Button href={nap.mapDirectionsUrl} variant="ghost">

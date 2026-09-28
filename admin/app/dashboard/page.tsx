@@ -8,6 +8,13 @@ export default function DashboardHome() {
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Link
+          href="/dashboard/settings"
+          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <p className="font-semibold text-slate-900">Site Settings</p>
+          <p className="mt-1 text-sm text-slate-500">Manage the address, phone numbers, emails and business hours.</p>
+        </Link>
+        <Link
           href="/dashboard/categories"
           className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
         >

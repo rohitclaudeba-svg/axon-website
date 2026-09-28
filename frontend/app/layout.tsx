@@ -9,6 +9,7 @@ import { ToastProvider } from "@/components/ui/Toast";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { medicalBusinessSchema, websiteSchema } from "@/lib/schema";
 import { nap } from "@/content/nap";
+import { getSiteSettings } from "@/lib/siteSettings";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -44,12 +45,14 @@ export const viewport: Viewport = {
   themeColor: "#2C4875",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="en" className={`${poppins.variable} ${inter.variable}`}>
       <body className="flex min-h-screen flex-col antialiased">
         <ToastProvider>
-          <JsonLd data={[medicalBusinessSchema(), websiteSchema()]} />
+          <JsonLd data={[medicalBusinessSchema(settings), websiteSchema()]} />
           <RouteProgress />
           <a
             href="#main-content"

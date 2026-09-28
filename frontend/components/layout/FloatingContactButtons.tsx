@@ -1,8 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { Phone } from "lucide-react";
 import { nap } from "@/content/nap";
+import { FALLBACK_SITE_SETTINGS, type SiteSettingsData } from "@/lib/siteSettings";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -14,7 +18,21 @@ function WhatsAppIcon({ className }: { className?: string }) {
 
 export function FloatingContactButtons() {
   const reduceMotion = useReducedMotion();
-  const whatsappHref = `https://wa.me/${nap.whatsappNumber}?text=${encodeURIComponent(nap.whatsappDefaultMessage)}`;
+  const [settings, setSettings] = useState<SiteSettingsData>(FALLBACK_SITE_SETTINGS);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/site-settings`)
+      .then((res) => res.json())
+      .then((json: { ok: boolean; data: SiteSettingsData }) => {
+        if (json.ok && json.data.phones.length > 0) setSettings(json.data);
+      })
+      .catch(() => {
+        // Backend unreachable — keep the static fallback numbers.
+      });
+  }, []);
+
+  const phone = settings.phones[0]?.text ?? "";
+  const whatsappHref = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(nap.whatsappDefaultMessage)}`;
 
   return (
     <div className="fixed bottom-6 right-4 z-40 flex flex-col items-end gap-3 sm:right-6">
@@ -38,7 +56,7 @@ export function FloatingContactButtons() {
       </a>
 
       <a
-        href={`tel:${nap.phone}`}
+        href={`tel:${phone}`}
         aria-label="Call us"
         className="group relative flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-navy/25 transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl"
       >

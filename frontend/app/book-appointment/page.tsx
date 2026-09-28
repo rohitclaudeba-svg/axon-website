@@ -4,8 +4,7 @@ import { EnquiryForm } from "@/components/sections/EnquiryForm";
 import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/AnimatedReveal";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { nap } from "@/content/nap";
-import { groupHours } from "@/lib/hours";
+import { getSiteSettings, groupHours } from "@/lib/siteSettings";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/schema";
 
@@ -17,7 +16,11 @@ export function generateMetadata(): Metadata {
   });
 }
 
-export default function BookAppointmentPage() {
+export default async function BookAppointmentPage() {
+  const settings = await getSiteSettings();
+  const phone = settings.phones[0]?.text ?? "";
+  const email = settings.emails[0]?.text ?? "";
+
   return (
     <>
       <JsonLd
@@ -45,8 +48,8 @@ export default function BookAppointmentPage() {
               </span>
               <div>
                 <p className="font-heading text-sm font-semibold text-navy">Call Us</p>
-                <a href={`tel:${nap.phone}`} className="block text-navy/70 transition-colors hover:text-primary">
-                  {nap.phone}
+                <a href={`tel:${phone}`} className="block text-navy/70 transition-colors hover:text-primary">
+                  {phone}
                 </a>
               </div>
             </div>
@@ -59,8 +62,8 @@ export default function BookAppointmentPage() {
               </span>
               <div>
                 <p className="font-heading text-sm font-semibold text-navy">Email Us</p>
-                <a href={`mailto:${nap.email}`} className="block text-navy/70 transition-colors hover:text-primary">
-                  {nap.email}
+                <a href={`mailto:${email}`} className="block text-navy/70 transition-colors hover:text-primary">
+                  {email}
                 </a>
               </div>
             </div>
@@ -73,7 +76,7 @@ export default function BookAppointmentPage() {
               </span>
               <div>
                 <p className="font-heading text-sm font-semibold text-navy">Working Hours</p>
-                {groupHours(nap.hours).map((h) => (
+                {groupHours(settings.hours).map((h) => (
                   <p key={h.label} className="whitespace-nowrap text-sm text-navy/70 sm:text-base">
                     {h.label}: {h.time}
                   </p>

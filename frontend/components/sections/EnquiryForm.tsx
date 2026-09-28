@@ -6,10 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, Loader2, ChevronDown } from "lucide-react";
 import { enquirySchema, type EnquiryInput } from "@/lib/validation";
 import { services } from "@/content/services";
-import { nap } from "@/content/nap";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
 import { cn } from "@/lib/cn";
+import { FALLBACK_SITE_SETTINGS, type SiteSettingsData } from "@/lib/siteSettings";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
 
 const inputClasses =
   "w-full rounded-xl border border-navy/15 bg-white px-4 py-3 text-sm text-navy placeholder:text-navy/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
@@ -35,16 +37,35 @@ function buildTimeSlots(opens: string, closes: string, stepMinutes = 30): string
   return slots;
 }
 
-const timeSlots = buildTimeSlots(nap.openingHours[0].opens, nap.openingHours[0].closes);
+function firstOpenDay(settings: SiteSettingsData) {
+  return settings.hours.find((h) => !h.closed && h.opens && h.closes) ?? settings.hours[0];
+}
 
 export function EnquiryForm({ variant = "appointment" }: { variant?: "appointment" | "contact" }) {
   const { showToast } = useToast();
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
   const [minDate, setMinDate] = useState("");
+  const [timeSlots, setTimeSlots] = useState<string[]>(() => {
+    const day = firstOpenDay(FALLBACK_SITE_SETTINGS);
+    return buildTimeSlots(day.opens, day.closes);
+  });
 
   // Computed client-side to avoid an SSR/client date mismatch.
   useEffect(() => {
     setMinDate(new Date().toISOString().split("T")[0]);
+  }, []);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/site-settings`)
+      .then((res) => res.json())
+      .then((json: { ok: boolean; data: SiteSettingsData }) => {
+        if (!json.ok) return;
+        const day = firstOpenDay(json.data);
+        if (day.opens && day.closes) setTimeSlots(buildTimeSlots(day.opens, day.closes));
+      })
+      .catch(() => {
+        // Backend unreachable — keep the static fallback time slots.
+      });
   }, []);
 
   const {
