@@ -48,14 +48,9 @@ async function buildSectionsFor(entry: ServiceEntry | ProgramEntry, kind: "servi
     `<p>Individuals we support may face:</p>${listHtml(primaryAreas)}` +
     `<p>Our ${name.toLowerCase()} at AXON Multi-Rehabilitation Centre supports individuals in working through these challenges, building confidence and everyday skills.</p>`;
 
-  let approachContent = "";
-  if (approachSections && approachSections.length > 0) {
-    approachContent = approachSections
-      .map((s) => `<h2>${escapeHtml(s.title)}</h2><p>${escapeHtml(s.intro)}</p>${listHtml(s.items)}`)
-      .join("");
-  } else if (restAreas.length > 0) {
-    approachContent = listHtml(restAreas);
-  }
+  const approachAreas: SupportArea[] =
+    approachSections && approachSections.length > 0 ? approachSections.flatMap((s) => s.items) : restAreas;
+  const approachItems = approachAreas.map((a) => ({ id: crypto.randomUUID(), title: a.title, description: a.description }));
 
   const whyChooseContent =
     `<p>Our therapists coordinate ${name.toLowerCase()} alongside AXON Multi-Rehabilitation Centre's wider team where needed, so your plan stays consistent, personalised and focused on measurable progress — not delivered in isolation.</p>` +
@@ -98,13 +93,12 @@ async function buildSectionsFor(entry: ServiceEntry | ProgramEntry, kind: "servi
     },
     {
       type: "approach" as const,
-      enabled: approachContent.length > 0,
+      enabled: approachItems.length > 0,
       position: 3,
       data: {
         heading: "Our Approach",
         subtitle: `Our approach to ${name} at AXON Multi-Rehabilitation Centre`,
-        content: approachContent,
-        imageUrl: null,
+        items: approachItems,
       },
     },
     {

@@ -1,5 +1,5 @@
 import { nap } from "@/content/nap";
-import type { ServiceEntry, ProgramEntry, FaqEntry } from "@/content/types";
+import type { FaqEntry } from "@/content/types";
 
 /**
  * Reusable JSON-LD builders (spec §1.2). Rendered through <JsonLd> so schema
@@ -59,7 +59,7 @@ export function webPageSchema(input: { name: string; description: string; path: 
   };
 }
 
-export function serviceSchema(entry: ServiceEntry | ProgramEntry, path: string) {
+export function serviceSchema(entry: { name: string; heroSummary: string }, path: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Service",

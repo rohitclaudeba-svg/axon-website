@@ -17,6 +17,7 @@ import {
   Blocks,
   Image,
   Quote,
+  Briefcase,
   type LucideIcon,
 } from "lucide-react";
 import type { IconName } from "@/content/types";
@@ -40,6 +41,7 @@ export const iconMap: Record<IconName, LucideIcon> = {
   progress: TrendingUp,
   gallery: Image,
   testimonials: Quote,
+  briefcase: Briefcase,
 };
 
 export function Icon({ name, className }: { name: IconName; className?: string }) {

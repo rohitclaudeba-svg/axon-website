@@ -15,6 +15,13 @@ export default function DashboardHome() {
           <p className="mt-1 text-sm text-slate-500">Manage the parent categories and subcategories that drive the header menu.</p>
         </Link>
         <Link
+          href="/dashboard/parent-category-pages"
+          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <p className="font-semibold text-slate-900">Parent Category Pages</p>
+          <p className="mt-1 text-sm text-slate-500">Manage the full page content for each parent category.</p>
+        </Link>
+        <Link
           href="/dashboard/subcategory-pages"
           className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
         >
@@ -50,6 +57,13 @@ export default function DashboardHome() {
           <p className="mt-1 text-sm text-slate-500">Manage the YouTube videos on the Testimonials page.</p>
         </Link>
         <Link
+          href="/dashboard/careers"
+          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <p className="font-semibold text-slate-900">Careers</p>
+          <p className="mt-1 text-sm text-slate-500">Post and manage job openings shown on the Careers page.</p>
+        </Link>
+        <Link
           href="/dashboard/appointments"
           className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
         >
@@ -62,6 +76,13 @@ export default function DashboardHome() {
         >
           <p className="font-semibold text-slate-900">Contacts</p>
           <p className="mt-1 text-sm text-slate-500">View messages submitted through the Contact form.</p>
+        </Link>
+        <Link
+          href="/dashboard/career-applications"
+          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <p className="font-semibold text-slate-900">Career Applications</p>
+          <p className="mt-1 text-sm text-slate-500">View resumes and applications submitted through Careers.</p>
         </Link>
       </div>
     </div>

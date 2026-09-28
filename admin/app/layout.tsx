@@ -5,6 +5,12 @@ import { ConfirmProvider } from "@/components/ConfirmDialog";
 export const metadata: Metadata = {
   title: "AXON Admin",
   description: "AXON Multi-Rehabilitation Centre — admin panel",
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: { index: false, follow: false, noimageindex: true },
+  },
 };
 
 export const viewport: Viewport = {

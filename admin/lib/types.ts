@@ -95,6 +95,12 @@ export interface FaqItem {
   enabled: boolean;
 }
 
+export interface ApproachItem {
+  id: string;
+  title: string;
+  description: string;
+}
+
 export interface HeroSectionData {
   heading: string;
   subtitle: string;
@@ -120,8 +126,7 @@ export interface HowItHelpsSectionData {
 export interface ApproachSectionData {
   heading: string;
   subtitle: string;
-  content: string;
-  imageUrl: string | null;
+  items: ApproachItem[];
 }
 
 export interface BenefitsSectionData {
@@ -187,6 +192,57 @@ export interface FounderDto {
   bio: string;
   bioParagraphs: string[];
   photo: string | null;
+  position: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CareerApplicationDto {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  position: string | null;
+  message: string | null;
+  resumeOriginalFilename: string;
+  certificateCount: number;
+  createdAt: string;
+}
+
+export const CAREER_OPENING_ICONS = [
+  "briefcase",
+  "speech",
+  "occupational",
+  "physiotherapy",
+  "special-education",
+  "behavioral-therapy",
+  "social-groups",
+  "school-readiness",
+  "play-groups",
+  "pediatric",
+  "neurological",
+  "orthopedic",
+  "geriatric",
+  "assessment",
+  "plan",
+  "therapy",
+  "progress",
+] as const;
+
+export type CareerOpeningIcon = (typeof CAREER_OPENING_ICONS)[number];
+
+export interface CareerOpeningDto {
+  id: number;
+  slug: string;
+  title: string;
+  department: string;
+  icon: CareerOpeningIcon;
+  type: string;
+  location: string;
+  summary: string;
+  responsibilities: string[];
+  requirements: string[];
+  enabled: boolean;
   position: number;
   createdAt: string;
   updatedAt: string;

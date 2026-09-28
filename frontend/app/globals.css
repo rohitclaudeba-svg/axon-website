@@ -71,6 +71,23 @@ h4 {
   font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
 }
 
+/* Thin, brand-tinted scrollbar for content lists that cap their height once
+   an admin adds more items than comfortably fit (e.g. Our Approach). */
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--palette-mid) / 0.5) transparent;
+}
+.scroll-thin::-webkit-scrollbar {
+  width: 6px;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--palette-mid) / 0.5);
+  border-radius: 9999px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

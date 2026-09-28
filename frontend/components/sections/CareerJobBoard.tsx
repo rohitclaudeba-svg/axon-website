@@ -1,19 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Briefcase, MapPin, CheckCircle2, ArrowRight, ArrowLeft, Sparkles } from "lucide-react";
 import { Icon } from "@/lib/icons";
-import { careerOpenings } from "@/content/careers";
 import { CareerApplicationForm } from "@/components/sections/CareerApplicationForm";
 import { cn } from "@/lib/cn";
+import type { IconName } from "@/content/types";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
+
+interface CareerOpening {
+  slug: string;
+  title: string;
+  department: string;
+  icon: IconName;
+  type: string;
+  location: string;
+  summary: string;
+  responsibilities: string[];
+  requirements: string[];
+}
 
 export function CareerJobBoard() {
-  const [activeSlug, setActiveSlug] = useState(careerOpenings[0].slug);
+  const [careerOpenings, setCareerOpenings] = useState<CareerOpening[]>([]);
+  const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [mode, setMode] = useState<"details" | "apply">("details");
   const [step, setStep] = useState<"list" | "detail">("list");
   const reduceMotion = useReducedMotion();
   const active = careerOpenings.find((opening) => opening.slug === activeSlug) ?? careerOpenings[0];
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/career-openings`)
+      .then((res) => res.json())
+      .then((json: { ok: boolean; data: CareerOpening[] }) => {
+        if (json.ok && json.data.length > 0) {
+          setCareerOpenings(json.data);
+          setActiveSlug(json.data[0].slug);
+        }
+      })
+      .catch(() => {
+        // Backend unreachable — the job board just stays empty.
+      });
+  }, []);
 
   const selectOpening = (slug: string) => {
     setActiveSlug(slug);
@@ -24,6 +53,10 @@ export function CareerJobBoard() {
   const backToList = () => {
     setStep("list");
   };
+
+  if (!active) {
+    return <p className="text-sm text-navy/60">No open roles right now — check back soon.</p>;
+  }
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:items-start">
@@ -193,7 +226,7 @@ export function CareerJobBoard() {
               </div>
 
               <div className="mt-6">
-                <CareerApplicationForm defaultPosition={active.title} />
+                <CareerApplicationForm defaultPosition={active.title} openings={careerOpenings} />
               </div>
             </motion.div>
           )}

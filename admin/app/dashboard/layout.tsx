@@ -16,6 +16,7 @@ const navItems: NavItem[] = [
     label: "Category Management",
     children: [
       { label: "Categories", href: "/dashboard/categories" },
+      { label: "Parent Category Pages", href: "/dashboard/parent-category-pages" },
       { label: "Subcategory Pages", href: "/dashboard/subcategory-pages" },
     ],
   },
@@ -27,6 +28,7 @@ const navItems: NavItem[] = [
       { label: "Gallery", href: "/dashboard/gallery" },
       { label: "Reviews", href: "/dashboard/reviews" },
       { label: "Video Testimonials", href: "/dashboard/video-testimonials" },
+      { label: "Careers", href: "/dashboard/careers" },
     ],
   },
   {
@@ -35,6 +37,7 @@ const navItems: NavItem[] = [
     children: [
       { label: "Appointments", href: "/dashboard/appointments" },
       { label: "Contacts", href: "/dashboard/contacts" },
+      { label: "Career Applications", href: "/dashboard/career-applications" },
     ],
   },
 ];

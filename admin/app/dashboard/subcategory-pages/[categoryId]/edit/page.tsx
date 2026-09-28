@@ -7,6 +7,7 @@ import { CollapsibleSection } from "@/components/CollapsibleSection";
 import { ImageUploadField } from "@/components/ImageUploadField";
 import { RichTextEditor } from "@/components/RichTextEditor";
 import { TextListEditor } from "@/components/TextListEditor";
+import { TitleDescriptionListEditor } from "@/components/TitleDescriptionListEditor";
 import { FaqListEditor } from "@/components/FaqListEditor";
 import { SECTION_LABELS_LIST } from "@/lib/sectionMeta";
 import type {
@@ -118,7 +119,7 @@ export default function EditSubcategoryPage() {
     <div className="pb-24">
       <h1 className="text-xl font-bold text-slate-900">Edit: {page.name}</h1>
       <p className="mt-1 text-sm text-slate-500">
-        {page.parentName} → {page.name} · URL: {page.url}
+        {page.parentName ? `${page.parentName} → ${page.name}` : page.name} · URL: {page.url}
       </p>
 
       <div className="mt-6 space-y-4">
@@ -129,7 +130,9 @@ export default function EditSubcategoryPage() {
           <div className="space-y-4 px-4 py-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700">Subcategory name</label>
+                <label className="mb-1 block text-sm font-medium text-slate-700">
+                  {page.parentName ? "Subcategory name" : "Category name"}
+                </label>
                 <input
                   type="text"
                   value={page.name}
@@ -142,7 +145,7 @@ export default function EditSubcategoryPage() {
                 <label className="mb-1 block text-sm font-medium text-slate-700">Parent category</label>
                 <input
                   type="text"
-                  value={page.parentName}
+                  value={page.parentName || "— (this is a parent category)"}
                   disabled
                   className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500"
                 />
@@ -259,7 +262,9 @@ export default function EditSubcategoryPage() {
           <div className="flex gap-3">
             <button
               type="button"
-              onClick={() => router.push("/dashboard/subcategory-pages")}
+              onClick={() =>
+                router.push(page.parentName ? "/dashboard/subcategory-pages" : "/dashboard/parent-category-pages")
+              }
               className="rounded-lg px-5 py-2.5 text-sm font-semibold text-slate-500 hover:bg-slate-100"
             >
               Back
@@ -390,15 +395,9 @@ function ApproachFields({
       <Field label="Subtitle">
         <input type="text" value={data.subtitle} onChange={(e) => onChange({ subtitle: e.target.value })} className={inputClass} />
       </Field>
-      <Field label="Main content">
-        <RichTextEditor value={data.content} onChange={(content) => onChange({ content })} />
+      <Field label="Items">
+        <TitleDescriptionListEditor items={data.items} onChange={(items) => onChange({ items })} />
       </Field>
-      <ImageUploadField
-        label="Image (optional)"
-        value={data.imageUrl}
-        onChange={(imageUrl) => onChange({ imageUrl })}
-        dimensionHint="800 × 1000px (portrait, 4:5 ratio)"
-      />
     </>
   );
 }

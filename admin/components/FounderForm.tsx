@@ -62,7 +62,7 @@ export function FounderForm({ mode, initial }: { mode: "create" | "edit"; initia
           id="photo"
           ref={fileInputRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp"
+          accept="image/*"
           className="w-full text-sm"
         />
       </div>

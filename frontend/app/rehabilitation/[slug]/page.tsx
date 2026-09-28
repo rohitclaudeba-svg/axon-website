@@ -1,48 +1,43 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { DetailTemplate } from "@/components/sections/DetailTemplate";
+import { DynamicDetailTemplate } from "@/components/sections/DynamicDetailTemplate";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { programs, getProgramBySlug } from "@/content/programs";
-import { services } from "@/content/services";
-import { media } from "@/content/media";
+import { getPublishedSubcategoryPage } from "@/lib/subcategoryPage";
 import { buildMetadata } from "@/lib/seo";
 import { serviceSchema } from "@/lib/schema";
 
-export function generateStaticParams() {
-  return programs.map((program) => ({ slug: program.slug }));
-}
+// No generateStaticParams — programs are fully admin-managed now (see the
+// Categories/Subcategory Pages modules in /admin), so a new program the admin
+// creates works at /rehabilitation/<slug> immediately without a rebuild.
+export const dynamic = "force-dynamic";
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const program = getProgramBySlug(params.slug);
-  if (!program) return {};
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const page = await getPublishedSubcategoryPage(params.slug);
+  if (!page || page.parentSlug !== "rehabilitation") return {};
 
   return buildMetadata({
-    title: program.seo.title,
-    description: program.seo.description,
-    path: `/rehabilitation/${program.slug}`,
+    title: page.seoTitle || page.name,
+    description: page.seoDescription || page.name,
+    path: `/rehabilitation/${page.slug}`,
   });
 }
 
-export default function ProgramDetailPage({ params }: { params: { slug: string } }) {
-  const program = getProgramBySlug(params.slug);
-  if (!program) notFound();
+export default async function ProgramDetailPage({ params }: { params: { slug: string } }) {
+  const page = await getPublishedSubcategoryPage(params.slug);
+  if (!page || page.parentSlug !== "rehabilitation") notFound();
 
-  const relatedServices = services.filter((service) => program.relatedServiceSlugs.includes(service.slug));
+  const hero = page.sections.find((s) => s.type === "hero");
+  const heroSummary = hero && "subtitle" in hero.data ? (hero.data as { subtitle: string }).subtitle : page.seoDescription;
 
   return (
     <>
-      <JsonLd data={serviceSchema(program, `/rehabilitation/${program.slug}`)} />
-      <DetailTemplate
-        entry={program}
-        image={media.programImages[program.slug as keyof typeof media.programImages]}
-        contentImage={media.programContentImages[program.slug as keyof typeof media.programContentImages]}
-        secondaryImage={media.programWhoBenefitImages[program.slug as keyof typeof media.programWhoBenefitImages]}
+      <JsonLd data={serviceSchema({ name: page.name, heroSummary }, `/rehabilitation/${page.slug}`)} />
+      <DynamicDetailTemplate
+        page={page}
         breadcrumbs={[
           { name: "Rehabilitation Programs", path: "/rehabilitation" },
-          { name: program.name, path: `/rehabilitation/${program.slug}` },
+          { name: page.name, path: `/rehabilitation/${page.slug}` },
         ]}
-        relatedServices={relatedServices}
-        relatedPrograms={[]}
       />
     </>
   );

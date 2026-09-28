@@ -90,11 +90,10 @@ export async function createCategory(data: { name: string; parentId: number | nu
   const row = await findCategoryById(id);
   if (!row) throw new Error("Failed to load newly created category");
 
-  // Subcategories automatically get their dynamic page structure — no
-  // developer step required before the admin can start filling it in.
-  if (data.parentId !== null) {
-    await provisionPageForCategory(id);
-  }
+  // Every category — parent or subcategory — automatically gets its dynamic
+  // page structure, no developer step required before the admin can start
+  // filling it in.
+  await provisionPageForCategory(id);
 
   return toDto(row);
 }

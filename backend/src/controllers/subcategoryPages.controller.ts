@@ -2,8 +2,10 @@ import type { Response } from "express";
 import type { AuthedRequest } from "../middleware/requireAuth";
 import {
   listSubcategoryPages,
+  listParentCategoryPages,
   getPageByCategoryId,
   updateFullPage,
+  getPublishedPageBySlug,
   SubcategoryPageError,
 } from "../services/subcategoryPages.service";
 import { updateSubcategoryPageSchema } from "../validators/subcategoryPages";
@@ -11,6 +13,11 @@ import { env } from "../config/env";
 
 export async function listSubcategoryPagesHandler(_req: AuthedRequest, res: Response) {
   const items = await listSubcategoryPages();
+  res.json({ ok: true, data: items });
+}
+
+export async function listParentCategoryPagesHandler(_req: AuthedRequest, res: Response) {
+  const items = await listParentCategoryPages();
   res.json({ ok: true, data: items });
 }
 
@@ -51,6 +58,15 @@ export async function updateSubcategoryPageHandler(req: AuthedRequest, res: Resp
     }
     throw err;
   }
+}
+
+export async function getPublicSubcategoryPageHandler(req: AuthedRequest, res: Response) {
+  const slug = req.params.slug;
+  const page = await getPublishedPageBySlug(slug);
+  if (!page) {
+    return res.status(404).json({ ok: false, error: "Page not found" });
+  }
+  res.json({ ok: true, data: page });
 }
 
 export async function uploadSubcategoryPageImageHandler(req: AuthedRequest, res: Response) {

@@ -4,11 +4,31 @@ import {
   findSectionsByPageId,
   findCategoryWithParent,
   listAllSubcategoriesWithPages,
+  listAllParentCategoriesWithPages,
   provisionPage,
   updatePageFull,
   type UpdatePageInput,
   type UpdateSectionInput,
 } from "../repositories/subcategoryPages.repository";
+
+// Known top-level categories map to their real, existing pages — mirrors
+// frontend/components/layout/Header.tsx's knownParentHrefs. Any parent
+// category outside this set falls back to a generic `/{slug}`.
+const KNOWN_PARENT_HREFS: Record<string, string> = {
+  home: "/",
+  "about-us": "/about",
+  services: "/services",
+  rehabilitation: "/rehabilitation",
+  media: "/gallery",
+  career: "/careers",
+  contact: "/contact",
+};
+
+function buildCategoryUrl(slug: string, parentSlug: string | null): string {
+  if (parentSlug === null) return KNOWN_PARENT_HREFS[slug] ?? `/${slug}`;
+  return `/${parentSlug}/${slug}`;
+}
+import { findCategoryBySlug } from "../repositories/categories.repository";
 import { SECTION_TYPES, defaultSectionData, type SectionType } from "../lib/subcategoryPageSections";
 import { validateSectionData } from "../validators/subcategoryPages";
 
@@ -69,7 +89,22 @@ export async function listSubcategoryPages(): Promise<SubcategoryPageSummaryDto[
     slug: row.slug,
     parentName: row.parent_name ?? "",
     parentSlug: row.parent_slug ?? "",
-    url: `/${row.parent_slug}/${row.slug}`,
+    url: buildCategoryUrl(row.slug, row.parent_slug),
+    pageId: row.page_id,
+    status: row.page_id ? (row.status as "draft" | "published") : "not_started",
+    updatedAt: row.updated_at,
+  }));
+}
+
+export async function listParentCategoryPages(): Promise<SubcategoryPageSummaryDto[]> {
+  const rows = await listAllParentCategoriesWithPages();
+  return rows.map((row) => ({
+    categoryId: row.id,
+    name: row.name,
+    slug: row.slug,
+    parentName: "",
+    parentSlug: "",
+    url: buildCategoryUrl(row.slug, null),
     pageId: row.page_id,
     status: row.page_id ? (row.status as "draft" | "published") : "not_started",
     updatedAt: row.updated_at,
@@ -103,7 +138,7 @@ async function buildDetailDto(categoryId: number, pageId: number): Promise<Subca
     slug: category.slug,
     parentName: category.parent_name ?? "",
     parentSlug: category.parent_slug ?? "",
-    url: `/${category.parent_slug}/${category.slug}`,
+    url: buildCategoryUrl(category.slug, category.parent_slug),
     seoTitle: page.seo_title ?? "",
     seoDescription: page.seo_description ?? "",
     seoKeywords: page.seo_keywords ?? "",
@@ -120,7 +155,6 @@ export class SubcategoryPageError extends Error {}
 export async function getPageByCategoryId(categoryId: number): Promise<SubcategoryPageDetailDto> {
   const category = await findCategoryWithParent(categoryId);
   if (!category) throw new SubcategoryPageError("Category not found");
-  if (category.parent_id === null) throw new SubcategoryPageError("Only subcategories have dynamic pages");
 
   const pageId = await provisionPage(categoryId);
   return buildDetailDto(categoryId, pageId);
@@ -129,6 +163,20 @@ export async function getPageByCategoryId(categoryId: number): Promise<Subcatego
 /** Called when a subcategory is created via the Categories module — provisions its page automatically. */
 export async function provisionPageForCategory(categoryId: number): Promise<void> {
   await provisionPage(categoryId);
+}
+
+/** Public-facing lookup for the live website — only ever returns a published page. */
+export async function getPublishedPageBySlug(slug: string): Promise<SubcategoryPageDetailDto | null> {
+  const category = await findCategoryBySlug(slug);
+  if (!category) return null;
+
+  const page = await getPageByCategoryId(category.id);
+  if (page.status !== "published") return null;
+
+  return {
+    ...page,
+    sections: page.sections.filter((s) => s.enabled),
+  };
 }
 
 export async function updateFullPage(

@@ -86,6 +86,24 @@ export async function listAllSubcategoriesWithPages(): Promise<
   })[];
 }
 
+export async function listAllParentCategoriesWithPages(): Promise<
+  (CategoryJoinRow & { page_id: number | null; status: "draft" | "published" | null; updated_at: string | null })[]
+> {
+  const [rows] = await pool.query<RowDataPacket[]>(
+    `SELECT c.id, c.name, c.slug, c.parent_id, NULL AS parent_name, NULL AS parent_slug,
+            sp.id AS page_id, sp.status, sp.updated_at
+     FROM categories c
+     LEFT JOIN subcategory_pages sp ON sp.category_id = c.id
+     WHERE c.parent_id IS NULL
+     ORDER BY c.position ASC, c.id ASC`
+  );
+  return rows as (CategoryJoinRow & {
+    page_id: number | null;
+    status: "draft" | "published" | null;
+    updated_at: string | null;
+  })[];
+}
+
 /** Creates the subcategory_pages row + one row per section type, all defaulted. Idempotent. */
 export async function provisionPage(categoryId: number): Promise<number> {
   const existing = await findPageByCategoryId(categoryId);

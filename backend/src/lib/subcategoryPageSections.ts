@@ -29,7 +29,7 @@ export function defaultSectionData(type: SectionType): Record<string, unknown> {
     case "how_it_helps":
       return { heading: "", content: "", imageUrl: null, additionalContent: "" };
     case "approach":
-      return { heading: "", subtitle: "", content: "", imageUrl: null };
+      return { heading: "", subtitle: "", items: [] };
     case "benefits":
       return { heading: "", description: "", items: [], imageUrl: null };
     case "why_choose_us":

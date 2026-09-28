@@ -6,6 +6,12 @@ const listItemSchema = z.object({
   text: z.string(),
 });
 
+const approachItemSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string().optional().default(""),
+});
+
 const faqItemSchema = z.object({
   id: z.string(),
   question: z.string(),
@@ -38,8 +44,7 @@ const howItHelpsDataSchema = z.object({
 const approachDataSchema = z.object({
   heading: z.string().optional().default(""),
   subtitle: z.string().optional().default(""),
-  content: z.string().optional().default(""),
-  imageUrl: z.string().nullable().optional().default(null),
+  items: z.array(approachItemSchema).optional().default([]),
 });
 
 const benefitsDataSchema = z.object({

@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import { careerApplicationSchema } from "@/lib/validation";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
+
 /**
- * Career application submission endpoint.
- * No database or file storage yet — validates the payload, checks the resume/
- * certificate attachments, and logs the metadata server-side. Once the
- * backend/CMS phase is built, swap this for a real upload + persistence call
- * without changing the frontend form contract.
+ * Career application submission endpoint. Validates the payload and file
+ * attachments, then forwards the multipart form to the real backend (which
+ * stores the resume/certificates and the application, manageable from the
+ * admin panel's Enquiries > Career Applications module).
  */
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_FILE_TYPES = [
@@ -69,15 +70,33 @@ export async function POST(request: Request) {
     }
   }
 
-  console.info("[AXON career application received]", {
-    ...parsed.data,
-    resume: { name: resume.name, size: resume.size, type: resume.type },
-    certificates: certificates.map((certificate) => ({
-      name: certificate.name,
-      size: certificate.size,
-      type: certificate.type,
-    })),
-  });
+  const forward = new FormData();
+  forward.append("name", parsed.data.name);
+  forward.append("email", parsed.data.email);
+  forward.append("phone", parsed.data.phone);
+  forward.append("position", parsed.data.position ?? "");
+  forward.append("message", parsed.data.message ?? "");
+  forward.append("resume", resume, resume.name);
+  for (const certificate of certificates) {
+    forward.append("certificates", certificate, certificate.name);
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/career-applications`, {
+      method: "POST",
+      body: forward,
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => null);
+      return NextResponse.json(
+        { ok: false, error: errorBody?.error ?? "Submission failed." },
+        { status: response.status }
+      );
+    }
+  } catch {
+    return NextResponse.json({ ok: false, error: "Could not reach the server. Please try again." }, { status: 502 });
+  }
 
   return NextResponse.json({ ok: true });
 }

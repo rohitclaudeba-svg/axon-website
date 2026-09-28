@@ -113,7 +113,7 @@ export function GalleryItemForm({ mode, initial }: { mode: "create" | "edit"; in
             id="image"
             ref={fileInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/webp"
+            accept="image/*"
             className="w-full text-sm"
           />
         </div>

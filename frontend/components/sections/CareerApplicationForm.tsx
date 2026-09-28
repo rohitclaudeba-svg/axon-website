@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, Loader2, ChevronDown, Upload } from "lucide-react";
 import { careerApplicationSchema, type CareerApplicationInput } from "@/lib/validation";
-import { careerOpenings } from "@/content/careers";
 import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
 import { cn } from "@/lib/cn";
@@ -18,7 +17,13 @@ const fileInputClasses = cn(
   "cursor-pointer file:mr-4 file:rounded-full file:border-0 file:bg-light-blue file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary file:transition-colors hover:file:bg-primary hover:file:text-white"
 );
 
-export function CareerApplicationForm({ defaultPosition }: { defaultPosition?: string }) {
+export function CareerApplicationForm({
+  defaultPosition,
+  openings,
+}: {
+  defaultPosition?: string;
+  openings: { slug: string; title: string }[];
+}) {
   const uid = useId();
   const fieldId = (name: string) => `${uid}-${name}`;
   const { showToast } = useToast();
@@ -151,7 +156,7 @@ export function CareerApplicationForm({ defaultPosition }: { defaultPosition?: s
         <div className="relative">
           <select id={fieldId("position")} className={cn(inputClasses, "appearance-none pr-10")} {...register("position")}>
             <option value="">General Application</option>
-            {careerOpenings.map((opening) => (
+            {openings.map((opening) => (
               <option key={opening.slug} value={opening.title}>
                 {opening.title}
               </option>

@@ -1,50 +1,38 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { DetailTemplate } from "@/components/sections/DetailTemplate";
+import { DynamicDetailTemplate } from "@/components/sections/DynamicDetailTemplate";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { services, getServiceBySlug } from "@/content/services";
-import { programs } from "@/content/programs";
-import { media } from "@/content/media";
+import { getPublishedSubcategoryPage } from "@/lib/subcategoryPage";
 import { buildMetadata } from "@/lib/seo";
 import { serviceSchema } from "@/lib/schema";
 
-export function generateStaticParams() {
-  return services.map((service) => ({ slug: service.slug }));
-}
+// No generateStaticParams — services are fully admin-managed now (see the
+// Categories/Subcategory Pages modules in /admin), so a new service the admin
+// creates works at /services/<slug> immediately without a rebuild.
+export const dynamic = "force-dynamic";
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const service = getServiceBySlug(params.slug);
-  if (!service) return {};
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const page = await getPublishedSubcategoryPage(params.slug);
+  if (!page || page.parentSlug !== "services") return {};
 
   return buildMetadata({
-    title: service.seo.title,
-    description: service.seo.description,
-    path: `/services/${service.slug}`,
+    title: page.seoTitle || page.name,
+    description: page.seoDescription || page.name,
+    path: `/services/${page.slug}`,
   });
 }
 
-export default function ServiceDetailPage({ params }: { params: { slug: string } }) {
-  const service = getServiceBySlug(params.slug);
-  if (!service) notFound();
+export default async function ServiceDetailPage({ params }: { params: { slug: string } }) {
+  const page = await getPublishedSubcategoryPage(params.slug);
+  if (!page || page.parentSlug !== "services") notFound();
 
-  const relatedServices = service.relatedServiceSlugs
-    .map((slug) => getServiceBySlug(slug))
-    .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry));
-
-  const relatedPrograms = programs.filter((program) => service.relatedProgramSlugs.includes(program.slug));
+  const hero = page.sections.find((s) => s.type === "hero");
+  const heroSummary = hero && "subtitle" in hero.data ? (hero.data as { subtitle: string }).subtitle : page.seoDescription;
 
   return (
     <>
-      <JsonLd data={serviceSchema(service, `/services/${service.slug}`)} />
-      <DetailTemplate
-        entry={service}
-        image={media.serviceShowcaseImages[service.slug as keyof typeof media.serviceShowcaseImages]}
-        contentImage={media.serviceImages[service.slug as keyof typeof media.serviceImages]}
-        secondaryImage={media.serviceWhoBenefitImages[service.slug as keyof typeof media.serviceWhoBenefitImages]}
-        breadcrumbs={[{ name: service.name, path: `/services/${service.slug}` }]}
-        relatedServices={relatedServices}
-        relatedPrograms={relatedPrograms}
-      />
+      <JsonLd data={serviceSchema({ name: page.name, heroSummary }, `/services/${page.slug}`)} />
+      <DynamicDetailTemplate page={page} breadcrumbs={[{ name: page.name, path: `/services/${page.slug}` }]} />
     </>
   );
 }
