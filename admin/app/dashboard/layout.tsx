@@ -11,7 +11,14 @@ type NavItem =
 
 const navItems: NavItem[] = [
   { kind: "link", label: "Dashboard", href: "/dashboard" },
-  { kind: "link", label: "Categories", href: "/dashboard/categories" },
+  {
+    kind: "group",
+    label: "Category Management",
+    children: [
+      { label: "Categories", href: "/dashboard/categories" },
+      { label: "Subcategory Pages", href: "/dashboard/subcategory-pages" },
+    ],
+  },
   {
     kind: "group",
     label: "Content",

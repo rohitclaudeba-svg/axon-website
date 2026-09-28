@@ -9,6 +9,9 @@ fs.mkdirSync(galleryDir, { recursive: true });
 const foundersDir = path.resolve(__dirname, "../../uploads/founders");
 fs.mkdirSync(foundersDir, { recursive: true });
 
+const subcategoryPagesDir = path.resolve(__dirname, "../../uploads/subcategory-pages");
+fs.mkdirSync(subcategoryPagesDir, { recursive: true });
+
 const allowedMimeTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
 
@@ -48,4 +51,10 @@ export const uploadFounderPhoto = multer({
   fileFilter: imageFileFilter,
 }).single("photo");
 
-export { galleryDir, foundersDir };
+export const uploadSubcategoryPageImage = multer({
+  storage: imageStorage(subcategoryPagesDir),
+  limits: { fileSize: MAX_IMAGE_SIZE_BYTES },
+  fileFilter: imageFileFilter,
+}).single("image");
+
+export { galleryDir, foundersDir, subcategoryPagesDir };

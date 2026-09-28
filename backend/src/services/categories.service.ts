@@ -8,6 +8,7 @@ import {
   deleteCategoryRow,
   type CategoryRow,
 } from "../repositories/categories.repository";
+import { provisionPageForCategory } from "./subcategoryPages.service";
 
 export interface CategoryDto {
   id: number;
@@ -88,6 +89,13 @@ export async function createCategory(data: { name: string; parentId: number | nu
   const id = await insertCategory({ name: data.name, slug, parentId: data.parentId });
   const row = await findCategoryById(id);
   if (!row) throw new Error("Failed to load newly created category");
+
+  // Subcategories automatically get their dynamic page structure — no
+  // developer step required before the admin can start filling it in.
+  if (data.parentId !== null) {
+    await provisionPageForCategory(id);
+  }
+
   return toDto(row);
 }
 
@@ -116,6 +124,13 @@ export async function editCategory(
   }
 
   await updateCategoryRow(id, { name: data.name, parentId: data.parentId });
+
+  // Became a subcategory just now (e.g. reparented from top-level) — make
+  // sure its dynamic page structure exists.
+  if (data.parentId !== null && existing.parent_id === null) {
+    await provisionPageForCategory(id);
+  }
+
   const row = await findCategoryById(id);
   return row ? toDto(row) : null;
 }

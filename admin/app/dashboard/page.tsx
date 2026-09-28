@@ -15,6 +15,13 @@ export default function DashboardHome() {
           <p className="mt-1 text-sm text-slate-500">Manage the parent categories and subcategories that drive the header menu.</p>
         </Link>
         <Link
+          href="/dashboard/subcategory-pages"
+          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
+        >
+          <p className="font-semibold text-slate-900">Subcategory Pages</p>
+          <p className="mt-1 text-sm text-slate-500">Manage the full page content for each subcategory.</p>
+        </Link>
+        <Link
           href="/dashboard/founders"
           className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
         >
