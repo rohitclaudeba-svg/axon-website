@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 :root {
+  /* Pins the site to a light color scheme regardless of the device's system
+     theme — without this, browsers with a "force dark mode" feature (e.g.
+     Android Chrome) auto-invert light backgrounds like the header logo's
+     white backing plate into a dark, broken-looking box. */
+  color-scheme: light;
+
   /* AXON brand palette — navy/sky-blue/lavender theme, matched to the AXON
      neuron logo (navy "AXON" wordmark, sky-blue X-swoosh and dendrites,
      lavender soma and tagline). The single source of truth is the palette-*

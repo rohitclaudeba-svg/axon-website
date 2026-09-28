@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Keeps the admin panel light regardless of the device's system theme —
+     without this, browsers with a "force dark" feature auto-invert light
+     backgrounds into broken-looking dark ones. */
+  color-scheme: light;
+}
+
 body {
   color: #0f172a;
   background: #f8fafc;
