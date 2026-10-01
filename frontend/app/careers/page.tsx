@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { media } from "@/content/media";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/schema";
+import { getPublishedSubcategoryPage, type HeroSectionData } from "@/lib/subcategoryPage";
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
@@ -41,7 +42,24 @@ const values = [
   },
 ];
 
-export default function CareersPage() {
+export default async function CareersPage() {
+  const page = await getPublishedSubcategoryPage("career");
+  const hero = page?.sections.find((s) => s.type === "hero" && s.enabled)?.data as HeroSectionData | undefined;
+
+  const hasCustomBanner = Boolean(hero?.imageUrl);
+  // See contact/page.tsx — anchor custom banners to the top so a logo/graphic
+  // baked into the top of the image is never cropped out.
+  const heroImage = hero?.imageUrl
+    ? { src: hero.imageUrl, alt: "AXON Multi-Rehabilitation Centre", focal: "center top" }
+    : media.careersImage;
+  const heroMobileImage = hero?.mobileImageUrl
+    ? { src: hero.mobileImageUrl, alt: "AXON Multi-Rehabilitation Centre", focal: "center top" }
+    : undefined;
+  const heroTitle = hero?.heading?.trim() || "Build a career that changes lives";
+  const heroDescription =
+    hero?.subtitle?.trim() ||
+    "Join a multidisciplinary team helping children, adults and older adults move, communicate, learn and grow — under one roof.";
+
   return (
     <>
       <JsonLd
@@ -54,10 +72,12 @@ export default function CareersPage() {
 
       <PageHero
         eyebrow="Careers"
-        title="Build a career that changes lives"
-        description="Join a multidisciplinary team helping children, adults and older adults move, communicate, learn and grow — under one roof."
+        title={heroTitle}
+        description={heroDescription}
         breadcrumbs={[{ name: "Careers", path: "/careers" }]}
-        image={media.careersImage}
+        image={heroImage}
+        mobileImage={heroMobileImage}
+        hideContent={hasCustomBanner}
       />
 
       <Section>

@@ -11,6 +11,7 @@ import { faqs } from "@/content/faqs";
 import { media } from "@/content/media";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema, faqPageSchema } from "@/lib/schema";
+import { getPublishedSubcategoryPage, type HeroSectionData } from "@/lib/subcategoryPage";
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
@@ -38,7 +39,25 @@ const whatToExpect = [
   },
 ];
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const page = await getPublishedSubcategoryPage("contact");
+  const hero = page?.sections.find((s) => s.type === "hero" && s.enabled)?.data as HeroSectionData | undefined;
+
+  const hasCustomBanner = Boolean(hero?.imageUrl);
+  // Admin-uploaded banners are shown with no text overlay, so they're cropped
+  // to fill the hero — anchor to the top edge so any logo/graphic baked into
+  // the top of the image is never cut off (crop comes off the bottom instead).
+  const heroImage = hero?.imageUrl
+    ? { src: hero.imageUrl, alt: "AXON Multi-Rehabilitation Centre", focal: "center top" }
+    : media.contactImage;
+  const heroMobileImage = hero?.mobileImageUrl
+    ? { src: hero.mobileImageUrl, alt: "AXON Multi-Rehabilitation Centre", focal: "center top" }
+    : undefined;
+  const heroTitle = hero?.heading?.trim() || "We'd love to hear from you";
+  const heroDescription =
+    hero?.subtitle?.trim() ||
+    "Reach out with any questions, or send an enquiry and our team will get back to you.";
+
   return (
     <>
       <JsonLd
@@ -52,10 +71,12 @@ export default function ContactPage() {
 
       <PageHero
         eyebrow="Contact"
-        title="We'd love to hear from you"
-        description="Reach out with any questions, or send an enquiry and our team will get back to you."
+        title={heroTitle}
+        description={heroDescription}
         breadcrumbs={[{ name: "Contact", path: "/contact" }]}
-        image={media.contactImage}
+        image={heroImage}
+        mobileImage={heroMobileImage}
+        hideContent={hasCustomBanner}
       />
 
       <Section className="!pt-10" tone="tint">

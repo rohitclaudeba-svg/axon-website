@@ -23,7 +23,7 @@ export const SECTION_LABELS: Record<SectionType, string> = {
 export function defaultSectionData(type: SectionType): Record<string, unknown> {
   switch (type) {
     case "hero":
-      return { heading: "", subtitle: "", imageUrl: null, buttonText: "", buttonUrl: "" };
+      return { heading: "", subtitle: "", imageUrl: null, mobileImageUrl: null, buttonText: "", buttonUrl: "" };
     case "about":
       return { heading: "", content: "", imageUrl: null, imagePosition: "right" };
     case "how_it_helps":

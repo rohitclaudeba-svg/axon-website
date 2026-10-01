@@ -24,6 +24,7 @@ export interface HeroSectionData {
   heading: string;
   subtitle: string;
   imageUrl: string | null;
+  mobileImageUrl: string | null;
   buttonText: string;
   buttonUrl: string;
 }

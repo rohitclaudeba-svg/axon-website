@@ -84,12 +84,17 @@ export default function EditSubcategoryPage() {
     setSaved(false);
     setSaving(true);
     try {
+      // Parent category pages (Home, About, Contact, etc.) have no draft/publish
+      // workflow — they're core nav pages that are always live, and the simplified
+      // hero-only editor has no status control. Saving always publishes them,
+      // so an uploaded banner reflects on the site without a separate step.
+      const isParentCategory = !page.parentName;
       const payload = {
         seoTitle,
         seoDescription,
         seoKeywords,
         featuredImageUrl,
-        status,
+        status: isParentCategory ? "published" : status,
         sections: sections.map((s, index) => ({
           type: s.type,
           enabled: s.enabled,
@@ -115,12 +120,23 @@ export default function EditSubcategoryPage() {
   if (loadError) return <p className="text-sm text-red-600">{loadError}</p>;
   if (!page) return null;
 
+  // Parent category pages (Home, About, Contact, etc.) are top-level pages with
+  // their own hand-built layout — only the Hero Banner is admin-editable here.
+  // Subcategories (service/program detail pages) keep the full section set.
+  const isParentCategory = !page.parentName;
+  const visibleSections = isParentCategory ? sections.filter((s) => s.type === "hero") : sections;
+
   return (
     <div className="pb-24">
       <h1 className="text-xl font-bold text-slate-900">Edit: {page.name}</h1>
       <p className="mt-1 text-sm text-slate-500">
         {page.parentName ? `${page.parentName} → ${page.name}` : page.name} · URL: {page.url}
       </p>
+      {isParentCategory && (
+        <p className="mt-1 text-sm text-slate-500">
+          This is a top-level page — only the Hero Banner below is editable here.
+        </p>
+      )}
 
       <div className="mt-6 space-y-4">
         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
@@ -152,17 +168,23 @@ export default function EditSubcategoryPage() {
               </div>
             </div>
 
-            <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">Page status</label>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value as "draft" | "published")}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none sm:w-60"
-              >
-                <option value="draft">Draft (not visible on the site)</option>
-                <option value="published">Published (live on the site)</option>
-              </select>
-            </div>
+            {isParentCategory ? (
+              <p className="rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-500">
+                This page is always live — changes go out as soon as you save, no publish step needed.
+              </p>
+            ) : (
+              <div>
+                <label className="mb-1 block text-sm font-medium text-slate-700">Page status</label>
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value as "draft" | "published")}
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none sm:w-60"
+                >
+                  <option value="draft">Draft (not visible on the site)</option>
+                  <option value="published">Published (live on the site)</option>
+                </select>
+              </div>
+            )}
 
             <ImageUploadField
               label="Featured image"
@@ -204,7 +226,7 @@ export default function EditSubcategoryPage() {
           </div>
         </div>
 
-        {sections.map((section, index) => (
+        {visibleSections.map((section, index) => (
           <CollapsibleSection
             key={section.type}
             title={SECTION_LABELS_LIST[section.type]}
@@ -213,7 +235,7 @@ export default function EditSubcategoryPage() {
             onMoveUp={() => moveSection(index, -1)}
             onMoveDown={() => moveSection(index, 1)}
             canMoveUp={index > 0}
-            canMoveDown={index < sections.length - 1}
+            canMoveDown={index < visibleSections.length - 1}
             defaultOpen={index === 0}
           >
             {section.type === "hero" && (
@@ -306,10 +328,16 @@ function HeroFields({ data, onChange }: { data: HeroSectionData; onChange: (patc
         <input type="text" value={data.subtitle} onChange={(e) => onChange({ subtitle: e.target.value })} className={inputClass} />
       </Field>
       <ImageUploadField
-        label="Banner image"
+        label="Banner image (desktop)"
         value={data.imageUrl}
         onChange={(imageUrl) => onChange({ imageUrl })}
         dimensionHint="1920 × 600px (wide landscape banner)"
+      />
+      <ImageUploadField
+        label="Banner image (mobile)"
+        value={data.mobileImageUrl ?? null}
+        onChange={(mobileImageUrl) => onChange({ mobileImageUrl })}
+        dimensionHint="800 × 1000px (tall, shown on phone screens) — optional, falls back to the desktop image if left blank"
       />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Button text (optional)">

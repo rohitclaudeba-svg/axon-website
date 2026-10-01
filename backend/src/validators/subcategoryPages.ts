@@ -23,6 +23,7 @@ const heroDataSchema = z.object({
   heading: z.string().optional().default(""),
   subtitle: z.string().optional().default(""),
   imageUrl: z.string().nullable().optional().default(null),
+  mobileImageUrl: z.string().nullable().optional().default(null),
   buttonText: z.string().optional().default(""),
   buttonUrl: z.string().optional().default(""),
 });

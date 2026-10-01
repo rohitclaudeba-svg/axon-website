@@ -12,6 +12,8 @@ export function PageHero({
   description,
   breadcrumbs,
   image,
+  mobileImage,
+  hideContent = false,
   children,
 }: {
   eyebrow?: string;
@@ -20,11 +22,26 @@ export function PageHero({
   description?: string;
   breadcrumbs: Crumb[];
   image?: { src: string; alt: string; focal?: string };
+  /** Shown instead of `image` below the `sm` breakpoint — admin-managed banners can supply a separate crop for phone screens. */
+  mobileImage?: { src: string; alt: string; focal?: string };
+  /** Hides the overlaid breadcrumbs/eyebrow/title/description — for a banner image that already carries its own text. */
+  hideContent?: boolean;
   children?: ReactNode;
 }) {
   if (image) {
     return (
       <section className="relative isolate flex min-h-[380px] items-end overflow-hidden pb-10 pt-14 sm:min-h-[440px] sm:pb-14 sm:pt-16 lg:min-h-[520px]">
+        {mobileImage && (
+          <Image
+            src={mobileImage.src}
+            alt={mobileImage.alt}
+            fill
+            priority
+            sizes="100vw"
+            style={mobileImage.focal ? { objectPosition: mobileImage.focal } : undefined}
+            className="absolute inset-0 -z-10 object-cover sm:hidden"
+          />
+        )}
         <Image
           src={image.src}
           alt={image.alt}
@@ -32,32 +49,36 @@ export function PageHero({
           priority
           sizes="100vw"
           style={image.focal ? { objectPosition: image.focal } : undefined}
-          className="absolute inset-0 -z-10 object-cover"
+          className={cn("absolute inset-0 -z-10 object-cover", mobileImage && "hidden sm:block")}
         />
-        <div
-          className="absolute inset-0 -z-10 bg-gradient-to-t from-black/85 via-black/45 to-black/10"
-          aria-hidden="true"
-        />
-        <Container className="relative">
-          <Reveal>
-            <Breadcrumbs items={breadcrumbs} light />
-            <div className="mt-6 max-w-3xl">
-              {eyebrow && (
-                <span
-                  className={cn(
-                    "mb-3 inline-block font-heading text-sm font-semibold uppercase tracking-wide",
-                    eyebrowClassName ?? "text-soft-green"
-                  )}
-                >
-                  {eyebrow}
-                </span>
-              )}
-              <h1 className="text-4xl font-bold text-white sm:text-5xl">{title}</h1>
-              {description && <p className="mt-4 text-lg text-white/80">{description}</p>}
-            </div>
-          </Reveal>
-          {children}
-        </Container>
+        {!hideContent && (
+          <div
+            className="absolute inset-0 -z-10 bg-gradient-to-t from-black/85 via-black/45 to-black/10"
+            aria-hidden="true"
+          />
+        )}
+        {!hideContent && (
+          <Container className="relative">
+            <Reveal>
+              <Breadcrumbs items={breadcrumbs} light />
+              <div className="mt-6 max-w-3xl">
+                {eyebrow && (
+                  <span
+                    className={cn(
+                      "mb-3 inline-block font-heading text-sm font-semibold uppercase tracking-wide",
+                      eyebrowClassName ?? "text-soft-green"
+                    )}
+                  >
+                    {eyebrow}
+                  </span>
+                )}
+                <h1 className="text-4xl font-bold text-white sm:text-5xl">{title}</h1>
+                {description && <p className="mt-4 text-lg text-white/80">{description}</p>}
+              </div>
+            </Reveal>
+            {children}
+          </Container>
+        )}
       </section>
     );
   }
