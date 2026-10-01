@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { apiClient, ApiError } from "@/lib/apiClient";
 import { TextListEditor } from "@/components/TextListEditor";
 import { BusinessHoursEditor } from "@/components/BusinessHoursEditor";
-import type { SiteSettingsDto, TextListItem, HoursDay } from "@/lib/types";
+import { useToast } from "@/components/Toast";
+import type { SiteSettingsDto, TextListItem, HourGroup } from "@/lib/types";
 
 const inputClass =
   "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none";
 
 export default function SiteSettingsPage() {
+  const showToast = useToast();
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -23,7 +25,7 @@ export default function SiteSettingsPage() {
   const [phones, setPhones] = useState<TextListItem[]>([]);
   const [emails, setEmails] = useState<TextListItem[]>([]);
   const [whatsappNumber, setWhatsappNumber] = useState("");
-  const [hours, setHours] = useState<HoursDay[]>([]);
+  const [hours, setHours] = useState<HourGroup[]>([]);
 
   useEffect(() => {
     apiClient
@@ -56,6 +58,14 @@ export default function SiteSettingsPage() {
       setSaveError("Please add at least one email address.");
       return;
     }
+    if (hours.length === 0) {
+      setSaveError("Please add at least one hours entry.");
+      return;
+    }
+    if (hours.some((h) => h.days.length === 0)) {
+      setSaveError("Every hours entry needs at least one day selected.");
+      return;
+    }
 
     setSaving(true);
     try {
@@ -71,9 +81,13 @@ export default function SiteSettingsPage() {
       });
       setPhones(result.data.phones);
       setEmails(result.data.emails);
+      setHours(result.data.hours);
       setSaved(true);
+      showToast("Site settings saved.");
     } catch (err) {
-      setSaveError(err instanceof ApiError ? err.message : "Failed to save. Please try again.");
+      const message = err instanceof ApiError ? err.message : "Failed to save. Please try again.";
+      setSaveError(message);
+      showToast(message, "error");
     } finally {
       setSaving(false);
     }
@@ -175,6 +189,10 @@ export default function SiteSettingsPage() {
 
         <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
           <h2 className="font-semibold text-slate-900">Business hours</h2>
+          <p className="mt-1 text-xs text-slate-400">
+            Group days that share the same hours — e.g. one entry for Mon–Sat, another for Sunday — instead of
+            setting every day individually.
+          </p>
           <div className="mt-4">
             <BusinessHoursEditor hours={hours} onChange={setHours} />
           </div>

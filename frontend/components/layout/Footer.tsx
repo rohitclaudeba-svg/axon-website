@@ -8,8 +8,6 @@ import { getSiteSettings, groupHours } from "@/lib/siteSettings";
 
 export async function Footer() {
   const settings = await getSiteSettings();
-  const phone = settings.phones[0]?.text ?? "";
-  const email = settings.emails[0]?.text ?? "";
 
   return (
     <footer className="bg-navy text-white">
@@ -79,17 +77,25 @@ export async function Footer() {
                   {settings.postalCode}
                 </span>
               </li>
-              <li className="flex items-center gap-2.5">
-                <Phone className="h-4 w-4 shrink-0 text-soft-green" aria-hidden="true" />
-                <a href={`tel:${phone}`} className="hover:text-soft-green">
-                  {phone}
-                </a>
+              <li className="flex items-start gap-2.5">
+                <Phone className="mt-0.5 h-4 w-4 shrink-0 text-soft-green" aria-hidden="true" />
+                <span className="flex flex-col">
+                  {settings.phones.map((p) => (
+                    <a key={p.id} href={`tel:${p.text}`} className="hover:text-soft-green">
+                      {p.text}
+                    </a>
+                  ))}
+                </span>
               </li>
-              <li className="flex items-center gap-2.5">
-                <Mail className="h-4 w-4 shrink-0 text-soft-green" aria-hidden="true" />
-                <a href={`mailto:${email}`} className="hover:text-soft-green">
-                  {email}
-                </a>
+              <li className="flex items-start gap-2.5">
+                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-soft-green" aria-hidden="true" />
+                <span className="flex flex-col">
+                  {settings.emails.map((e) => (
+                    <a key={e.id} href={`mailto:${e.text}`} className="hover:text-soft-green">
+                      {e.text}
+                    </a>
+                  ))}
+                </span>
               </li>
               <li className="flex items-start gap-2.5">
                 <Clock className="mt-0.5 h-4 w-4 shrink-0 text-soft-green" aria-hidden="true" />

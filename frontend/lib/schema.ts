@@ -36,7 +36,7 @@ export function medicalBusinessSchema(settings: SiteSettingsData) {
       .filter((h) => !h.closed && h.opens && h.closes)
       .map((h) => ({
         "@type": "OpeningHoursSpecification",
-        dayOfWeek: h.day,
+        dayOfWeek: h.days,
         opens: h.opens,
         closes: h.closes,
       })),

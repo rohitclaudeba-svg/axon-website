@@ -18,8 +18,6 @@ export function generateMetadata(): Metadata {
 
 export default async function BookAppointmentPage() {
   const settings = await getSiteSettings();
-  const phone = settings.phones[0]?.text ?? "";
-  const email = settings.emails[0]?.text ?? "";
 
   return (
     <>
@@ -48,9 +46,15 @@ export default async function BookAppointmentPage() {
               </span>
               <div>
                 <p className="font-heading text-sm font-semibold text-navy">Call Us</p>
-                <a href={`tel:${phone}`} className="block text-navy/70 transition-colors hover:text-primary">
-                  {phone}
-                </a>
+                {settings.phones.map((p) => (
+                  <a
+                    key={p.id}
+                    href={`tel:${p.text}`}
+                    className="block text-navy/70 transition-colors hover:text-primary"
+                  >
+                    {p.text}
+                  </a>
+                ))}
               </div>
             </div>
 
@@ -62,9 +66,15 @@ export default async function BookAppointmentPage() {
               </span>
               <div>
                 <p className="font-heading text-sm font-semibold text-navy">Email Us</p>
-                <a href={`mailto:${email}`} className="block text-navy/70 transition-colors hover:text-primary">
-                  {email}
-                </a>
+                {settings.emails.map((e) => (
+                  <a
+                    key={e.id}
+                    href={`mailto:${e.text}`}
+                    className="block text-navy/70 transition-colors hover:text-primary"
+                  >
+                    {e.text}
+                  </a>
+                ))}
               </div>
             </div>
 

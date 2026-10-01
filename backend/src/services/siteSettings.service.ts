@@ -6,8 +6,9 @@ export interface ListItem {
   text: string;
 }
 
-export interface HoursDay {
-  day: (typeof DAYS)[number];
+export interface HourGroup {
+  id: string;
+  days: (typeof DAYS)[number][];
   opens: string;
   closes: string;
   closed: boolean;
@@ -24,7 +25,7 @@ export interface SiteSettingsDto {
   phones: ListItem[];
   emails: ListItem[];
   whatsappNumber: string;
-  hours: HoursDay[];
+  hours: HourGroup[];
   updatedAt: string | null;
 }
 
@@ -39,8 +40,8 @@ function parseJson<T>(raw: unknown, fallback: T): T {
   return raw !== null && raw !== undefined ? (raw as T) : fallback;
 }
 
-function defaultHours(): HoursDay[] {
-  return DAYS.map((day) => ({ day, opens: "", closes: "", closed: true }));
+function defaultHours(): HourGroup[] {
+  return [{ id: "default", days: [...DAYS], opens: "", closes: "", closed: true }];
 }
 
 export async function getSiteSettings(): Promise<SiteSettingsDto> {
@@ -87,7 +88,7 @@ export interface UpdateSiteSettingsInput {
   phones: ListItem[];
   emails: ListItem[];
   whatsappNumber: string;
-  hours: HoursDay[];
+  hours: HourGroup[];
 }
 
 export async function updateSiteSettings(input: UpdateSiteSettingsInput): Promise<SiteSettingsDto> {

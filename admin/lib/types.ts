@@ -258,8 +258,9 @@ export const DAYS_OF_WEEK = [
   "Sunday",
 ] as const;
 
-export interface HoursDay {
-  day: (typeof DAYS_OF_WEEK)[number];
+export interface HourGroup {
+  id: string;
+  days: (typeof DAYS_OF_WEEK)[number][];
   opens: string;
   closes: string;
   closed: boolean;
@@ -276,6 +277,6 @@ export interface SiteSettingsDto {
   phones: TextListItem[];
   emails: TextListItem[];
   whatsappNumber: string;
-  hours: HoursDay[];
+  hours: HourGroup[];
   updatedAt: string | null;
 }

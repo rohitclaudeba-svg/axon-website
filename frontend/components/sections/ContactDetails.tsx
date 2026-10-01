@@ -7,8 +7,6 @@ import { getSiteSettings } from "@/lib/siteSettings";
 
 export async function ContactDetails() {
   const settings = await getSiteSettings();
-  const phone = settings.phones[0]?.text ?? "";
-  const email = settings.emails[0]?.text ?? "";
 
   return (
     <StaggerGroup className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -27,20 +25,24 @@ export async function ContactDetails() {
             </li>
             <li className="flex items-start gap-3.5">
               <Phone className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-              <div>
+              <div className="flex flex-col">
                 <p className="font-heading text-sm font-semibold text-navy">Phone</p>
-                <a href={`tel:${phone}`} className="text-sm text-navy/70 hover:text-primary">
-                  {phone}
-                </a>
+                {settings.phones.map((p) => (
+                  <a key={p.id} href={`tel:${p.text}`} className="text-sm text-navy/70 hover:text-primary">
+                    {p.text}
+                  </a>
+                ))}
               </div>
             </li>
             <li className="flex items-start gap-3.5">
               <Mail className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
-              <div>
+              <div className="flex flex-col">
                 <p className="font-heading text-sm font-semibold text-navy">Email</p>
-                <a href={`mailto:${email}`} className="text-sm text-navy/70 hover:text-primary">
-                  {email}
-                </a>
+                {settings.emails.map((e) => (
+                  <a key={e.id} href={`mailto:${e.text}`} className="text-sm text-navy/70 hover:text-primary">
+                    {e.text}
+                  </a>
+                ))}
               </div>
             </li>
           </ul>

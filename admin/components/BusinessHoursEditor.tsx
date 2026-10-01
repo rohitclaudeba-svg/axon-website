@@ -1,62 +1,108 @@
 "use client";
 
-import type { HoursDay } from "@/lib/types";
+import { DAYS_OF_WEEK } from "@/lib/types";
+import type { HourGroup } from "@/lib/types";
+import { TrashIcon, PlusIcon } from "@/components/icons";
+
+let counter = 0;
+function newId() {
+  counter += 1;
+  return `new-${Date.now()}-${counter}`;
+}
 
 export function BusinessHoursEditor({
   hours,
   onChange,
 }: {
-  hours: HoursDay[];
-  onChange: (hours: HoursDay[]) => void;
+  hours: HourGroup[];
+  onChange: (hours: HourGroup[]) => void;
 }) {
-  const update = (day: string, patch: Partial<HoursDay>) => {
-    onChange(hours.map((h) => (h.day === day ? { ...h, ...patch } : h)));
+  const update = (id: string, patch: Partial<HourGroup>) => {
+    onChange(hours.map((g) => (g.id === id ? { ...g, ...patch } : g)));
+  };
+
+  const toggleDay = (group: HourGroup, day: (typeof DAYS_OF_WEEK)[number]) => {
+    const has = group.days.includes(day);
+    const days = has ? group.days.filter((d) => d !== day) : [...group.days, day];
+    update(group.id, { days });
+  };
+
+  const remove = (id: string) => {
+    onChange(hours.filter((g) => g.id !== id));
+  };
+
+  const add = () => {
+    onChange([...hours, { id: newId(), days: [], opens: "", closes: "", closed: false }]);
   };
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-slate-200">
-      <table className="w-full min-w-[520px] text-left text-sm">
-        <thead>
-          <tr className="border-b border-slate-200 bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
-            <th className="px-3 py-2.5">Day</th>
-            <th className="px-3 py-2.5">Opens</th>
-            <th className="px-3 py-2.5">Closes</th>
-            <th className="px-3 py-2.5">Closed</th>
-          </tr>
-        </thead>
-        <tbody>
-          {hours.map((h) => (
-            <tr key={h.day} className="border-b border-slate-100 last:border-0">
-              <td className="px-3 py-2.5 font-medium text-slate-800">{h.day}</td>
-              <td className="px-3 py-2.5">
-                <input
-                  type="time"
-                  value={h.opens}
-                  disabled={h.closed}
-                  onChange={(e) => update(h.day, { opens: e.target.value })}
-                  className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-sm focus:border-slate-500 focus:outline-none disabled:bg-slate-50 disabled:text-slate-400"
-                />
-              </td>
-              <td className="px-3 py-2.5">
-                <input
-                  type="time"
-                  value={h.closes}
-                  disabled={h.closed}
-                  onChange={(e) => update(h.day, { closes: e.target.value })}
-                  className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-sm focus:border-slate-500 focus:outline-none disabled:bg-slate-50 disabled:text-slate-400"
-                />
-              </td>
-              <td className="px-3 py-2.5">
-                <input
-                  type="checkbox"
-                  checked={h.closed}
-                  onChange={(e) => update(h.day, { closed: e.target.checked })}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="space-y-3">
+      {hours.map((group) => (
+        <div key={group.id} className="rounded-lg border border-slate-200 p-3">
+          <div className="flex flex-wrap gap-1.5">
+            {DAYS_OF_WEEK.map((day) => {
+              const active = group.days.includes(day);
+              return (
+                <button
+                  key={day}
+                  type="button"
+                  onClick={() => toggleDay(group, day)}
+                  className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                    active ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  }`}
+                >
+                  {day.slice(0, 3)}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-1.5">
+              <input
+                type="time"
+                value={group.opens}
+                disabled={group.closed}
+                onChange={(e) => update(group.id, { opens: e.target.value })}
+                className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-sm focus:border-slate-500 focus:outline-none disabled:bg-slate-50 disabled:text-slate-400"
+              />
+              <span className="text-slate-400">–</span>
+              <input
+                type="time"
+                value={group.closes}
+                disabled={group.closed}
+                onChange={(e) => update(group.id, { closes: e.target.value })}
+                className="rounded-lg border border-slate-300 px-2.5 py-1.5 text-sm focus:border-slate-500 focus:outline-none disabled:bg-slate-50 disabled:text-slate-400"
+              />
+            </div>
+            <label className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
+              <input
+                type="checkbox"
+                checked={group.closed}
+                onChange={(e) => update(group.id, { closed: e.target.checked })}
+              />
+              Closed
+            </label>
+            <button
+              type="button"
+              onClick={() => remove(group.id)}
+              aria-label="Remove hours group"
+              className="ml-auto flex h-8 w-8 items-center justify-center rounded-lg text-red-600 hover:bg-red-50"
+            >
+              <TrashIcon className="h-4 w-4" />
+            </button>
+          </div>
+          {group.days.length === 0 && <p className="mt-2 text-xs text-amber-600">Select at least one day.</p>}
+        </div>
+      ))}
+
+      <button
+        type="button"
+        onClick={add}
+        className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
+      >
+        <PlusIcon className="h-4 w-4" /> Add hours group
+      </button>
     </div>
   );
 }

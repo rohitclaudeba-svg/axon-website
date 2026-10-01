@@ -12,8 +12,9 @@ const timeString = z
   .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Use 24-hour HH:MM format")
   .or(z.literal(""));
 
-const hoursDaySchema = z.object({
-  day: z.enum(DAYS),
+const hourGroupSchema = z.object({
+  id: z.string(),
+  days: z.array(z.enum(DAYS)).min(1, "Select at least one day"),
   opens: timeString,
   closes: timeString,
   closed: z.boolean().default(false),
@@ -27,7 +28,7 @@ export const updateSiteSettingsSchema = z.object({
   phones: z.array(listItemSchema).min(1, "Please add at least one phone number"),
   emails: z.array(listItemSchema).min(1, "Please add at least one email address"),
   whatsappNumber: z.string().trim().optional().default(""),
-  hours: z.array(hoursDaySchema).length(7, "All 7 days must be present"),
+  hours: z.array(hourGroupSchema).min(1, "Add at least one hours entry"),
 });
 
 export { DAYS };

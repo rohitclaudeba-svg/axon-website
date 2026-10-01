@@ -27,7 +27,7 @@ function to24Hour(time: string): { opens: string; closes: string } | null {
 }
 
 async function main() {
-  const hours = nap.hours.map((h) => {
+  const days = nap.hours.map((h) => {
     const parsed = h.closed ? null : to24Hour(h.time);
     return {
       day: h.day,
@@ -36,6 +36,18 @@ async function main() {
       closed: h.closed,
     };
   });
+
+  // Collapse consecutive days sharing the same schedule into one group —
+  // matches the admin's day-group editor instead of one row per day.
+  const hours: { id: string; days: string[]; opens: string; closes: string; closed: boolean }[] = [];
+  for (const d of days) {
+    const last = hours[hours.length - 1];
+    if (last && last.opens === d.opens && last.closes === d.closes && last.closed === d.closed) {
+      last.days.push(d.day);
+    } else {
+      hours.push({ id: crypto.randomUUID(), days: [d.day], opens: d.opens, closes: d.closes, closed: d.closed });
+    }
+  }
 
   const phones = [{ id: crypto.randomUUID(), text: nap.phone }];
   const emails = [{ id: crypto.randomUUID(), text: nap.email }];
