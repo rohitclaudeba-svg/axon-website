@@ -53,6 +53,12 @@
 html {
   overflow-x: hidden;
   overflow-y: visible;
+  /* Page still scrolls (wheel, touch, keyboard) — only the visible bar is hidden. */
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {

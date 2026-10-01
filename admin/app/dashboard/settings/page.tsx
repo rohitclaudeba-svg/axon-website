@@ -156,10 +156,10 @@ export default function SiteSettingsPage() {
         <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
           <h2 className="font-semibold text-slate-900">Phone numbers</h2>
           <p className="mt-1 text-xs text-slate-400">
-            The first number is used as the primary contact link (call button, footer).
+            The Primary number is used for the floating call button and as the main number in the footer and contact page.
           </p>
           <div className="mt-4">
-            <TextListEditor items={phones} onChange={setPhones} placeholder="e.g. +91-94456-80838" />
+            <TextListEditor items={phones} onChange={setPhones} placeholder="e.g. +91-94456-80838" markPrimary />
           </div>
         </div>
 
@@ -181,9 +181,9 @@ export default function SiteSettingsPage() {
 
         <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
           <h2 className="font-semibold text-slate-900">Email addresses</h2>
-          <p className="mt-1 text-xs text-slate-400">The first address is used as the primary contact link.</p>
+          <p className="mt-1 text-xs text-slate-400">The Primary address is used as the main contact email.</p>
           <div className="mt-4">
-            <TextListEditor items={emails} onChange={setEmails} placeholder="e.g. info@example.com" />
+            <TextListEditor items={emails} onChange={setEmails} placeholder="e.g. info@example.com" markPrimary />
           </div>
         </div>
 
