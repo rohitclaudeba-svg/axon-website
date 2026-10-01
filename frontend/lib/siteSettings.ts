@@ -64,6 +64,11 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
     if (!res.ok) return FALLBACK_SITE_SETTINGS;
     const json = (await res.json()) as { ok: boolean; data: SiteSettingsData };
     if (!json.ok || json.data.phones.length === 0) return FALLBACK_SITE_SETTINGS;
+    // Hours still in the pre-migration per-day shape (no `days` array) would
+    // crash the layout and 500 every page — fall back rather than break the site.
+    const hoursValid =
+      Array.isArray(json.data.hours) && json.data.hours.every((g) => Array.isArray(g?.days));
+    if (!hoursValid) return { ...json.data, hours: FALLBACK_SITE_SETTINGS.hours };
     return json.data;
   } catch {
     return FALLBACK_SITE_SETTINGS;
