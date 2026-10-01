@@ -47,7 +47,7 @@ export const nap = {
       closes: "19:00",
     },
   ],
-  siteUrl: "https://www.axon-placeholder.example",
+  siteUrl: "https://axonrehabilitation.com",
   socials: {
     facebook: "",
     instagram: "",
