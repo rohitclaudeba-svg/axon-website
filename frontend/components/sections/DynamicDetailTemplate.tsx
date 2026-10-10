@@ -1,12 +1,11 @@
 import Image from "next/image";
 import { CheckCircle2 } from "lucide-react";
-import { Breadcrumbs, type Crumb } from "@/components/ui/Breadcrumbs";
+import type { Crumb } from "@/components/ui/Breadcrumbs";
+import { PageHero } from "@/components/sections/PageHero";
 import { FaqAccordion } from "@/components/sections/FaqAccordion";
 import { CTASection } from "@/components/sections/CTASection";
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { Container } from "@/components/ui/Container";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/ui/AnimatedReveal";
-import { Button } from "@/components/ui/Button";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { faqPageSchema } from "@/lib/schema";
 import { cn } from "@/lib/cn";
@@ -246,36 +245,13 @@ export function DynamicDetailTemplate({ page, breadcrumbs }: { page: Subcategory
 
 function HeroBanner({ data, name, breadcrumbs }: { data: HeroSectionData; name: string; breadcrumbs: Crumb[] }) {
   return (
-    <section className="relative isolate flex min-h-[380px] items-center overflow-hidden py-14 sm:min-h-[440px]">
-      {data.imageUrl ? (
-        <>
-          <Image src={data.imageUrl} alt={data.heading || name} fill priority sizes="100vw" className="absolute inset-0 -z-10 object-cover" />
-          <div
-            className="absolute inset-0 -z-10 bg-gradient-to-r from-black/70 via-black/35 to-black/10"
-            aria-hidden="true"
-          />
-        </>
-      ) : (
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-navy via-primary-dark to-primary" aria-hidden="true" />
-      )}
-
-      <Container className="relative">
-        <Reveal>
-          <Breadcrumbs items={breadcrumbs} light />
-        </Reveal>
-        <Reveal delay={0.05} className="mt-6 max-w-3xl">
-          <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl">{data.heading || name}</h1>
-          {data.subtitle && <p className="mt-5 text-lg text-white/85">{data.subtitle}</p>}
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Button href={data.buttonUrl || "/book-appointment"} variant="primary">
-              {data.buttonText || "Book an Appointment"}
-            </Button>
-            <Button href="/contact" variant="ghost">
-              Contact Us
-            </Button>
-          </div>
-        </Reveal>
-      </Container>
-    </section>
+    <PageHero
+      title={data.heading || name}
+      description={data.subtitle}
+      breadcrumbs={breadcrumbs}
+      image={data.imageUrl ? { src: data.imageUrl, alt: data.heading || name } : undefined}
+      mobileImage={data.mobileImageUrl ? { src: data.mobileImageUrl, alt: data.heading || name } : undefined}
+      hideContent
+    />
   );
 }

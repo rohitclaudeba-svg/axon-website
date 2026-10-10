@@ -35,6 +35,7 @@ export default function RehabilitationPage() {
         description="From early childhood development to healthy ageing, our programs bring the right specialities together around each individual."
         breadcrumbs={[{ name: "Rehabilitation Programs", path: "/rehabilitation" }]}
         image={media.rehabilitationHeroImage}
+        hideContent
       />
       <Section>
         <StaggerGroup className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

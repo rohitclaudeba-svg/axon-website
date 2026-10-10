@@ -36,6 +36,7 @@ export default function ApproachPage() {
           { name: "Our Approach", path: "/about/approach" },
         ]}
         image={media.approachImage}
+        hideContent
       />
 
       <Section>

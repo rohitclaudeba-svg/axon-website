@@ -34,6 +34,7 @@ export default function ServicesPage() {
         description="One coordinated team across speech, movement, learning and behaviour — built around each individual's goals."
         breadcrumbs={[{ name: "Services", path: "/services" }]}
         image={media.servicesHeroImage}
+        hideContent
       />
       <Section>
         <ServiceShowcase services={services} />

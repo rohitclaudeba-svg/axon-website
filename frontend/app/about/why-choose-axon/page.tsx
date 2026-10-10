@@ -33,6 +33,7 @@ export default function WhyChooseAxonPage() {
           { name: "Why Choose AXON", path: "/about/why-choose-axon" },
         ]}
         image={media.whyChooseImage}
+        hideContent
       />
       <WhyChooseAxon />
       <CTASection />

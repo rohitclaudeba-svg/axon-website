@@ -14,6 +14,7 @@ import { services } from "@/content/services";
 import { media } from "@/content/media";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/schema";
+import { getPublishedSubcategoryPage, type HeroSectionData } from "@/lib/subcategoryPage";
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
@@ -75,7 +76,19 @@ const aboutLinks = [
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const page = await getPublishedSubcategoryPage("about-us");
+  const hero = page?.sections.find((s) => s.type === "hero" && s.enabled)?.data as HeroSectionData | undefined;
+
+  const heroImage = hero?.imageUrl
+    ? { src: hero.imageUrl, alt: "AXON Multi-Rehabilitation Centre" }
+    : media.aboutImage;
+  const heroMobileImage = hero?.mobileImageUrl
+    ? { src: hero.mobileImageUrl, alt: "AXON Multi-Rehabilitation Centre" }
+    : undefined;
+  const heroTitle = hero?.heading?.trim() || "Comprehensive rehabilitation, under one roof";
+  const heroDescription = hero?.subtitle?.trim() || nap.tagline;
+
   return (
     <>
       <JsonLd
@@ -88,10 +101,12 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About Us"
         eyebrowClassName="text-pink-400"
-        title="Comprehensive rehabilitation, under one roof"
-        description={nap.tagline}
+        title={heroTitle}
+        description={heroDescription}
         breadcrumbs={[{ name: "About", path: "/about" }]}
-        image={media.aboutImage}
+        image={heroImage}
+        mobileImage={heroMobileImage}
+        hideContent
       />
 
       <Section>

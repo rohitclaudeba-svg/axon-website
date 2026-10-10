@@ -33,6 +33,7 @@ export default function ConditionsPage() {
         description="From early childhood development to healthy ageing, our team supports a wide range of conditions and concerns."
         breadcrumbs={[{ name: "Conditions We Support", path: "/conditions" }]}
         image={media.conditionsImage}
+        hideContent
       />
       <Section>
         <ConditionGroups detailed />

@@ -43,15 +43,11 @@ export default async function ContactPage() {
   const page = await getPublishedSubcategoryPage("contact");
   const hero = page?.sections.find((s) => s.type === "hero" && s.enabled)?.data as HeroSectionData | undefined;
 
-  const hasCustomBanner = Boolean(hero?.imageUrl);
-  // Admin-uploaded banners are shown with no text overlay, so they're cropped
-  // to fill the hero — anchor to the top edge so any logo/graphic baked into
-  // the top of the image is never cut off (crop comes off the bottom instead).
   const heroImage = hero?.imageUrl
-    ? { src: hero.imageUrl, alt: "AXON Multi-Rehabilitation Centre", focal: "center top" }
+    ? { src: hero.imageUrl, alt: "AXON Multi-Rehabilitation Centre" }
     : media.contactImage;
   const heroMobileImage = hero?.mobileImageUrl
-    ? { src: hero.mobileImageUrl, alt: "AXON Multi-Rehabilitation Centre", focal: "center top" }
+    ? { src: hero.mobileImageUrl, alt: "AXON Multi-Rehabilitation Centre" }
     : undefined;
   const heroTitle = hero?.heading?.trim() || "We'd love to hear from you";
   const heroDescription =
@@ -76,7 +72,7 @@ export default async function ContactPage() {
         breadcrumbs={[{ name: "Contact", path: "/contact" }]}
         image={heroImage}
         mobileImage={heroMobileImage}
-        hideContent={hasCustomBanner}
+        hideContent
       />
 
       <Section className="!pt-10" tone="tint">

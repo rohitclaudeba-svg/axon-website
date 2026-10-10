@@ -191,6 +191,7 @@ export default function EditSubcategoryPage() {
               value={featuredImageUrl}
               onChange={setFeaturedImageUrl}
               dimensionHint="1200 × 630px (used for search & social previews)"
+              aspectRatio={1200 / 630}
             />
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -332,12 +333,14 @@ function HeroFields({ data, onChange }: { data: HeroSectionData; onChange: (patc
         value={data.imageUrl}
         onChange={(imageUrl) => onChange({ imageUrl })}
         dimensionHint="1920 × 600px (wide landscape banner)"
+        aspectRatio={1920 / 600}
       />
       <ImageUploadField
         label="Banner image (mobile)"
         value={data.mobileImageUrl ?? null}
         onChange={(mobileImageUrl) => onChange({ mobileImageUrl })}
         dimensionHint="800 × 1000px (tall, shown on phone screens) — optional, falls back to the desktop image if left blank"
+        aspectRatio={800 / 1000}
       />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Button text (optional)">
@@ -365,6 +368,7 @@ function AboutFields({ data, onChange }: { data: AboutSectionData; onChange: (pa
         value={data.imageUrl}
         onChange={(imageUrl) => onChange({ imageUrl })}
         dimensionHint="800 × 1000px (portrait, 4:5 ratio)"
+        aspectRatio={800 / 1000}
       />
       <Field label="Image position">
         <select
@@ -400,6 +404,7 @@ function HowItHelpsFields({
         value={data.imageUrl}
         onChange={(imageUrl) => onChange({ imageUrl })}
         dimensionHint="800 × 1000px (portrait, 4:5 ratio)"
+        aspectRatio={800 / 1000}
       />
       <Field label="Additional content (optional)">
         <RichTextEditor value={data.additionalContent} onChange={(additionalContent) => onChange({ additionalContent })} />
@@ -458,6 +463,7 @@ function BenefitsFields({
         value={data.imageUrl}
         onChange={(imageUrl) => onChange({ imageUrl })}
         dimensionHint="800 × 1000px (portrait, 4:5 ratio)"
+        aspectRatio={800 / 1000}
       />
     </>
   );
@@ -494,6 +500,7 @@ function WhyChooseUsFields({
         value={data.imageUrl}
         onChange={(imageUrl) => onChange({ imageUrl })}
         dimensionHint="800 × 1000px (portrait, 4:5 ratio)"
+        aspectRatio={800 / 1000}
       />
     </>
   );

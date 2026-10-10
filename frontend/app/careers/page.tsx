@@ -46,14 +46,11 @@ export default async function CareersPage() {
   const page = await getPublishedSubcategoryPage("career");
   const hero = page?.sections.find((s) => s.type === "hero" && s.enabled)?.data as HeroSectionData | undefined;
 
-  const hasCustomBanner = Boolean(hero?.imageUrl);
-  // See contact/page.tsx — anchor custom banners to the top so a logo/graphic
-  // baked into the top of the image is never cropped out.
   const heroImage = hero?.imageUrl
-    ? { src: hero.imageUrl, alt: "AXON Multi-Rehabilitation Centre", focal: "center top" }
+    ? { src: hero.imageUrl, alt: "AXON Multi-Rehabilitation Centre" }
     : media.careersImage;
   const heroMobileImage = hero?.mobileImageUrl
-    ? { src: hero.mobileImageUrl, alt: "AXON Multi-Rehabilitation Centre", focal: "center top" }
+    ? { src: hero.mobileImageUrl, alt: "AXON Multi-Rehabilitation Centre" }
     : undefined;
   const heroTitle = hero?.heading?.trim() || "Build a career that changes lives";
   const heroDescription =
@@ -77,7 +74,7 @@ export default async function CareersPage() {
         breadcrumbs={[{ name: "Careers", path: "/careers" }]}
         image={heroImage}
         mobileImage={heroMobileImage}
-        hideContent={hasCustomBanner}
+        hideContent
       />
 
       <Section>
