@@ -9,6 +9,7 @@ import { programs } from "@/content/programs";
 import { media } from "@/content/media";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/schema";
+import { getPublishedSubcategoryPage, type HeroSectionData } from "@/lib/subcategoryPage";
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
@@ -19,7 +20,21 @@ export function generateMetadata(): Metadata {
   });
 }
 
-export default function RehabilitationPage() {
+export default async function RehabilitationPage() {
+  const page = await getPublishedSubcategoryPage("rehabilitation");
+  const hero = page?.sections.find((s) => s.type === "hero" && s.enabled)?.data as HeroSectionData | undefined;
+
+  const heroImage = hero?.imageUrl
+    ? { src: hero.imageUrl, alt: "AXON Multi-Rehabilitation Centre" }
+    : media.rehabilitationHeroImage;
+  const heroMobileImage = hero?.mobileImageUrl
+    ? { src: hero.mobileImageUrl, alt: "AXON Multi-Rehabilitation Centre" }
+    : undefined;
+  const heroTitle = hero?.heading?.trim() || "Coordinated care for every stage of life";
+  const heroDescription =
+    hero?.subtitle?.trim() ||
+    "From early childhood development to healthy ageing, our programs bring the right specialities together around each individual.";
+
   return (
     <>
       <JsonLd
@@ -31,10 +46,11 @@ export default function RehabilitationPage() {
       />
       <PageHero
         eyebrow="Rehabilitation Programs"
-        title="Coordinated care for every stage of life"
-        description="From early childhood development to healthy ageing, our programs bring the right specialities together around each individual."
+        title={heroTitle}
+        description={heroDescription}
         breadcrumbs={[{ name: "Rehabilitation Programs", path: "/rehabilitation" }]}
-        image={media.rehabilitationHeroImage}
+        image={heroImage}
+        mobileImage={heroMobileImage}
         hideContent
       />
       <Section>
