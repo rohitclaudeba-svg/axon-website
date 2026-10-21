@@ -159,8 +159,17 @@ export function Header() {
     return () => observer.disconnect();
   }, []);
 
+  // Navigating from a link inside the open mobile menu races Next's
+  // automatic scroll-to-top against the menu-close effect below: if the
+  // body's scroll lock (overflow: hidden, set while the menu is open) is
+  // still active when Next tries to reset scroll, the reset silently fails,
+  // and the new page is left wherever the old page happened to be scrolled.
+  // Unlocking and resetting scroll together, in this one effect, removes
+  // that race.
   useEffect(() => {
     setMenuOpen(false);
+    document.body.style.overflow = "";
+    window.scrollTo(0, 0);
   }, [pathname]);
 
   useEffect(() => {

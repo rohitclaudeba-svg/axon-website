@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Icon } from "@/lib/icons";
 import { conditionGroups } from "@/content/conditions";
 import { media } from "@/content/media";
@@ -22,6 +22,20 @@ export function ConditionGroups({
   const reduceMotion = useReducedMotion();
   const group = conditionGroups[active];
   const image = media.conditionGroupImages[group.slug as keyof typeof media.conditionGroupImages];
+  const topRef = useRef<HTMLDivElement>(null);
+
+  // Selecting a group — by tab or by the prev/next arrows — scrolls back to
+  // the top of this panel. Without it, picking a new category while scrolled
+  // down into the previous one's content leaves you stranded mid-panel,
+  // looking at content that no longer matches the tab you just tapped.
+  const selectGroup = (index: number) => {
+    setActive(index);
+    topRef.current?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+  };
+
+  const goToGroup = (direction: 1 | -1) => {
+    selectGroup((active + direction + conditionGroups.length) % conditionGroups.length);
+  };
 
   if (!detailed) {
     return (
@@ -92,8 +106,16 @@ export function ConditionGroups({
   }
 
   return (
-    <div>
-      <div className="flex flex-wrap justify-center gap-3" role="tablist" aria-label="Condition categories">
+    <div ref={topRef} className="scroll-mt-20">
+      {/* 2-column grid on mobile (same pattern as the Home page's "Who We Help /
+          Rehabilitation Programs" selector) instead of wrapped pills, which on a
+          narrow screen stack as one full-width pill per row with no real order
+          to them. */}
+      <div
+        className="grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:justify-center sm:gap-3"
+        role="tablist"
+        aria-label="Condition categories"
+      >
         {conditionGroups.map((item, index) => {
           const isActive = index === active;
           return (
@@ -102,22 +124,22 @@ export function ConditionGroups({
               type="button"
               role="tab"
               aria-selected={isActive}
-              onClick={() => setActive(index)}
+              onClick={() => selectGroup(index)}
               className={cn(
-                "flex items-center gap-2 rounded-full border px-4 py-2.5 font-heading text-sm font-semibold transition-all duration-300",
+                "flex items-center gap-2 rounded-2xl border px-4 py-3 text-left font-heading text-sm font-semibold leading-snug transition-all duration-300 sm:rounded-full sm:py-2.5",
                 isActive
                   ? "border-primary bg-primary text-white shadow-md shadow-primary/20"
                   : "border-navy/15 bg-white text-navy/70 hover:border-primary/40 hover:text-primary"
               )}
             >
-              <Icon name={item.icon} className="h-4 w-4" />
+              <Icon name={item.icon} className="h-4 w-4 shrink-0" />
               {item.title}
             </button>
           );
         })}
       </div>
 
-      <div className="relative mt-10 overflow-hidden rounded-3xl border border-navy/8 bg-white shadow-sm shadow-navy/5">
+      <div className="relative mt-6 overflow-hidden rounded-3xl border border-navy/8 bg-white shadow-sm shadow-navy/5 sm:mt-10">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={group.slug}
@@ -148,6 +170,28 @@ export function ConditionGroups({
             </div>
           </motion.div>
         </AnimatePresence>
+      </div>
+
+      <div className="mt-6 flex items-center justify-center gap-4">
+        <button
+          type="button"
+          onClick={() => goToGroup(-1)}
+          aria-label="Previous condition group"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-navy/15 bg-white text-navy/60 shadow-sm transition-colors duration-200 hover:border-primary/40 hover:text-primary"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+        </button>
+        <span className="font-heading text-xs font-semibold text-navy/50">
+          {active + 1} / {conditionGroups.length}
+        </span>
+        <button
+          type="button"
+          onClick={() => goToGroup(1)}
+          aria-label="Next condition group"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-navy/15 bg-white text-navy/60 shadow-sm transition-colors duration-200 hover:border-primary/40 hover:text-primary"
+        >
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </button>
       </div>
 
       {linkToFullPage && (
