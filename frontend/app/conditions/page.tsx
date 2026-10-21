@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { media } from "@/content/media";
 import { buildMetadata } from "@/lib/seo";
 import { webPageSchema } from "@/lib/schema";
+import { getPublishedSubcategoryPage, type HeroSectionData } from "@/lib/subcategoryPage";
 
 export function generateMetadata(): Metadata {
   return buildMetadata({
@@ -17,7 +18,19 @@ export function generateMetadata(): Metadata {
   });
 }
 
-export default function ConditionsPage() {
+export default async function ConditionsPage() {
+  const page = await getPublishedSubcategoryPage("conditions");
+  const hero = page?.sections.find((s) => s.type === "hero" && s.enabled)?.data as HeroSectionData | undefined;
+
+  const heroImage = hero?.imageUrl ? { src: hero.imageUrl, alt: "AXON Multi-Rehabilitation Centre" } : media.conditionsImage;
+  const heroMobileImage = hero?.mobileImageUrl
+    ? { src: hero.mobileImageUrl, alt: "AXON Multi-Rehabilitation Centre" }
+    : undefined;
+  const heroTitle = hero?.heading?.trim() || "Care across every stage of life";
+  const heroDescription =
+    hero?.subtitle?.trim() ||
+    "From early childhood development to healthy ageing, our team supports a wide range of conditions and concerns.";
+
   return (
     <>
       <JsonLd
@@ -29,10 +42,11 @@ export default function ConditionsPage() {
       />
       <PageHero
         eyebrow="Conditions We Support"
-        title="Care across every stage of life"
-        description="From early childhood development to healthy ageing, our team supports a wide range of conditions and concerns."
+        title={heroTitle}
+        description={heroDescription}
         breadcrumbs={[{ name: "Conditions We Support", path: "/conditions" }]}
-        image={media.conditionsImage}
+        image={heroImage}
+        mobileImage={heroMobileImage}
         hideContent
       />
       <Section>
