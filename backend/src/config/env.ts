@@ -14,6 +14,10 @@ const envSchema = z.object({
   ADMIN_INITIAL_PASSWORD: z.string().optional(),
   CORS_ORIGIN: z.string().default("http://localhost:3000"),
   PUBLIC_API_URL: z.string().optional(),
+  // Gmail SMTP for enquiry notifications. Optional — if unset, emails are skipped.
+  SMTP_USER: z.string().email().optional().or(z.literal("")),
+  SMTP_PASS: z.string().optional(),
+  ENQUIRY_NOTIFY_TO: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -14,6 +14,7 @@ import { primaryNav as staticPrimaryNav } from "@/content/nav";
 import { services } from "@/content/services";
 import { programs } from "@/content/programs";
 import { cn } from "@/lib/cn";
+import { DEFAULT_PAGE_VISIBILITY, hiddenPagePaths, type PageVisibility } from "@/lib/pageVisibility";
 import type { IconName } from "@/content/types";
 import type { NavLink } from "@/content/types";
 
@@ -44,15 +45,27 @@ const mediaItems: NavDropdownItem[] = [
   { label: "Testimonials", href: "/testimonials", icon: "testimonials" },
 ];
 
+// Conditions is its own parent category (so its hero banner stays
+// admin-manageable), but in the menu it sits at the end of the Rehabilitation
+// dropdown rather than as a top-level item.
+const conditionsItem = (label = "Conditions"): NavDropdownItem => ({
+  label,
+  href: "/conditions",
+  icon: "assessment",
+});
+
 // Built from content/nav.ts and services.ts/programs.ts so the header renders
 // correctly on first paint and whenever the backend is unreachable.
 const staticDropdownItemsByHref: Record<string, NavDropdownItem[]> = {
   "/services": services.map((service) => ({ label: service.name, href: `/services/${service.slug}`, icon: service.icon })),
-  "/rehabilitation": programs.map((program) => ({
-    label: program.name,
-    href: `/rehabilitation/${program.slug}`,
-    icon: program.icon,
-  })),
+  "/rehabilitation": [
+    ...programs.map((program) => ({
+      label: program.name,
+      href: `/rehabilitation/${program.slug}`,
+      icon: program.icon,
+    })),
+    conditionsItem(),
+  ],
   "/gallery": mediaItems,
 };
 
@@ -72,8 +85,13 @@ function buildNavFromCategories(categories: CategoryParent[]): {
 } {
   const nav: NavLink[] = [];
   const dropdowns: Record<string, NavDropdownItem[]> = {};
+  const conditions = categories.find((parent) => parent.slug === "conditions");
+  const hasRehabilitation = categories.some((parent) => parent.slug === "rehabilitation");
 
   for (const parent of categories) {
+    // Nested under Rehabilitation below, unless there's no Rehabilitation menu to put it in.
+    if (parent.slug === "conditions" && hasRehabilitation) continue;
+
     const href = knownParentHrefs[parent.slug] ?? `/${parent.slug}`;
     nav.push({ label: parent.name, href });
 
@@ -99,6 +117,10 @@ function buildNavFromCategories(categories: CategoryParent[]): {
         icon: iconLookup[child.slug],
       }));
     }
+  }
+
+  if (conditions && hasRehabilitation) {
+    dropdowns["/rehabilitation"] = [...(dropdowns["/rehabilitation"] ?? []), conditionsItem(conditions.name)];
   }
 
   return { nav, dropdowns };
@@ -139,6 +161,32 @@ export function Header() {
         // Backend unreachable — keep the static fallback nav.
       });
   }, []);
+
+  // Pages the admin has unpublished (e.g. Testimonials) are dropped from the
+  // menu. Defaults to everything published until the check loads.
+  const [pageVisibility, setPageVisibility] = useState<PageVisibility>(DEFAULT_PAGE_VISIBILITY);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/page-visibility`)
+      .then((res) => res.json())
+      .then((json: { ok: boolean; data: Partial<PageVisibility> }) => {
+        if (json.ok) setPageVisibility({ ...DEFAULT_PAGE_VISIBILITY, ...json.data });
+      })
+      .catch(() => {
+        // Backend unreachable — keep every page visible.
+      });
+  }, []);
+
+  const visibleDropdownItemsByHref = useMemo(() => {
+    const hidden = hiddenPagePaths(pageVisibility);
+    if (hidden.length === 0) return dropdownItemsByHref;
+    return Object.fromEntries(
+      Object.entries(dropdownItemsByHref).map(([href, items]) => [
+        href,
+        items.filter((item) => !hidden.includes(item.href)),
+      ])
+    );
+  }, [dropdownItemsByHref, pageVisibility]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -195,7 +243,7 @@ export function Header() {
             <div className="ml-auto hidden items-center gap-6 xl:flex">
               <nav aria-label="Primary" className="flex items-center gap-5">
                 {primaryNav.map((link) => {
-                  const dropdownItems = dropdownItemsByHref[link.href];
+                  const dropdownItems = visibleDropdownItemsByHref[link.href];
                   const active =
                     link.href === "/"
                       ? pathname === "/"
@@ -275,7 +323,7 @@ export function Header() {
             >
               <Container className="flex flex-col gap-1 py-6">
                 {primaryNav.map((link) => {
-                  const dropdownItems = dropdownItemsByHref[link.href];
+                  const dropdownItems = visibleDropdownItemsByHref[link.href];
                   const isExpanded = expandedMobile === link.href;
 
                   if (dropdownItems) {

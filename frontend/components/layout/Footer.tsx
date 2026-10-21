@@ -5,9 +5,12 @@ import { Container } from "@/components/ui/Container";
 import { footerServiceLinks, footerProgramLinks, footerCompanyLinks } from "@/content/nav";
 import { nap } from "@/content/nap";
 import { getSiteSettings, groupHours } from "@/lib/siteSettings";
+import { getPageVisibility, hiddenPagePaths } from "@/lib/pageVisibility";
 
 export async function Footer() {
-  const settings = await getSiteSettings();
+  const [settings, pageVisibility] = await Promise.all([getSiteSettings(), getPageVisibility()]);
+  const hiddenPaths = hiddenPagePaths(pageVisibility);
+  const companyLinks = footerCompanyLinks.filter((link) => !hiddenPaths.includes(link.href));
 
   return (
     <footer className="bg-navy text-white">
@@ -55,7 +58,7 @@ export async function Footer() {
               Quick Links
             </h3>
             <ul className="space-y-2.5">
-              {footerCompanyLinks.map((link) => (
+              {companyLinks.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-sm text-white/70 transition-colors hover:text-soft-green">
                     {link.label}

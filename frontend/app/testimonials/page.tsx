@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getPageVisibility } from "@/lib/pageVisibility";
 import { VideoTestimonials } from "@/components/sections/VideoTestimonials";
 import { TestimonialSection } from "@/components/sections/TestimonialSection";
 import { CTASection } from "@/components/sections/CTASection";
@@ -15,7 +17,11 @@ export function generateMetadata(): Metadata {
   });
 }
 
-export default function TestimonialsPage() {
+export default async function TestimonialsPage() {
+  // Unpublished from Admin → Reviews / Video Testimonials → shows the 404 page.
+  const { testimonials: published } = await getPageVisibility();
+  if (!published) notFound();
+
   return (
     <>
       <JsonLd

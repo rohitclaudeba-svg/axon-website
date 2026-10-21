@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { apiClient, ApiError } from "@/lib/apiClient";
+import { TestimonialsPageVisibility } from "@/components/TestimonialsPageVisibility";
 import { useConfirm } from "@/components/ConfirmDialog";
 import { Pagination } from "@/components/Pagination";
 import { PencilIcon, TrashIcon } from "@/components/icons";
@@ -68,6 +69,8 @@ export default function ReviewsPage() {
           + Add
         </Link>
       </div>
+
+      <TestimonialsPageVisibility />
 
       {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
 

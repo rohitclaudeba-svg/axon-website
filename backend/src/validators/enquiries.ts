@@ -5,8 +5,10 @@ import { z } from "zod";
 export const createEnquirySchema = z.object({
   source: z.enum(["appointment", "contact"]).default("appointment"),
   name: z.string().trim().min(2, "Please enter your full name"),
-  phone: z.string().trim().min(7).max(20, "Please enter a valid phone number"),
-  email: z.string().trim().email("Please enter a valid email address").optional().or(z.literal("")),
+  phone: z.string().trim().regex(/^\d{10}$/, "Please enter a valid 10-digit mobile number"),
+  // Mandatory on the public forms. The admin edit schema below stays optional
+  // because enquiries submitted before this rule may have no email.
+  email: z.string().trim().min(1, "Please enter your email address").email("Please enter a valid email address"),
   serviceInterest: z.string().trim().optional(),
   preferredDate: z.string().trim().optional(),
   preferredTime: z.string().trim().optional(),

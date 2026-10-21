@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { apiClient, downloadFile, ApiError } from "@/lib/apiClient";
+import { apiClient, ApiError } from "@/lib/apiClient";
 import { useConfirm } from "@/components/ConfirmDialog";
+import { CareerApplicationFilesDialog } from "@/components/CareerApplicationFilesDialog";
 import { Pagination } from "@/components/Pagination";
 import { TrashIcon } from "@/components/icons";
 import type { CareerApplicationDto } from "@/lib/types";
@@ -19,7 +20,7 @@ export default function CareerApplicationsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [page, setPageNum] = useState(1);
-  const [downloadingId, setDownloadingId] = useState<number | null>(null);
+  const [viewingFiles, setViewingFiles] = useState<CareerApplicationDto | null>(null);
 
   const loadItems = async () => {
     setLoading(true);
@@ -49,17 +50,6 @@ export default function CareerApplicationsPage() {
     }
   };
 
-  const onDownloadResume = async (item: CareerApplicationDto) => {
-    setDownloadingId(item.id);
-    try {
-      await downloadFile(`/api/career-applications/${item.id}/resume`, item.resumeOriginalFilename);
-    } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Failed to download resume.");
-    } finally {
-      setDownloadingId(null);
-    }
-  };
-
   const pageCount = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
   const visibleItems = items.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
@@ -85,7 +75,7 @@ export default function CareerApplicationsPage() {
                   <th className="px-4 py-3">Position</th>
                   <th className="px-4 py-3">Email</th>
                   <th className="px-4 py-3">Phone</th>
-                  <th className="px-4 py-3">Resume</th>
+                  <th className="px-4 py-3">Attachments</th>
                   <th className="px-4 py-3">Submitted</th>
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
@@ -101,15 +91,11 @@ export default function CareerApplicationsPage() {
                     <td className="px-4 py-3">
                       <button
                         type="button"
-                        onClick={() => onDownloadResume(item)}
-                        disabled={downloadingId === item.id}
-                        className="font-medium text-slate-700 underline underline-offset-2 hover:text-slate-900 disabled:opacity-50"
+                        onClick={() => setViewingFiles(item)}
+                        className="whitespace-nowrap font-medium text-slate-700 underline underline-offset-2 hover:text-slate-900"
                       >
-                        {downloadingId === item.id ? "Downloading…" : "Download"}
+                        View files ({1 + item.certificateCount})
                       </button>
-                      {item.certificateCount > 0 && (
-                        <span className="ml-2 text-xs text-slate-400">+{item.certificateCount} cert.</span>
-                      )}
                     </td>
                     <td className="whitespace-nowrap px-4 py-3 text-slate-500">{formatDateTime(item.createdAt)}</td>
                     <td className="px-4 py-3 text-right">
@@ -131,6 +117,10 @@ export default function CareerApplicationsPage() {
 
           <Pagination page={page} pageCount={pageCount} onChange={setPageNum} />
         </>
+      )}
+
+      {viewingFiles && (
+        <CareerApplicationFilesDialog application={viewingFiles} onClose={() => setViewingFiles(null)} />
       )}
     </div>
   );

@@ -43,11 +43,11 @@ export const apiClient = {
 };
 
 /**
- * Downloads an admin-only file (resumes/certificates aren't served from a
- * public static path, so a plain <a href> can't carry the Bearer token) by
- * fetching it as a blob and triggering a save through a throwaway link.
+ * Fetches an admin-only file (resumes/certificates aren't served from a
+ * public static path, so a plain <a href> can't carry the Bearer token) as a
+ * blob — for previewing in the page or saving via downloadFile.
  */
-export async function downloadFile(path: string, filename: string): Promise<void> {
+export async function fetchFile(path: string): Promise<Blob> {
   const token = getToken();
   const headers = new Headers();
   if (token) headers.set("Authorization", `Bearer ${token}`);
@@ -57,8 +57,11 @@ export async function downloadFile(path: string, filename: string): Promise<void
     const data = await response.json().catch(() => null);
     throw new ApiError(data?.error ?? "Download failed", response.status);
   }
+  return response.blob();
+}
 
-  const blob = await response.blob();
+/** Triggers a browser save of a blob through a throwaway link. */
+export function saveBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
@@ -67,6 +70,11 @@ export async function downloadFile(path: string, filename: string): Promise<void
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
+}
+
+/** Downloads an admin-only file straight to disk. */
+export async function downloadFile(path: string, filename: string): Promise<void> {
+  saveBlob(await fetchFile(path), filename);
 }
 
 export { API_BASE_URL };

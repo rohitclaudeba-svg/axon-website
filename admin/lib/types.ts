@@ -207,6 +207,7 @@ export interface CareerApplicationDto {
   message: string | null;
   resumeOriginalFilename: string;
   certificateCount: number;
+  certificates: { index: number; originalFilename: string }[];
   createdAt: string;
 }
 
@@ -280,4 +281,26 @@ export interface SiteSettingsDto {
   whatsappNumber: string;
   hours: HourGroup[];
   updatedAt: string | null;
+}
+
+export type EmailTemplateKey = "appointment" | "contact" | "career_application";
+
+export interface EmailTemplateDto {
+  key: EmailTemplateKey;
+  name: string;
+  description: string;
+  placeholders: string[];
+  subject: string;
+  body: string;
+  enabled: boolean;
+  defaultSubject: string;
+  defaultBody: string;
+  isCustomized: boolean;
+  updatedAt: string | null;
+}
+
+export interface EmailTemplatesResponse {
+  configured: boolean;
+  recipients: string[];
+  templates: EmailTemplateDto[];
 }

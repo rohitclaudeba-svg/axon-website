@@ -12,6 +12,7 @@ type NavItem =
 const navItems: NavItem[] = [
   { kind: "link", label: "Dashboard", href: "/dashboard" },
   { kind: "link", label: "Site Settings", href: "/dashboard/settings" },
+  { kind: "link", label: "Email Notifications", href: "/dashboard/email-templates" },
   {
     kind: "group",
     label: "Category Management",

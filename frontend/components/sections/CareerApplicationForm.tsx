@@ -4,8 +4,9 @@ import { useId, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, Loader2, ChevronDown, Upload } from "lucide-react";
-import { careerApplicationSchema, type CareerApplicationInput } from "@/lib/validation";
+import { careerApplicationSchema, sanitizeMobileInput, type CareerApplicationInput } from "@/lib/validation";
 import { Button } from "@/components/ui/Button";
+import { RequiredMark } from "@/components/ui/RequiredMark";
 import { useToast } from "@/components/ui/Toast";
 import { cn } from "@/lib/cn";
 
@@ -42,14 +43,19 @@ export function CareerApplicationForm({
     resolver: zodResolver(careerApplicationSchema),
     defaultValues: { position: defaultPosition ?? "" },
   });
+  const phoneField = register("phone");
+
+  // Runs on every submit attempt (valid or not) so the resume error shows
+  // alongside the other field errors instead of only after they're fixed.
+  const checkResume = (): File | null => {
+    const resumeFile = resumeInputRef.current?.files?.[0] ?? null;
+    setResumeError(resumeFile ? "" : "Please attach your resume.");
+    return resumeFile;
+  };
 
   const onSubmit = async (data: CareerApplicationInput) => {
-    const resumeFile = resumeInputRef.current?.files?.[0];
-    if (!resumeFile) {
-      setResumeError("Please attach your resume.");
-      return;
-    }
-    setResumeError("");
+    const resumeFile = checkResume();
+    if (!resumeFile) return;
     setStatus("submitting");
     setErrorMessage("");
 
@@ -86,16 +92,18 @@ export function CareerApplicationForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
+    <form onSubmit={handleSubmit(onSubmit, () => checkResume())} noValidate className="space-y-5">
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor={fieldId("name")} className="mb-1.5 block font-heading text-sm font-medium text-navy">
             Full name
+            <RequiredMark />
           </label>
           <input
             id={fieldId("name")}
             type="text"
             autoComplete="name"
+            required
             className={inputClasses}
             aria-invalid={!!errors.name}
             aria-describedby={errors.name ? fieldId("name-error") : undefined}
@@ -110,16 +118,24 @@ export function CareerApplicationForm({
 
         <div>
           <label htmlFor={fieldId("phone")} className="mb-1.5 block font-heading text-sm font-medium text-navy">
-            Phone number
+            Mobile number
+            <RequiredMark />
           </label>
           <input
             id={fieldId("phone")}
             type="tel"
-            autoComplete="tel"
+            inputMode="numeric"
+            autoComplete="tel-national"
+            placeholder="10-digit mobile number"
+            required
             className={inputClasses}
             aria-invalid={!!errors.phone}
             aria-describedby={errors.phone ? fieldId("phone-error") : undefined}
-            {...register("phone")}
+            {...phoneField}
+            onChange={(e) => {
+              e.target.value = sanitizeMobileInput(e.target.value);
+              phoneField.onChange(e);
+            }}
           />
           {errors.phone && (
             <p id={fieldId("phone-error")} className="mt-1.5 text-xs text-red-600">
@@ -132,11 +148,13 @@ export function CareerApplicationForm({
       <div>
         <label htmlFor={fieldId("email")} className="mb-1.5 block font-heading text-sm font-medium text-navy">
           Email
+          <RequiredMark />
         </label>
         <input
           id={fieldId("email")}
           type="email"
           autoComplete="email"
+          required
           className={inputClasses}
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? fieldId("email-error") : undefined}
@@ -171,13 +189,16 @@ export function CareerApplicationForm({
 
       <div>
         <label htmlFor={fieldId("resume")} className="mb-1.5 block font-heading text-sm font-medium text-navy">
-          Resume / CV <span className="font-normal text-navy/50">(PDF or Word, max 5MB)</span>
+          Resume / CV
+          <RequiredMark /> <span className="font-normal text-navy/50">(PDF or Word, max 5MB)</span>
         </label>
         <input
           id={fieldId("resume")}
           ref={resumeInputRef}
           type="file"
           accept=".pdf,.doc,.docx"
+          required
+          onChange={() => resumeError && checkResume()}
           className={fileInputClasses}
           aria-invalid={!!resumeError}
           aria-describedby={resumeError ? fieldId("resume-error") : undefined}

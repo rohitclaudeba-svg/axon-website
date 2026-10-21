@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, Loader2, ChevronDown } from "lucide-react";
-import { enquirySchema, type EnquiryInput } from "@/lib/validation";
+import { enquirySchema, sanitizeMobileInput, type EnquiryInput } from "@/lib/validation";
 import { services } from "@/content/services";
 import { Button } from "@/components/ui/Button";
+import { RequiredMark } from "@/components/ui/RequiredMark";
 import { useToast } from "@/components/ui/Toast";
 import { cn } from "@/lib/cn";
 import { FALLBACK_SITE_SETTINGS, type SiteSettingsData } from "@/lib/siteSettings";
@@ -76,6 +77,7 @@ export function EnquiryForm({ variant = "appointment" }: { variant?: "appointmen
   } = useForm<EnquiryInput>({
     resolver: zodResolver(enquirySchema),
   });
+  const phoneField = register("phone");
 
   const onSubmit = async (data: EnquiryInput) => {
     setStatus("submitting");
@@ -105,11 +107,13 @@ export function EnquiryForm({ variant = "appointment" }: { variant?: "appointmen
         <div>
           <label htmlFor="name" className="mb-1.5 block font-heading text-sm font-medium text-navy">
             Full name
+            <RequiredMark />
           </label>
           <input
             id="name"
             type="text"
             autoComplete="name"
+            required
             className={inputClasses}
             aria-invalid={!!errors.name}
             aria-describedby={errors.name ? "name-error" : undefined}
@@ -124,16 +128,24 @@ export function EnquiryForm({ variant = "appointment" }: { variant?: "appointmen
 
         <div>
           <label htmlFor="phone" className="mb-1.5 block font-heading text-sm font-medium text-navy">
-            Phone number
+            Mobile number
+            <RequiredMark />
           </label>
           <input
             id="phone"
             type="tel"
-            autoComplete="tel"
+            inputMode="numeric"
+            autoComplete="tel-national"
+            placeholder="10-digit mobile number"
+            required
             className={inputClasses}
             aria-invalid={!!errors.phone}
             aria-describedby={errors.phone ? "phone-error" : undefined}
-            {...register("phone")}
+            {...phoneField}
+            onChange={(e) => {
+              e.target.value = sanitizeMobileInput(e.target.value);
+              phoneField.onChange(e);
+            }}
           />
           {errors.phone && (
             <p id="phone-error" className="mt-1.5 text-xs text-red-600">
@@ -143,27 +155,27 @@ export function EnquiryForm({ variant = "appointment" }: { variant?: "appointmen
         </div>
       </div>
 
-      {variant === "appointment" && (
-        <div>
-          <label htmlFor="email" className="mb-1.5 block font-heading text-sm font-medium text-navy">
-            Email <span className="font-normal text-navy/50">(optional)</span>
-          </label>
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            className={inputClasses}
-            aria-invalid={!!errors.email}
-            aria-describedby={errors.email ? "email-error" : undefined}
-            {...register("email")}
-          />
-          {errors.email && (
-            <p id="email-error" className="mt-1.5 text-xs text-red-600">
-              {errors.email.message}
-            </p>
-          )}
-        </div>
-      )}
+      <div>
+        <label htmlFor="email" className="mb-1.5 block font-heading text-sm font-medium text-navy">
+          Email
+          <RequiredMark />
+        </label>
+        <input
+          id="email"
+          type="email"
+          autoComplete="email"
+          required
+          className={inputClasses}
+          aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? "email-error" : undefined}
+          {...register("email")}
+        />
+        {errors.email && (
+          <p id="email-error" className="mt-1.5 text-xs text-red-600">
+            {errors.email.message}
+          </p>
+        )}
+      </div>
 
       {variant === "appointment" && (
         <div>

@@ -9,6 +9,7 @@ import {
   type CreateEnquiryData,
   type UpdateEnquiryData,
 } from "../repositories/enquiries.repository";
+import { notifyEnquiry } from "../lib/mailer";
 
 export interface EnquiryDto {
   id: number;
@@ -56,7 +57,10 @@ export async function createEnquiry(data: CreateEnquiryData): Promise<EnquiryDto
   const id = await insertEnquiry(data);
   const row = await findEnquiryById(id);
   if (!row) throw new Error("Failed to load newly created enquiry");
-  return toDto(row);
+  const dto = toDto(row);
+  // Fire-and-forget so the form response isn't held up by SMTP.
+  void notifyEnquiry(dto);
+  return dto;
 }
 
 export async function editEnquiry(id: number, data: UpdateEnquiryData): Promise<EnquiryDto | null> {

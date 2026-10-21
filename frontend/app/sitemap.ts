@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { services } from "@/content/services";
 import { programs } from "@/content/programs";
 import { nap } from "@/content/nap";
+import { getPageVisibility, hiddenPagePaths } from "@/lib/pageVisibility";
 
 const staticRoutes = [
   "",
@@ -19,13 +20,14 @@ const staticRoutes = [
   "/careers",
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const dynamicRoutes = [
     ...services.map((service) => `/services/${service.slug}`),
     ...programs.map((program) => `/rehabilitation/${program.slug}`),
   ];
+  const hiddenPaths = hiddenPagePaths(await getPageVisibility());
 
-  return [...staticRoutes, ...dynamicRoutes].map((path) => ({
+  return [...staticRoutes, ...dynamicRoutes].filter((path) => !hiddenPaths.includes(path)).map((path) => ({
     url: new URL(path, nap.siteUrl).toString(),
     lastModified: new Date(),
     changeFrequency: "weekly",

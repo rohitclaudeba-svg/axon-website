@@ -10,6 +10,7 @@ import {
   type CertificateFile,
 } from "../repositories/careerApplications.repository";
 import { careerApplicationsDir } from "../middleware/upload";
+import { notifyCareerApplication } from "../lib/mailer";
 
 export interface CareerApplicationDto {
   id: number;
@@ -20,6 +21,8 @@ export interface CareerApplicationDto {
   message: string | null;
   resumeOriginalFilename: string;
   certificateCount: number;
+  // Original filenames only — files are fetched via /certificates/:index.
+  certificates: { index: number; originalFilename: string }[];
   createdAt: string;
 }
 
@@ -35,6 +38,7 @@ function parseCertificates(raw: unknown): CertificateFile[] {
 }
 
 function toDto(row: CareerApplicationRow): CareerApplicationDto {
+  const certificates = parseCertificates(row.certificates);
   return {
     id: row.id,
     name: row.name,
@@ -43,7 +47,11 @@ function toDto(row: CareerApplicationRow): CareerApplicationDto {
     position: row.position,
     message: row.message,
     resumeOriginalFilename: row.resume_original_filename,
-    certificateCount: parseCertificates(row.certificates).length,
+    certificateCount: certificates.length,
+    certificates: certificates.map((certificate, index) => ({
+      index,
+      originalFilename: certificate.originalFilename,
+    })),
     createdAt: row.created_at,
   };
 }
@@ -57,7 +65,18 @@ export async function createCareerApplication(data: NewCareerApplication): Promi
   const id = await insertCareerApplication(data);
   const row = await findCareerApplicationById(id);
   if (!row) throw new Error("Failed to load newly created career application");
-  return toDto(row);
+  const dto = toDto(row);
+  // Resume first so it's the one kept if the attachments exceed the email size cap.
+  const files = [
+    { filename: row.resume_original_filename, path: path.join(careerApplicationsDir, row.resume_filename) },
+    ...parseCertificates(row.certificates).map((certificate) => ({
+      filename: certificate.originalFilename,
+      path: path.join(careerApplicationsDir, certificate.filename),
+    })),
+  ];
+  // Fire-and-forget so the form response isn't held up by SMTP.
+  void notifyCareerApplication(dto, files);
+  return dto;
 }
 
 export interface ResumeFile {
